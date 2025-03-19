@@ -1,5 +1,5 @@
 drawline:
-	g++ line.cpp -lboost_iostreams -lboost_system  -o line && ./line
+	g++ 3dline.cpp -lboost_iostreams -lboost_system  -o 3dline && ./3dline
 
 NAME = "shubham"
 
