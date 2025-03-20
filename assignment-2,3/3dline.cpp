@@ -2,25 +2,10 @@
 #include "gnuplot-iostream.h"
 using namespace std;
 
-class Point {
-    public:
-    double x,y,z;
+#include "lib/point.cpp"
 
-    Point(){
-        this->x = 0;
-        this->y = 0;
-        this->z = 0;
-    }
-
-    Point(double x, double y, double z){
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-};
-
-vector<Point> generatePoints(Point p1, Point p2){
-    vector<Point> points;
+vector<Point3D> generatePoints(Point3D p1, Point3D p2){
+    vector<Point3D> points;
     
     double dx = (p2.x - p1.x) / 9.0;  
     double dy = (p2.y - p1.y) / 9.0;
@@ -30,22 +15,22 @@ vector<Point> generatePoints(Point p1, Point p2){
         double x = p1.x + i * dx;
         double y = p1.y + i * dy;
         double z = p1.z + i * dz;
-        Point p(x,y,z);
+        Point3D p(x,y,z);
         points.push_back(p);
     }
 
     return points;
 }
 
-void print(vector<Point>& points){
-    cout << "Points: "<<endl;
+void print(vector<Point3D>& points){
+    cout << "Point3Ds: "<<endl;
     for(auto& point : points){
         cout << point.x << "\t" << point.y << "\t" << point.y << endl;
     }
     cout << endl;
 }
 
-vector<tuple<double,double,double>> pointToTuple(vector<Point>& points){
+vector<tuple<double,double,double>> pointToTuple(vector<Point3D>& points){
     vector<tuple<double,double,double>> res;
     for(auto& point : points){
         res.push_back({point.x, point.y, point.z});
@@ -61,11 +46,11 @@ int main(){
     cout << "Enter end coords: ";
     cin >> x2 >> y2 >> z2;
 
-    Point p1(x1,y1,z1);
-    Point p2(x2,y2,z2);
+    Point3D p1(x1,y1,z1);
+    Point3D p2(x2,y2,z2);
 
     // generate points from start to end to plot
-    vector<Point> points = generatePoints(p1,p2);
+    vector<Point3D> points = generatePoints(p1,p2);
     vector<tuple<double,double,double>> coords = pointToTuple(points);
 
     // setup gnuplot

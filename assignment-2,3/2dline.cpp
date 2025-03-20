@@ -2,16 +2,18 @@
 #include "gnuplot-iostream.h"
 using namespace std;
 
-vector<pair<double,double>> generatePoints(double x1, double y1, double x2, double y2){
-    vector<pair<double, double>> points;
+#include "lib/point.cpp"
+
+vector<Point2D> generatePoints(Point2D p1, Point2D p2){
+    vector<Point2D> points;
     
-    double dx = (x2 - x1) / 9.0;  
-    double dy = (y2 - y1) / 9.0;
+    double dx = (p2.x - p1.x) / 9.0;  
+    double dy = (p2.y - p1.y) / 9.0;
 
     for (int i = 0; i < 10; i++) {
-        double x = x1 + i * dx;
-        double y = y1 + i * dy;
-        points.push_back({x, y});
+        double x = p1.x + i * dx;
+        double y = p1.y + i * dy;
+        points.push_back(Point2D(x,y));
     }
 
     return points;
@@ -23,17 +25,18 @@ int main(){
     gp << "set terminal dumb\n";
 
     // input start and end coordinates
-    double x1,x2,y1,y2;
+    Point2D p1, p2;
     cout << "Enter start coords: ";
-    cin >> x1 >> y1;
+    cin >> p1.x >> p1.y;
     cout << "Enter end coords: ";
-    cin >> x2 >> y2;
+    cin >> p2.x >> p2.y
 
     // generate points from start to end to plot
-    vector<pair<double,double>> points = generatePoints(x1,y1,x2,y2);
+    vector<Point2D> points = generatePoints(p1,p2);
 
     // plot the points
     gp << "plot '-' with lines title 'y = x^2'\n";
     gp.send1d(points);
 }
 
+// DAA - CLR 
