@@ -29,6 +29,16 @@ public:
     void draw();
 };
 
+class Rectangle {
+public:
+    double l,b;
+    double x,y;
+    
+    Rectangle(double x=0, double y=0, double l=1, double b=1): l(l), b(b), x(x), y(y) {}
+    void draw();
+    void input();
+};
+
 class Cuboid {
 public:
     double l, b, h;
