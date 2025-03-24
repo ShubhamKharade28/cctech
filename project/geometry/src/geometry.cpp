@@ -1,16 +1,17 @@
 
 #include "geometry.h"
-#define tb tuple<double,double,double>
-#define pi pair<int,int>
+#define td tuple<double,double,double>
+#define pd pair<double, double>
+#define pi pair<int, int>
 
 template <typename T>
 void Line<T>::draw(){
     GnuplotUtils gp;
     if constexpr (is_same_v<T, Point3D>) {
-        vector<tuple<double, double, double>> plotData = {start.toTuple(), end.toTuple()};
+        vector<td> plotData = {start.toTuple(), end.toTuple()};
         gp.plot3D(plotData);
     } else {
-        vector<pair<double, double>> plotData = {start.toPair(), end.toPair()};
+        vector<pd> plotData = {start.toPair(), end.toPair()};
         gp.plot2D(plotData);
     }
 }
@@ -18,7 +19,7 @@ void Line<T>::draw(){
 void Rectangle::draw() {
     GnuplotUtils gp;
     
-    vector<pair<double, double>> vertices = {
+    vector<pd> vertices = {
         {x, y},          // Bottom-left
         {x + l, y},      // Bottom-right
         {x + l, y + b},  // Top-right
@@ -39,7 +40,7 @@ void Rectangle::input() {
 
 void Cuboid::draw(){
     GnuplotUtils gp;
-    vector<tb> vertices = {
+    vector<td> vertices = {
         {x, y, z},                // 0: left-bottom-front  
         {x + l, y, z},            // 1: right-bottom-front
         {x + l, y + b, z},        // 2: right-top-front
@@ -56,7 +57,7 @@ void Cuboid::draw(){
         {0, 4}, {1, 5}, {2, 6}, {3, 7}  // Connecting edges
     };
 
-    vector<tb> plotData;
+    vector<td> plotData;
     for(pi& edge : edges){
         plotData.push_back(vertices[edge.first]);
         plotData.push_back(vertices[edge.second]);
