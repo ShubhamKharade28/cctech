@@ -5,8 +5,10 @@
 using namespace std;
 
 #include "gnuplot-utils.h"
+#include "transformations.h"
 
-typedef vector<vector<double>> vvd;
+#define vvd vector<vector<double>>
+#define pi pair<int, int>
 
 class Point {
 public:
@@ -31,14 +33,12 @@ public:
     void draw();
 };
 
-vvd multiplyMatrix(vvd &X, vvd &T);
-
 class Rectangle {
 public:
     double l,b;
     double x,y;
     
-    Rectangle(double x=0, double y=0, double l=1, double b=1): l(l), b(b), x(x), y(y) {}
+    Rectangle(double x=0, double y=0, double l=1, double b=1);
     void draw();
     void input();
     Rectangle rotate90();
@@ -49,18 +49,14 @@ public:
     double l, b, h;
     double x, y, z;
 
-    Cuboid(double x = 0, double y = 0, double z = 0, double l = 1, double b = 1, double h = 1)
-        : l(l), b(b), h(h), x(x), y(y), z(z) {}  
-
+    Cuboid(double x = 0, double y = 0, double z = 0, double l = 1, double b = 1, double h = 1);
     void draw();
 };
 
 class Cube : public Cuboid {
 public:
     double side;
-
-    Cube(double side = 1, double x = 0, double y = 0, double z = 0)
-        : Cuboid(x, y, z, side, side, side), side(side) {}
+    Cube(double side = 1, double x = 0, double y = 0, double z = 0);
 };
 
 class Circle {
@@ -68,9 +64,7 @@ public:
     double x, y, z, r;
     bool is3D;
 
-    Circle(double x = 0, double y = 0, double z = 0, double r = 1, bool is3D = false)
-        : x(x), y(y), z(z), r(r), is3D(is3D) {}
-
+    Circle(double x = 0, double y = 0, double z = 0, double r = 1, bool is3D = false);
     void draw();
     void input();
 };
@@ -78,16 +72,14 @@ public:
 class Sphere {
 public:
     double x,y,z,r;
-    Sphere(double x, double y, double z, double r): x(x), y(y), z(z), r(r) {}
+    Sphere(double x, double y, double z, double r);
     void draw();
 };
 
 class Cylinder {
-private:
-    double x, y, z; // center coords of bottom face
-    double r, h;    // radius and height
-
 public:
+    double x, y, z; 
+    double r, h;
     Cylinder(double x, double y, double z, double r, double h)
         : x(x), y(y), z(z), r(r), h(h) {}
 
