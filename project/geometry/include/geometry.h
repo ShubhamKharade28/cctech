@@ -6,6 +6,8 @@ using namespace std;
 
 #include "gnuplot-utils.h"
 
+typedef vector<vector<double>> vvd;
+
 class Point {
 public:
     double x, y;
@@ -16,7 +18,7 @@ public:
 class Point3D : public Point {
 public:
     double z;
-    Point3D();
+    Point3D(): Point(0,0) {};
     Point3D(double x=0, double y=0, double z=0): Point(x,y), z(z) {}
     tuple<double, double, double> toTuple() { return {x, y, z}; }
 };
@@ -29,6 +31,8 @@ public:
     void draw();
 };
 
+vvd multiplyMatrix(vvd &X, vvd &T);
+
 class Rectangle {
 public:
     double l,b;
@@ -37,6 +41,7 @@ public:
     Rectangle(double x=0, double y=0, double l=1, double b=1): l(l), b(b), x(x), y(y) {}
     void draw();
     void input();
+    Rectangle rotate90();
 };
 
 class Cuboid {
@@ -68,6 +73,25 @@ public:
 
     void draw();
     void input();
+};
+
+class Sphere {
+public:
+    double x,y,z,r;
+    Sphere(double x, double y, double z, double r): x(x), y(y), z(z), r(r) {}
+    void draw();
+};
+
+class Cylinder {
+private:
+    double x, y, z; // center coords of bottom face
+    double r, h;    // radius and height
+
+public:
+    Cylinder(double x, double y, double z, double r, double h)
+        : x(x), y(y), z(z), r(r), h(h) {}
+
+    void draw();
 };
     
 

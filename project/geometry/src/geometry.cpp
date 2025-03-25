@@ -1,7 +1,5 @@
 
 #include "geometry.h"
-#define td tuple<double,double,double>
-#define pd pair<double, double>
 #define pi pair<int, int>
 
 template <typename T>
@@ -38,6 +36,37 @@ void Rectangle::input() {
     cin >> l >> b;
 }
 
+
+vvd multiplyMatrix(vvd &A,vvd &B) {
+    int rowsA = A.size(), colsA = A[0].size();
+    int rowsB = B.size(), colsB = B[0].size();
+
+    if (colsA != rowsB) {
+        throw invalid_argument("Matrix dimensions do not match for multiplication.");
+    }
+
+    vvd result(rowsA, vector<double>(colsB, 0));
+
+    for (int i = 0; i < rowsA; i++) {
+        for (int j = 0; j < colsB; j++) {
+            for (int k = 0; k < colsA; k++) {
+                result[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+    return result;
+}
+
+Rectangle Rectangle::rotate90(){
+    vvd X = {{x, y}, {x+l, y},{x+l, y+b}, {x, y+b}};
+    vvd T = {{0, 1}, {-1, 0}};
+    vvd rotated = multiplyMatrix(X,T);
+    double newX = rotated[0][0], newY = rotated[0][1];
+    double newL = b, newB = l;
+    Rectangle rg(newX, newY, newL, newB);
+    return rg;
+}
+
 void Cuboid::draw(){
     GnuplotUtils gp;
     vector<td> vertices = {
@@ -64,7 +93,7 @@ void Cuboid::draw(){
         plotData.push_back({NAN,NAN,NAN});
     }
 
-    gp.plot3D(plotData);
+    gp.draw3D(plotData, "mycuboid.dat", "My Cuboid");
 }
 
 void Circle::draw() {
@@ -102,6 +131,88 @@ void Circle::input() {
     
     z = 10;
 }
+
+void Sphere::draw() {
+    string filename = "mysphere.dat";
+    vector<td> dataPoints;
+
+    int lat_steps = 20;
+    int lon_steps = 20;
+
+    // longitude lines
+    for(int i=0; i<=lat_steps; i++){
+        double theta = M_PI * i / lat_steps;
+        for(int j=0; j<=lon_steps; j++){
+            double phi = 2 * M_PI * j / lon_steps;
+
+            double dx = x + r * sin(theta) * cos(phi);
+            double dy = y + r * sin(theta) * sin(phi);
+            double dz = z + r * cos(theta);
+            dataPoints.push_back({dx, dy, dz});
+        }
+        dataPoints.push_back({NAN, NAN, NAN});
+    }
+
+    // lattitude lines
+    lon_steps /= 2;
+    for (int j = 0; j <= lon_steps; j++) {  
+        double phi = 2 * M_PI * j / lon_steps;  
+
+        for (int i = 0; i <= lat_steps; i++) {
+            double theta = M_PI * i / lat_steps; 
+
+            double dx = x + r * sin(theta) * cos(phi);
+            double dy = y + r * sin(theta) * sin(phi);
+            double dz = z + r * cos(theta);
+
+            dataPoints.push_back({dx, dy, dz});
+        }
+        dataPoints.push_back({NAN, NAN, NAN}); 
+    }
+
+    GnuplotUtils gp;
+    gp.draw3D(dataPoints, filename, "Sphere");
+}
+
+void Cylinder::draw() {
+    string filename = "mycylinder.dat";  // Save in 'data' folder
+    vector<td> dataPoints;
+
+    int steps = 50; 
+   
+    for (int i = 0; i <= steps; i++) {
+        double theta = 2 * M_PI * i / steps;
+        double dx = x + r * cos(theta);
+        double dy = y + r * sin(theta);
+        double dz = z; // bottom base
+        dataPoints.push_back({dx, dy, dz});
+    }
+    dataPoints.push_back({NAN, NAN, NAN});  
+
+    for (int i = 0; i <= steps; i++) {
+        double theta = 2 * M_PI * i / steps;
+        double dx = x + r * cos(theta);
+        double dy = y + r * sin(theta);
+        double dz = z + h; // top base
+        dataPoints.push_back({dx, dy, dz});
+    }
+    dataPoints.push_back({NAN, NAN, NAN});  
+
+    for (int i = 0; i <= steps; i += steps/50) {
+        double theta = 2 * M_PI * i / steps;
+        double dx = x + r * cos(theta);
+        double dy = y + r * sin(theta);
+
+        // Connect bottom to top
+        dataPoints.push_back({dx, dy, z});
+        dataPoints.push_back({dx, dy, z + h});
+        dataPoints.push_back({NAN, NAN, NAN}); 
+    }
+
+    GnuplotUtils gp;
+    gp.draw3D(dataPoints, filename, "Cylinder");
+}
+
 
 
 template class Line<Point>;

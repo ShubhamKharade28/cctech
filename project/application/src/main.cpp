@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "geometry.h"
+namespace fs = filesystem;
 
 void drawDiagram() {
     cout << "In what dimensions do you want to draw?" << endl 
@@ -72,7 +73,52 @@ void drawDiagram() {
     }
 }
 
+void listAndDrawSavedFiles(){
+    string dataFolder = "data/";
+    vector<string> datFiles;
+
+    if (!fs::exists(dataFolder) || !fs::is_directory(dataFolder)) {
+        cout << "No data folder found. No saved .dat files available.\n";
+        return;
+    }
+
+    cout << "Available .dat files:\n";
+    int index = 1;
+    for (auto& entry : fs::directory_iterator(dataFolder)) {
+        if (entry.path().extension() == ".dat") {
+            datFiles.push_back(entry.path().filename());
+            cout << index++ << ". " << entry.path().filename() << "\n";
+        }
+    }
+
+    if (datFiles.empty()) {
+        cout << "No .dat files found in the data folder.\n";
+        return;
+    }
+
+    cout << "Enter the number of the file you want to draw (or 0 to exit): ";
+    int choice;
+    cin >> choice;
+
+    if (choice > 0 && choice <= datFiles.size()) {
+        string selectedFile = datFiles[choice - 1];
+        cout << "Drawing " << selectedFile << "...\n";
+
+        // Assuming the file is 3D
+        GnuplotUtils gp;
+        gp.open3D(dataFolder + selectedFile, "Generated Plot");
+    } else {
+        cout << "Invalid selection or exit chosen.\n";
+    }
+}
+
 int main(){
-    
+    Rectangle rg;
+    rg.input();
+
+    Rectangle rotatedRg = rg.rotate90();
+
+    rg.draw();
+    rotatedRg.draw();
 }
 
