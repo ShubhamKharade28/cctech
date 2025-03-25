@@ -1,8 +1,11 @@
 #include "transformations.h"
 #include <cmath>
 
+// Constructor
+Transformations::Transformations(const vvd &X) : X(X) {}
+
 // Matrix multiplication
-vvd multiplyMatrix(const vvd &A, const vvd &B) {
+vvd Transformations::multiplyMatrix(const vvd &A, const vvd &B) {
     int r1 = A.size(), c1 = A[0].size(), c2 = B[0].size();
     vvd result(r1, vector<double>(c2, 0));
 
@@ -17,7 +20,7 @@ vvd multiplyMatrix(const vvd &A, const vvd &B) {
 }
 
 // Rotation function
-vvd rotatePoints(const vvd &X, double angle, vector<double> pivot) {
+vvd Transformations::rotate(double angle, vector<double> pivot) {
     if (pivot.empty()) pivot = X[0]; // Default pivot to first point
 
     double rad = angle * M_PI / 180.0;
@@ -43,7 +46,7 @@ vvd rotatePoints(const vvd &X, double angle, vector<double> pivot) {
 }
 
 // Scaling function
-vvd scalePoints(const vvd &X, double scaleFactor, vector<double> pivot) {
+vvd Transformations::scale(double scaleFactor, vector<double> pivot) {
     if (pivot.empty()) pivot = X[0];
 
     vvd scaledX = X;
@@ -56,7 +59,7 @@ vvd scalePoints(const vvd &X, double scaleFactor, vector<double> pivot) {
 }
 
 // Translation function
-vvd translatePoints(const vvd &X, double dx, double dy) {
+vvd Transformations::translate(double dx, double dy) {
     vvd translatedX = X;
     for (auto &p : translatedX) {
         p[0] += dx;
