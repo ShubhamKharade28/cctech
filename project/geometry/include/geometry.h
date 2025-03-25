@@ -58,4 +58,17 @@ public:
         : Cuboid(x, y, z, side, side, side), side(side) {}
 };
 
+class Circle {
+public:
+    double x, y, z, r;
+    bool is3D;
+
+    Circle(double x = 0, double y = 0, double z = 0, double r = 1, bool is3D = false)
+        : x(x), y(y), z(z), r(r), is3D(is3D) {}
+
+    void draw();
+    void input();
+};
+    
+
 #endif

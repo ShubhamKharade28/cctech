@@ -3,7 +3,7 @@ using namespace std;
 
 #include "geometry.h"
 
-int main(){
+void drawDiagram() {
     cout << "In what dimensions do you want to draw?" << endl 
         << "\t 1. 2D" << endl
         << "\t 2. 3D" << endl;
@@ -31,6 +31,13 @@ int main(){
                 cout <<"Drawing a rectangle..." << endl;
                 break;
             }
+            case 4: {
+                Circle cir;
+                cir.input();
+                cir.draw();
+                cout << "Drawing a circle..." << endl;
+                break;
+            }
             default:
                 break;
         }
@@ -40,7 +47,8 @@ int main(){
             << "\t 1. Cuboid" << endl 
             << "\t 2. Cube" << endl 
             << "\t 3. Sphere" << endl
-            << "\t 4. Cylinder" << endl;
+            << "\t 4. Cylinder" << endl
+            << "\t 5. Circle" << endl;
         
         cin >> c;
         switch (c)
@@ -51,9 +59,20 @@ int main(){
         case 2:
             cout << "Drawing a cube...";
             break;
+        case 5: {
+            Circle cir;
+            cir.is3D = true;
+            cir.input();
+            cir.draw();
+            cout << "Drawing a circle...";
+        }
         default:
             break;
         }
     }
+}
+
+int main(){
+    
 }
 
