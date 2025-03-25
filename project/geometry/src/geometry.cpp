@@ -36,27 +36,6 @@ void Rectangle::input() {
     cin >> l >> b;
 }
 
-
-vvd multiplyMatrix(vvd &A,vvd &B) {
-    int rowsA = A.size(), colsA = A[0].size();
-    int rowsB = B.size(), colsB = B[0].size();
-
-    if (colsA != rowsB) {
-        throw invalid_argument("Matrix dimensions do not match for multiplication.");
-    }
-
-    vvd result(rowsA, vector<double>(colsB, 0));
-
-    for (int i = 0; i < rowsA; i++) {
-        for (int j = 0; j < colsB; j++) {
-            for (int k = 0; k < colsA; k++) {
-                result[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
-    return result;
-}
-
 Rectangle Rectangle::rotate90(){
     vvd X = {{x, y}, {x+l, y},{x+l, y+b}, {x, y+b}};
     vvd T = {{0, 1}, {-1, 0}};
