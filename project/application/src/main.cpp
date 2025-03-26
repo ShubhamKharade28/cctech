@@ -2,15 +2,26 @@
 using namespace std;
 
 #include "geometry.h"
-// #include "utils.cpp"
+#include "sketcher.h"
 
-int main(){
-    Rectangle rg;
-    rg.input();
+int main() {
+    // Create shape objects using shared pointers
+    shared_ptr<Shape> cb = make_shared<Cuboid>(10, 10, 10, 20, 40, 60);
+    shared_ptr<Shape> cyl = make_shared<Cylinder>(20, 30, 40, 10, 50);
+    shared_ptr<Shape> sph = make_shared<Sphere>(20, 20,50, 50);
 
-    Rectangle rotatedRg = rg.rotate90();
+    Sketcher skt;
 
-    rg.draw();
-    rotatedRg.draw();
+    // Add shapes to Sketcher
+    skt.addShape(cb);
+    skt.addShape(cyl);
+    skt.addShape(sph);
+
+    // Get drawable representation
+    auto drawable = skt.getDrawable();
+
+    // Optionally, draw the shapes
+    skt.draw();
+
+    return 0;
 }
-

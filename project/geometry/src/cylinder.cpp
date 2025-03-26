@@ -1,9 +1,7 @@
 #include "geometry.h"
 
-void Cylinder::draw() {
-    string filename = "mycylinder.dat";  // Save in 'data' folder
-    vector<td> dataPoints;
-
+vvd Cylinder::getDrawable() {
+    vvd dataPoints;
     int steps = 50; 
    
     for (int i = 0; i <= steps; i++) {
@@ -24,7 +22,7 @@ void Cylinder::draw() {
     }
     dataPoints.push_back({NAN, NAN, NAN});  
 
-    for (int i = 0; i <= steps; i += steps/50) {
+    for (int i = 0; i <= steps; i += steps/20) {
         double theta = 2 * M_PI * i / steps;
         double dx = x + r * cos(theta);
         double dy = y + r * sin(theta);
@@ -35,6 +33,13 @@ void Cylinder::draw() {
         dataPoints.push_back({NAN, NAN, NAN}); 
     }
 
+    return dataPoints;
+}
+
+void Cylinder::draw() {
     GnuplotUtils gp;
-    gp.draw3D(dataPoints, filename, "Cylinder");
+    // string filename = "mycylinder.dat";
+    // gp.draw3D(dataPoints, filename, "Cylinder");
+    vvd dataPoints = getDrawable();
+    gp.plot3D(dataPoints);
 }

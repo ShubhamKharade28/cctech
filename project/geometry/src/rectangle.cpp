@@ -1,19 +1,22 @@
 #include "geometry.h"
 
-Rectangle::Rectangle(double x, double y, double l, double b) : x(x), y(y), l(l), b(b) {}
+Rectangle::Rectangle(double x, double y, double z, double l, double b) : x(x), y(y), z(z), l(l), b(b) {}
+
+vvd Rectangle::getDrawable() {
+    vvd vertices = {
+        {x, y, z},          // Bottom-left
+        {x + l, y, z},      // Bottom-right
+        {x + l, y + b, z},  // Top-right
+        {x, y + b, z},      // Top-left
+        {x, y, z}           // Closing the rectangle (Back to Bottom-left)
+    };
+    return vertices;
+}
 
 void Rectangle::draw() {
     GnuplotUtils gp;
-    
-    vector<pd> vertices = {
-        {x, y},          // Bottom-left
-        {x + l, y},      // Bottom-right
-        {x + l, y + b},  // Top-right
-        {x, y + b},      // Top-left
-        {x, y}           // Closing the rectangle (Back to Bottom-left)
-    };
-
-    gp.plot2D(vertices, "rectangle");
+    vvd dataPoints = getDrawable();
+    gp.plot2D(dataPoints, "rectangle");
 }
 
 void Rectangle::input() {

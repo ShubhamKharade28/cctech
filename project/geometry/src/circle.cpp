@@ -1,12 +1,10 @@
 #include "geometry.h"
 
-Circle::Circle(double x, double y, double z, double r, bool is3D): 
-    x(x), y(y), z(z), r(r), is3D(is3D) {}
+Circle::Circle(double x, double y, double z, double r): 
+    x(x), y(y), z(z), r(r) {}
 
-void Circle::draw() {
-    GnuplotUtils gp;
-    vector<pair<double, double>> points2D;
-    vector<tuple<double, double, double>> points3D;
+vvd Circle::getDrawable() {
+    vvd dataPoints;
 
     int numPoints = 100;
     for (int i = 0; i <= numPoints; i++) {
@@ -14,16 +12,16 @@ void Circle::draw() {
         double px = x + r * cos(theta);
         double py = y + r * sin(theta);
 
-        if (is3D)
-            points3D.emplace_back(px, py, z);
-        else
-            points2D.emplace_back(px, py);
+        dataPoints.push_back({px, py, z});
     }
 
-    if (is3D)
-        gp.plot3D(points3D, "Circle");
-    else
-        gp.plot2D(points2D, "Circle");
+    return dataPoints;
+}
+
+void Circle::draw() {
+    GnuplotUtils gp;
+    vvd dataPoints = getDrawable();
+    gp.plot3D(dataPoints);
 }
 
 void Circle::input() {

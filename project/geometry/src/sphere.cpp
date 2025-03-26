@@ -2,9 +2,8 @@
 
 Sphere::Sphere(double x, double y, double z, double r): x(x), y(y), z(z), r(r) {}
 
-void Sphere::draw() {
-    string filename = "mysphere.dat";
-    vector<td> dataPoints;
+vvd Sphere::getDrawable() {
+    vvd dataPoints;
 
     int lat_steps = 20;
     int lon_steps = 20;
@@ -40,6 +39,14 @@ void Sphere::draw() {
         dataPoints.push_back({NAN, NAN, NAN}); 
     }
 
+    return dataPoints;
+}
+
+void Sphere::draw() {
+    vvd dataPoints = getDrawable();
     GnuplotUtils gp;
-    gp.draw3D(dataPoints, filename, "Sphere");
+    gp.plot3D(dataPoints);
+
+    // string filename = "mysphere.dat";
+    // gp.draw3D(dataPoints, filename, "Sphere");
 }

@@ -3,12 +3,11 @@
 template <typename T>
 void Line<T>::draw(){
     GnuplotUtils gp;
+    vvd dataPoints = {start.toVector(), end.toVector()};
     if constexpr (is_same_v<T, Point3D>) {
-        vector<td> plotData = {start.toTuple(), end.toTuple()};
-        gp.plot3D(plotData);
+        gp.plot3D(dataPoints);
     } else {
-        vector<pd> plotData = {start.toPair(), end.toPair()};
-        gp.plot2D(plotData);
+        gp.plot2D(dataPoints);
     }
 }
 

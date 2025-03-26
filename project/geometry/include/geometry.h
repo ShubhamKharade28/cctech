@@ -14,7 +14,7 @@ class Point {
 public:
     double x, y;
     Point(double x=0, double y=0): x(x), y(y) {}
-    pair<double, double> toPair() { return {x, y}; }
+    virtual vector<double> toVector() { return {x, y}; }
 };
 
 class Point3D : public Point {
@@ -22,7 +22,7 @@ public:
     double z;
     Point3D(): Point(0,0) {};
     Point3D(double x=0, double y=0, double z=0): Point(x,y), z(z) {}
-    tuple<double, double, double> toTuple() { return {x, y, z}; }
+    vector<double> toVector() override { return {x, y, z}; }
 };
 
 template <typename T>
@@ -33,24 +33,43 @@ public:
     void draw();
 };
 
-class Rectangle {
+class Shape {
+public:
+    virtual vvd getDrawable() = 0;
+    virtual void draw() = 0;
+    virtual ~Shape() {};
+
+    double degToRad(double degrees) {
+        return degrees * M_PI / 180.0;
+    }
+
+    double radToDeg(double radians) {
+        return radians * 180.0 / M_PI;
+    }
+};
+
+class Rectangle: public Shape {
 public:
     double l,b;
-    double x,y;
+    double x,y,z;
     
-    Rectangle(double x=0, double y=0, double l=1, double b=1);
-    void draw();
+    Rectangle(double x=0, double y=0, double z=0, double l=1, double b=1);
+    void draw() override;
+    vvd getDrawable() override;
     void input();
     Rectangle rotate90();
 };
 
-class Cuboid {
+class Cuboid: public Shape {
 public:
-    double l, b, h;
     double x, y, z;
+    double l, b, h;
+    double rotationX, rotationY, rotationZ;
 
     Cuboid(double x = 0, double y = 0, double z = 0, double l = 1, double b = 1, double h = 1);
-    void draw();
+    void draw() override;
+    vvd getDrawable() override;
+    void setRotation(double rotX_deg, double rotY_deg, double rotZ_deg);  
 };
 
 class Cube : public Cuboid {
@@ -59,31 +78,48 @@ public:
     Cube(double side = 1, double x = 0, double y = 0, double z = 0);
 };
 
-class Circle {
+class Circle: public Shape {
 public:
     double x, y, z, r;
-    bool is3D;
-
-    Circle(double x = 0, double y = 0, double z = 0, double r = 1, bool is3D = false);
-    void draw();
-    void input();
+    Circle(double x = 0, double y = 0, double z = 0, double r = 1);
+    void draw() override;
+    void input() ;
+    vvd getDrawable() override;
 };
 
-class Sphere {
+class Sphere: public Shape{
 public:
     double x,y,z,r;
     Sphere(double x, double y, double z, double r);
-    void draw();
+    void draw() override;
+    vvd getDrawable() override;
 };
 
-class Cylinder {
+class Cylinder: public Shape {
 public:
     double x, y, z; 
     double r, h;
     Cylinder(double x, double y, double z, double r, double h)
         : x(x), y(y), z(z), r(r), h(h) {}
 
-    void draw();
+    void draw() override;
+    vvd getDrawable() override;
+};
+
+class Polyline: public Shape{
+public:
+    vvd points;
+    Polyline(vvd& pts) : points(pts) {}
+    vvd getDrawable() override { return points; }
+    void draw() override;
+};
+
+class BezierCurve: public Shape{
+public:
+    vvd controlPoints;
+    BezierCurve(vvd& points);
+    vvd getDrawable() override { return controlPoints; }
+    void draw() override;
 };
     
 

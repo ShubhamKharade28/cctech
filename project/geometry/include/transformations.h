@@ -1,22 +1,19 @@
-#ifndef TRANSFORMATIONS_H
-#define TRANSFORMATIONS_H
+// #ifndef TRANSFORMATIONS_H
+// #define TRANSFORMATIONS_H
 
-#include <vector>
-using namespace std;
+// #include <vector>
+// using namespace std;
 
-#define vvd vector<vector<double>>
+// #define vvd vector<vector<double>>
 
-class Transformations {
-private:
-    vvd multiplyMatrix(const vvd &A, const vvd &B); // Matrix multiplication
+// class Transformations {
+// private:
+//     vvd multiplyMatrix(vvd &A, vvd &B); // Matrix multiplication
+//     // vvd addMatrix(vvd& A, vvd& B);
+// public:
+//     vvd translate(vvd& X, double dx, double dy);  // Translation
+//     vvd rotate(vvd& X, double angle, vector<double> pivot = {});  // Rotation
+//     vvd scale(vvd& X, double scaleFactor, vector<double> pivot = {});  // Scaling
+// };
 
-public:
-    vvd X; // Stores the shape points
-    Transformations(const vvd &X); // Constructor
-
-    vvd rotate(double angle, vector<double> pivot = {});  // Rotation
-    vvd scale(double scaleFactor, vector<double> pivot = {});  // Scaling
-    vvd translate(double dx, double dy);  // Translation
-};
-
-#endif
+// #endif

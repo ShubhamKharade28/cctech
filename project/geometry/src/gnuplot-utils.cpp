@@ -3,38 +3,48 @@
 #include "gnuplot-iostream.h"
 using namespace std;
 
-#define pd pair<double, double>
-#define td tuple<double, double, double>
-
-void GnuplotUtils::plot2D(vector<pd>& plotData, string title) {
+void GnuplotUtils::plot2D(vvd& dataPoints, string title) {
     Gnuplot gp;
     gp << "set terminal wxt\n"; 
     gp << "set xlabel 'X'\n";
     gp << "set ylabel 'Y'\n";
     gp << "set title '" << title << "'\n";
     gp << "plot '-' with lines title '2D Line'\n";
-    gp.send1d(plotData);
+    gp.send1d(dataPoints);
 }
 
-void GnuplotUtils::plot3D(vector<td>& plotData, string title) {
+void GnuplotUtils::plot3D(vvd& dataPoints, string title) {
     Gnuplot gp;
+    // # unfilled
     gp << "set terminal wxt\n";
     gp << "set xlabel 'X'\n";
     gp << "set ylabel 'Y'\n";
     gp << "set zlabel 'Z'\n";
     gp << "set title '" << title << "'\n";
     gp << "splot '-' with lines title '3D Line'\n";
-    gp.send1d(plotData);
+
+    gp.send1d(dataPoints);
 }
 
-void GnuplotUtils::save2D(vector<pd>& plotData, string filename) {
+void GnuplotUtils::plotCurve(vvd& dataPoints, string title) {
+    Gnuplot gp;
+    gp << "set terminal wxt\n";
+    gp << "set xlabel 'X'\n";
+    gp << "set ylabel 'Y'\n";
+    gp << "set zlabel 'Z'\n";
+    gp << "set title '" << title << "'\n";
+    gp << "splot '-' using 1:2:3 smooth csplines with lines title 'Bezier Curve'\n";  
+    gp.send1d(dataPoints);
+}
+
+void GnuplotUtils::save2D(vvd& dataPoints, string filename) {
     ofstream file(filename);
     if (!file) {
         cerr << "Error opening file: " << filename << endl;
         return;
     }
-    for (auto& point : plotData) {
-        file << point.first << " " << point.second << "\n";
+    for (auto& point : dataPoints) {
+        file << point[0] << " " << point[1] << "\n";
     }
     file.close();
 }
@@ -54,20 +64,20 @@ void GnuplotUtils::open2D(const string dataFile, string title) {
     system("gnuplot -persist plot_2d.gnu");
 }
 
-void GnuplotUtils::draw2D(vector<pd>& plotData, string filename, string title) {
+void GnuplotUtils::draw2D(vvd& dataPoints, string filename, string title) {
     string filepath = "data/" + filename;
-    save2D(plotData, filepath);
+    save2D(dataPoints, filepath);
     open2D(filepath, title);
 }
 
-void GnuplotUtils::save3D(vector<td>& plotData, string filename) {
+void GnuplotUtils::save3D(vvd& dataPoints, string filename) {
     ofstream file(filename);
     if (!file) {
         cerr << "Error opening file: " << filename << endl;
         return;
     }
-    for (const auto& point : plotData) {
-        file << get<0>(point) << " " << get<1>(point) << " " << get<2>(point) << "\n";
+    for (auto& point : dataPoints) {
+        file << point[0] << " " << point[1] << " " << point[2] << "\n";
     }
     file.close();
 }
@@ -88,8 +98,8 @@ void GnuplotUtils::open3D(string dataFile, string title) {
     system("gnuplot -persist plot_3d.gnu");
 }
 
-void GnuplotUtils::draw3D(vector<td>& plotData, string filename, string title) {
+void GnuplotUtils::draw3D(vvd& dataPoints, string filename, string title) {
     string filepath = "data/" + filename;
-    save3D(plotData, filepath);
+    save3D(dataPoints, filepath);
     open3D(filepath, title);
 }
