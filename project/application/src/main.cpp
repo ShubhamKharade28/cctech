@@ -58,17 +58,14 @@ int main() {
     auto neck = make_shared<Cylinder>(1, 2, 0, 0, 8.2);  // Cylinder with radius 1, height 1 at (0,0,8)
     auto body = make_shared<Cuboid>(6, 4, 8, 0, 0, 5);  // Cuboid with length 6, breadth 4, height 6 centered at (0,0,5)
 
-    auto leftHand = make_shared<Cylinder>(1, 5, -5, 2, 4);  // Cylinder with radius 1, height 5 at (-5,1,5), rotated -30 degrees
-    auto rightHand = make_shared<Cylinder>(1, 5, 5, 2, 4);  // Cylinder with radius 1, height 5 at (5,1,5), rotated 30 degrees
+    auto leftHand = make_shared<Cylinder>(1, 5, -7, 0, -1);  // Cylinder with radius 1, height 5 at (-5,1,5), rotated -30 degrees
+    auto rightHand = make_shared<Cylinder>(1, 5, 7.2, 0, -1.5);  // Cylinder with radius 1, height 5 at (5,1,5), rotated 30 degrees
 
     auto leftLeg = make_shared<Cylinder>(1, 4, -2, 0, -2);  // Cylinder with radius 1, height 4 at (-2,0,1)
     auto rightLeg = make_shared<Cylinder>(1, 4, 2, 0, -2);  // Cylinder with radius 1, height 4 at (2,0,1)
 
-    // leftHand->setPivot(-5,2,4);
-    // leftHand->setRotation(0, 30, 0);
-    
-    // rightHand->setPivot(5,2,4);
-    // rightHand->setRotation(0, -30, 0);
+    leftHand->setRotation(0, -45, 0);
+    rightHand->setRotation(0, 45, 0);
 
     
     robot.addShape(head);

@@ -1,6 +1,8 @@
 #include "geometry.h"
 
-Cuboid::Cuboid(double l, double b, double h, double x, double y, double z): l(l), b(b), h(h), x(x), y(y), z(z) {}
+Cuboid::Cuboid(double l, double b, double h, double x, double y, double z): l(l), b(b), h(h), x(x), y(y), z(z) {
+    setPivot(x, y, z);
+}
 
 vvd Cuboid::computePoints() {
     double halfL = l / 2.0;

@@ -58,8 +58,10 @@ vvd Transformations::rotate(vvd& X, double angle, char axis, vector<double> pivo
     if(X.empty()) return {};
     if(pivot.empty()) pivot = X[0];
 
-    double cx = pivot[0], cy = pivot[1], cz = pivot[2];
-    vvd translatedX = translate(X, -cx, -cy, -cz);
+    // double cx = pivot[0], cy = pivot[1], cz = pivot[2];
+    // vvd translatedX = translate(X, -cx, -cy, -cz);
+
+    vvd translatedX = X;
 
     double theta = angle * M_PI / 180.0;
     vvd R; // rotation matrix
@@ -90,7 +92,7 @@ vvd Transformations::rotate(vvd& X, double angle, char axis, vector<double> pivo
     vvd rotatedX = multiplyMatrix(homogeneousX, R);
 
     rotatedX = toCartesian(rotatedX);
-    rotatedX = translate(rotatedX, cx, cy, cz);
+    // rotatedX = translate(rotatedX, cx, cy, cz);
     return rotatedX;
 }
 

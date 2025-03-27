@@ -42,7 +42,6 @@ protected:
     vector<double> rotation = {0,0,0};
     double scaleFactor = 1.0;
     vector<double> pivot = {0,0,0};
-
     string title = "3D Shape";
     string filename = "shape-data.dat";
 public:
@@ -110,7 +109,7 @@ public:
 
 class Sphere: public Shape{
 public:
-    double x,y,z,r;
+    double r,x,y,z;
     Sphere(double r=1, double x=0, double y=0, double z=0);
     vvd computePoints() override;
     void input() override;
@@ -120,8 +119,7 @@ class Cylinder: public Shape {
 public:
     double x, y, z; 
     double r, h;
-    Cylinder(double r=1,  double h=10, double x=0, double y=0, double z=0)
-        : r(r), h(h), x(x), y(y), z(z)  {}
+    Cylinder(double r=1,  double h=10, double x=0, double y=0, double z=0);
     vvd computePoints() override;
     void input() override;
 };
