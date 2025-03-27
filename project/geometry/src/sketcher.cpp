@@ -19,8 +19,21 @@ vvd Sketcher::getDrawable() {
     return combinedDrawable;
 }
 
-void Sketcher::draw() {
+void Sketcher::draw(int seconds) {
     vvd dataPoints = getDrawable();
     GnuplotUtils gp;
-    gp.draw3D(dataPoints, "random-model.dat", "My first sketch");
+    gp.draw3D(dataPoints, filename, title);
+
+    if(seconds > 0){
+        std::this_thread::sleep_for(std::chrono::seconds(seconds));
+        system("pkill gnuplot");
+    }
+}
+
+void Sketcher::setTitle(string title) {
+    this->title = title;
+}
+
+void Sketcher::setFileName(string filename) {
+    this->filename = filename;
 }

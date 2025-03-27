@@ -34,18 +34,44 @@ public:
 };
 
 class Shape {
-public:
-    virtual vvd getDrawable() = 0;
-    virtual void draw() = 0;
-    virtual ~Shape() {};
-
-    double degToRad(double degrees) {
+    double toRadians(double degrees) {
         return degrees * M_PI / 180.0;
     }
+protected:
+    vector<double> translation = {0,0,0};
+    vector<double> rotation = {0,0,0};
+    double scaleFactor = 1.0;
+    vector<double> pivot = {0,0,0};
 
-    double radToDeg(double radians) {
-        return radians * 180.0 / M_PI;
+    string title = "3D Shape";
+    string filename = "shape-data.dat";
+public:
+    virtual vvd computePoints() = 0;
+    virtual void draw();
+    vvd getDrawable();
+
+    void setTitle(string title);
+    void setFileName(string filename);
+    void setRotation(double rx, double ry, double rz);
+    void setTranslation(double cx, double cy, double cz);
+    void setScaling(double factor);
+    void setPivot(double px, double py, double pz);
+    virtual void input() = 0;
+
+    void inputTransformation() {
+        cout << "Any rotation? (y/n): ";
+        char isRotation = 'n'; cin >> isRotation;
+
+        if(isRotation == 'y' ) {
+            cout <<"Enter (rx, ry, rz): ";
+            double rx, ry, rz; 
+            cin >> rx >> ry >> rz;
+            
+            setRotation(rx, ry, rz);
+        }
     }
+
+    virtual ~Shape() {};
 };
 
 class Rectangle: public Shape {
@@ -54,22 +80,18 @@ public:
     double x,y,z;
     
     Rectangle(double x=0, double y=0, double z=0, double l=1, double b=1);
-    void draw() override;
-    vvd getDrawable() override;
+    vvd computePoints() override;
     void input();
     Rectangle rotate90();
 };
 
 class Cuboid: public Shape {
 public:
-    double x, y, z;
     double l, b, h;
-    double rotationX, rotationY, rotationZ;
-
-    Cuboid(double x = 0, double y = 0, double z = 0, double l = 1, double b = 1, double h = 1);
-    void draw() override;
-    vvd getDrawable() override;
-    void setRotation(double rotX_deg, double rotY_deg, double rotZ_deg);  
+    double x, y, z;
+    Cuboid(double l=1, double b=1, double h=1, double x=0, double y=0, double z=0);
+    vvd computePoints() override;
+    void input() override;
 };
 
 class Cube : public Cuboid {
@@ -82,44 +104,41 @@ class Circle: public Shape {
 public:
     double x, y, z, r;
     Circle(double x = 0, double y = 0, double z = 0, double r = 1);
-    void draw() override;
     void input() ;
-    vvd getDrawable() override;
+    vvd computePoints() override;
 };
 
 class Sphere: public Shape{
 public:
     double x,y,z,r;
-    Sphere(double x, double y, double z, double r);
-    void draw() override;
-    vvd getDrawable() override;
+    Sphere(double r=1, double x=0, double y=0, double z=0);
+    vvd computePoints() override;
+    void input() override;
 };
 
 class Cylinder: public Shape {
 public:
     double x, y, z; 
     double r, h;
-    Cylinder(double x, double y, double z, double r, double h)
-        : x(x), y(y), z(z), r(r), h(h) {}
-
-    void draw() override;
-    vvd getDrawable() override;
+    Cylinder(double r=1,  double h=10, double x=0, double y=0, double z=0)
+        : r(r), h(h), x(x), y(y), z(z)  {}
+    vvd computePoints() override;
+    void input() override;
 };
 
 class Polyline: public Shape{
 public:
     vvd points;
     Polyline(vvd& pts) : points(pts) {}
-    vvd getDrawable() override { return points; }
-    void draw() override;
+    vvd computePoints() override { return points; }
 };
 
 class BezierCurve: public Shape{
 public:
     vvd controlPoints;
     BezierCurve(vvd& points);
-    vvd getDrawable() override { return controlPoints; }
-    void draw() override;
+    vvd computePoints() override { return controlPoints; }
+    void draw();
 };
     
 

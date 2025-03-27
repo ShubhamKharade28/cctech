@@ -1,8 +1,8 @@
 #include "geometry.h"
 
-Sphere::Sphere(double x, double y, double z, double r): x(x), y(y), z(z), r(r) {}
+Sphere::Sphere(double r, double x, double y, double z): r(r), x(x), y(y), z(z) {}
 
-vvd Sphere::getDrawable() {
+vvd Sphere::computePoints() {
     vvd dataPoints;
 
     int lat_steps = 20;
@@ -42,11 +42,10 @@ vvd Sphere::getDrawable() {
     return dataPoints;
 }
 
-void Sphere::draw() {
-    vvd dataPoints = getDrawable();
-    GnuplotUtils gp;
-    gp.plot3D(dataPoints);
+void Sphere::input() {
+    cout <<"Enter center (x, y, z): ";
+    cin >> x >> y >> z;
 
-    // string filename = "mysphere.dat";
-    // gp.draw3D(dataPoints, filename, "Sphere");
+    cout <<"Enter radius (r): ";
+    cin >> r;
 }

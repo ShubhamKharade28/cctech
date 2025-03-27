@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-vvd Cylinder::getDrawable() {
+vvd Cylinder::computePoints() {
     vvd dataPoints;
     int steps = 50; 
    
@@ -36,10 +36,10 @@ vvd Cylinder::getDrawable() {
     return dataPoints;
 }
 
-void Cylinder::draw() {
-    GnuplotUtils gp;
-    // string filename = "mycylinder.dat";
-    // gp.draw3D(dataPoints, filename, "Cylinder");
-    vvd dataPoints = getDrawable();
-    gp.plot3D(dataPoints);
+void Cylinder::input() {
+    cout << "Enter bottom (x,y,z): ";
+    cin >> x >> y >> z;
+
+    cout << "Enter radius (r): ";
+    cin >> r;
 }

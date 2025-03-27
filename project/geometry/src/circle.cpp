@@ -3,7 +3,7 @@
 Circle::Circle(double x, double y, double z, double r): 
     x(x), y(y), z(z), r(r) {}
 
-vvd Circle::getDrawable() {
+vvd Circle::computePoints() {
     vvd dataPoints;
 
     int numPoints = 100;
@@ -16,12 +16,6 @@ vvd Circle::getDrawable() {
     }
 
     return dataPoints;
-}
-
-void Circle::draw() {
-    GnuplotUtils gp;
-    vvd dataPoints = getDrawable();
-    gp.plot3D(dataPoints);
 }
 
 void Circle::input() {

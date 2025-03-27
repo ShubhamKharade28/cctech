@@ -2,7 +2,7 @@
 
 Rectangle::Rectangle(double x, double y, double z, double l, double b) : x(x), y(y), z(z), l(l), b(b) {}
 
-vvd Rectangle::getDrawable() {
+vvd Rectangle::computePoints() {
     vvd vertices = {
         {x, y, z},          // Bottom-left
         {x + l, y, z},      // Bottom-right
@@ -11,12 +11,6 @@ vvd Rectangle::getDrawable() {
         {x, y, z}           // Closing the rectangle (Back to Bottom-left)
     };
     return vertices;
-}
-
-void Rectangle::draw() {
-    GnuplotUtils gp;
-    vvd dataPoints = getDrawable();
-    gp.plot2D(dataPoints, "rectangle");
 }
 
 void Rectangle::input() {

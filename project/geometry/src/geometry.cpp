@@ -11,5 +11,49 @@ void Line<T>::draw(){
     }
 }
 
+void Shape::setTitle(string title) {
+    this->title = title;
+}   
+
+void Shape::setFileName(string filename) {
+    this->filename = filename;
+}
+
+void Shape::setTranslation(double cx, double cy, double cz) {
+    translation = {cx, cy, cz};
+}
+
+void Shape::setRotation(double rx, double ry, double rz) {
+    rotation = {rx, ry, rz};
+}
+
+void Shape::setScaling(double factor){
+    scaleFactor = factor;
+}
+
+void Shape::setPivot(double px, double py, double pz){
+    pivot = {px, py, pz};
+}
+
+vvd Shape::getDrawable() {
+    vvd points = computePoints();
+
+    Transformations transform;
+    points = transform.scale(points, scaleFactor, pivot);
+    points = transform.rotate(points, rotation[0], 'x', pivot);
+    points = transform.rotate(points, rotation[1], 'y', pivot);
+    points = transform.rotate(points, rotation[2], 'z', pivot);
+    points = transform.translate(points, translation[0], translation[1], translation[2]);
+
+    return points;
+}
+
+void Shape::draw() {
+    vvd points = getDrawable();
+    GnuplotUtils gp;
+    cout << "Drawing my shape..."<< endl;
+    gp.plot3D(points, "My shape");
+}
+
 template class Line<Point>;
 template class Line<Point3D>;

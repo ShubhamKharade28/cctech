@@ -3,23 +3,23 @@
 
 #include <vector>
 #include <memory>
-#include "geometry.h"  // Include the base Shape class
+#include "geometry.h"
 
 class Sketcher {
 private:
-    vector<shared_ptr<Shape>> shapes;  // Store shapes as shared pointers
-
+    string title = "3D Model";
+    string filename = "3d-model.dat";
+    vector<shared_ptr<Shape>> shapes;
 public:
-    // Add a shape to the sketcher
+    Sketcher(string title="3D Model", string filename="3d-model.dat"): title(title), filename(filename) {}
     void addShape(shared_ptr<Shape> shape);
-
-    // Get the drawable representation of all shapes
     vvd getDrawable();
+    void draw(int seconds=0);
 
-    void draw();
+    void setTitle(string title);
+    void setFileName(string filename);
 
-    // Destructor (default)
     ~Sketcher() = default;
 };
 
-#endif // SKETCHER_H
+#endif

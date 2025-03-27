@@ -4,24 +4,83 @@ using namespace std;
 #include "geometry.h"
 #include "sketcher.h"
 
+void drawSketchUsingInput() {
+    Sketcher Robot("Robot", "robot.dat");
+    char more = 'y';
+    while(more == 'y'){
+        cout <<"What shape do you want to draw? " << endl
+            << "1. Cuboid" << endl 
+            << "2. Sphere" << endl
+            << "3. Cylinder" << endl;
+        int choice; cin >> choice;
+
+        switch (choice)
+        {
+        case 1: {
+            shared_ptr<Shape> shape = make_shared<Cuboid>();
+            shape->input();
+            shape->inputTransformation();
+            Robot.addShape(shape);
+            break;
+        }
+        case 2: {
+            shared_ptr<Shape> shape = make_shared<Sphere>();
+            shape->input();
+            shape->inputTransformation();
+            Robot.addShape(shape);
+            break;
+        }
+        case 3: {
+            shared_ptr<Shape> shape = make_shared<Cylinder>();
+            shape->input();
+            shape->inputTransformation();
+            Robot.addShape(shape);
+            break;
+        }
+        default:
+            break;
+        }
+
+        Robot.draw(5);
+        
+        cout <<"Add more shapes? (y/n): ";
+        cin >> more;
+        cout << endl;
+    }
+
+    Robot.draw();
+}
+
 int main() {
-    // Create shape objects using shared pointers
-    shared_ptr<Shape> cb = make_shared<Cuboid>(10, 10, 10, 20, 40, 60);
-    shared_ptr<Shape> cyl = make_shared<Cylinder>(20, 30, 40, 10, 50);
-    shared_ptr<Shape> sph = make_shared<Sphere>(20, 20,50, 50);
+    Sketcher robot("Robot", "robo-v2.dat");
 
-    Sketcher skt;
+    auto head = make_shared<Sphere>(2, 0, 0, 12.2);  // Sphere with radius 2 at (0,0,10)
+    auto neck = make_shared<Cylinder>(1, 2, 0, 0, 8.2);  // Cylinder with radius 1, height 1 at (0,0,8)
+    auto body = make_shared<Cuboid>(6, 4, 8, 0, 0, 5);  // Cuboid with length 6, breadth 4, height 6 centered at (0,0,5)
 
-    // Add shapes to Sketcher
-    skt.addShape(cb);
-    skt.addShape(cyl);
-    skt.addShape(sph);
+    auto leftHand = make_shared<Cylinder>(1, 5, -5, 2, 4);  // Cylinder with radius 1, height 5 at (-5,1,5), rotated -30 degrees
+    auto rightHand = make_shared<Cylinder>(1, 5, 5, 2, 4);  // Cylinder with radius 1, height 5 at (5,1,5), rotated 30 degrees
 
-    // Get drawable representation
-    auto drawable = skt.getDrawable();
+    auto leftLeg = make_shared<Cylinder>(1, 4, -2, 0, -2);  // Cylinder with radius 1, height 4 at (-2,0,1)
+    auto rightLeg = make_shared<Cylinder>(1, 4, 2, 0, -2);  // Cylinder with radius 1, height 4 at (2,0,1)
 
-    // Optionally, draw the shapes
-    skt.draw();
+    // leftHand->setPivot(-5,2,4);
+    // leftHand->setRotation(0, 30, 0);
+    
+    // rightHand->setPivot(5,2,4);
+    // rightHand->setRotation(0, -30, 0);
+
+    
+    robot.addShape(head);
+    robot.addShape(neck);
+    robot.addShape(body);
+    robot.addShape(leftHand);
+    robot.addShape(rightHand);
+    robot.addShape(leftLeg);
+    robot.addShape(rightLeg);
+    
+    robot.draw();
+    
 
     return 0;
 }
