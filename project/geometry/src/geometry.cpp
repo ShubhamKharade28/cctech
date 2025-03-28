@@ -39,10 +39,10 @@ vvd Shape::getDrawable() {
     vvd points = computePoints();
 
     Transformations transform;
-    points = transform.scale(points, scaleFactor, pivot);
-    points = transform.rotate(points, rotation[0], 'x', pivot);
-    points = transform.rotate(points, rotation[1], 'y', pivot);
-    points = transform.rotate(points, rotation[2], 'z', pivot);
+    // points = transform.scale(points, scaleFactor, pivot);
+    // points = transform.rotate(points, rotation[0], 'x', pivot);
+    // points = transform.rotate(points, rotation[1], 'y', pivot);
+    // points = transform.rotate(points, rotation[2], 'z', pivot);
     points = transform.translate(points, translation[0], translation[1], translation[2]);
 
     return points;
@@ -53,6 +53,30 @@ void Shape::draw() {
     GnuplotUtils gp;
     cout << "Drawing my shape..."<< endl;
     gp.plot3D(points, "My shape");
+}
+
+void Shape::inputTransformation() {
+    cout <<"Enter rotation(rx, ry, rz): ";
+    double rx, ry, rz; 
+    cin >> rx >> ry >> rz;
+    setRotation(rx, ry, rz);
+
+    cout <<"Enter translation(cx, cy, cz): ";
+    double cx, cy, cz;
+    cin >> cx >> cy >> cz;
+    setTranslation(cx, cy, cz);
+}
+
+void Shape::addTranslation(char axis='x', double val=1) {
+    double cx = translation[0], cy = translation[1], cz = translation[2];
+    if(axis == 'x'){
+        cx += val;
+    } else if(axis == 'y') {
+        cy += val;
+    } else {
+        cz += val;
+    }
+    setTranslation(cx, cy, cz);
 }
 
 template class Line<Point>;

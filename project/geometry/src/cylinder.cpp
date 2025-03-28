@@ -7,12 +7,14 @@ Cylinder::Cylinder(double r,  double h, double x, double y, double z): r(r), h(h
 vvd Cylinder::computePoints() {
     vvd dataPoints;
     int steps = 50; 
+    double zBottom = z - h / 2;  // Adjust base to center the cylinder
+    double zTop = z + h / 2;     // Adjust top accordingly
    
     for (int i = 0; i <= steps; i++) {
         double theta = 2 * M_PI * i / steps;
         double dx = x + r * cos(theta);
         double dy = y + r * sin(theta);
-        double dz = z; // bottom base
+        double dz = zBottom;
         dataPoints.push_back({dx, dy, dz});
     }
     dataPoints.push_back({NAN, NAN, NAN});  
@@ -21,7 +23,7 @@ vvd Cylinder::computePoints() {
         double theta = 2 * M_PI * i / steps;
         double dx = x + r * cos(theta);
         double dy = y + r * sin(theta);
-        double dz = z + h; // top base
+        double dz = zTop;
         dataPoints.push_back({dx, dy, dz});
     }
     dataPoints.push_back({NAN, NAN, NAN});  
@@ -32,8 +34,8 @@ vvd Cylinder::computePoints() {
         double dy = y + r * sin(theta);
 
         // Connect bottom to top
-        dataPoints.push_back({dx, dy, z});
-        dataPoints.push_back({dx, dy, z + h});
+        dataPoints.push_back({dx, dy, zBottom});
+        dataPoints.push_back({dx, dy, zTop});
         dataPoints.push_back({NAN, NAN, NAN}); 
     }
 
@@ -41,9 +43,6 @@ vvd Cylinder::computePoints() {
 }
 
 void Cylinder::input() {
-    cout << "Enter bottom (x,y,z): ";
-    cin >> x >> y >> z;
-
-    cout << "Enter radius (r): ";
-    cin >> r;
+    cout <<"Enter (r & h): "; 
+    cin >> r >> h;
 }

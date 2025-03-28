@@ -56,19 +56,8 @@ public:
     void setScaling(double factor);
     void setPivot(double px, double py, double pz);
     virtual void input() = 0;
-
-    void inputTransformation() {
-        cout << "Any rotation? (y/n): ";
-        char isRotation = 'n'; cin >> isRotation;
-
-        if(isRotation == 'y' ) {
-            cout <<"Enter (rx, ry, rz): ";
-            double rx, ry, rz; 
-            cin >> rx >> ry >> rz;
-            
-            setRotation(rx, ry, rz);
-        }
-    }
+    void inputTransformation();
+    void addTranslation(char axis, double val);
 
     virtual ~Shape() {};
 };

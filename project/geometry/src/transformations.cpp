@@ -38,73 +38,40 @@ vvd Transformations::multiplyMatrix(vvd &A, vvd &B) {
 }
 
 vvd Transformations::translate(vvd& X, double dx, double dy, double dz) {
-    vvd homogeneousX = toHomogeneous(X);
-
-    // translation matrix
-    vvd T = {
-        {1, 0, 0, dx},
-        {0, 1, 0, dy},
-        {0, 0, 1, dz},
-        {0, 0, 0, 1}
-    };
-
-    vvd transformed = multiplyMatrix(homogeneousX, T);
-    vvd translatedX = toCartesian(transformed);
-
-    return translatedX;
+    vvd points = X;
+    for (auto &v : points) {
+        v[0] += dx;
+        v[1] += dy;
+        v[2] += dz;
+    }
+    return points;
 }
 
 vvd Transformations::rotate(vvd& X, double angle, char axis, vector<double> pivot) {
-    if(X.empty()) return {};
-    if(pivot.empty()) pivot = X[0];
-
-    // double cx = pivot[0], cy = pivot[1], cz = pivot[2];
-    // vvd translatedX = translate(X, -cx, -cy, -cz);
-
-    vvd translatedX = X;
-
-    double theta = angle * M_PI / 180.0;
-    vvd R; // rotation matrix
-    if (axis == 'x') {
-        R = {
-            {1, 0, 0, 0},
-            {0, cos(theta), -sin(theta), 0},
-            {0, sin(theta), cos(theta), 0},
-            {0, 0, 0, 1}
-        };
-    } else if (axis == 'y') {
-        R = {
-            {cos(theta), 0, sin(theta), 0},
-            {0, 1, 0, 0},
-            {-sin(theta), 0, cos(theta), 0},
-            {0, 0, 0, 1}
-        };
-    } else if (axis == 'z') {
-        R = {
-            {cos(theta), -sin(theta), 0, 0},
-            {sin(theta), cos(theta), 0, 0},
-            {0, 0, 1, 0},
-            {0, 0, 0, 1}
-        };
+    vvd points = X;
+    double rad = angle * M_PI / 180.0;
+    for (auto &v : points) {
+        double x = v[0], y = v[1], z = v[2];
+        if (axis == 'x') {
+            v[1] = y * cos(rad) - z * sin(rad);
+            v[2] = y * sin(rad) + z * cos(rad);
+        } else if (axis == 'y') {
+            v[0] = x * cos(rad) + z * sin(rad);
+            v[2] = -x * sin(rad) + z * cos(rad);
+        } else if (axis == 'z') {
+            v[0] = x * cos(rad) - y * sin(rad);
+            v[1] = x * sin(rad) + y * cos(rad);
+        }
     }
-
-    vvd homogeneousX = toHomogeneous(translatedX);
-    vvd rotatedX = multiplyMatrix(homogeneousX, R);
-
-    rotatedX = toCartesian(rotatedX);
-    // rotatedX = translate(rotatedX, cx, cy, cz);
-    return rotatedX;
+    return points;
 }
 
 vvd Transformations::scale(vvd& X, double scaleFactor, vector<double> pivot) {
-    if (pivot.empty()) pivot = X[0];
-
-    vvd scaledX = X;
-    for (auto &p : scaledX) {
-        p[0] = pivot[0] + scaleFactor * (p[0] - pivot[0]);
-        p[1] = pivot[1] + scaleFactor * (p[1] - pivot[1]);
-        p[2] = pivot[2] + scaleFactor * (p[2] - pivot[2]);
+    vvd points = X;
+    for (auto &v : points) {
+        v[0] *= scaleFactor;
+        v[1] *= scaleFactor;
+        v[2] *= scaleFactor;
     }
-
-    return scaledX;
+    return points;
 }

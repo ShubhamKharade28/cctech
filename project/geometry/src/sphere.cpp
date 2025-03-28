@@ -45,9 +45,6 @@ vvd Sphere::computePoints() {
 }
 
 void Sphere::input() {
-    cout <<"Enter center (x, y, z): ";
-    cin >> x >> y >> z;
-
     cout <<"Enter radius (r): ";
     cin >> r;
 }

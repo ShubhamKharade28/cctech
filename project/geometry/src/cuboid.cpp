@@ -39,9 +39,6 @@ vvd Cuboid::computePoints() {
 void Cuboid::input() {
     cout <<"Enter (l,b,h): ";
     cin >> l >> b >> h;
-
-    cout <<"Enter (x,y,z): ";
-    cin >> x >> y >> z;
 }
 
 Cube::Cube(double x, double y, double z, double side): 
