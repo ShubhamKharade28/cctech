@@ -39,10 +39,10 @@ vvd Shape::getDrawable() {
     vvd points = computePoints();
 
     Transformations transform;
-    // points = transform.scale(points, scaleFactor, pivot);
-    // points = transform.rotate(points, rotation[0], 'x', pivot);
-    // points = transform.rotate(points, rotation[1], 'y', pivot);
-    // points = transform.rotate(points, rotation[2], 'z', pivot);
+    points = transform.scale(points, scaleFactor, pivot);
+    points = transform.rotate(points, rotation[0], 'x', pivot);
+    points = transform.rotate(points, rotation[1], 'y', pivot);
+    points = transform.rotate(points, rotation[2], 'z', pivot);
     points = transform.translate(points, translation[0], translation[1], translation[2]);
 
     return points;

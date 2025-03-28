@@ -4,6 +4,17 @@ using namespace std;
 #include "geometry.h"
 #include "sketcher.h"
 
+shared_ptr<Shape> getShape(int i) {
+    static unordered_map<int, function<shared_ptr<Shape>()>> shapeFactory = {
+        {1, [] { return make_shared<Cuboid>(); }},
+        {2, [] { return make_shared<Sphere>(); }},
+        {3, [] { return make_shared<Cylinder>(); }}
+    };
+
+    return shapeFactory.count(i) ? shapeFactory[i]() : nullptr;
+}
+
+
 void drawSketch() {
     cout << "Enter model name: "; 
     string sketchName; cin >> sketchName;
@@ -17,23 +28,7 @@ void drawSketch() {
             << "3. Cylinder" << endl;
         int choice; cin >> choice;
 
-        shared_ptr<Shape> shape;
-        switch (choice)
-        {
-        case 1: {
-            shape = make_shared<Cuboid>();
-            break;
-        }
-        case 2: {
-            shape = make_shared<Sphere>();
-            break;
-        }
-        case 3: {
-            shape = make_shared<Cylinder>();
-        }
-        default:
-            break;
-        }
+        shared_ptr<Shape> shape = getShape(choice);
 
         shape->input();
         shape->inputTransformation();
