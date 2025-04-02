@@ -43,23 +43,25 @@ Vector computeNormal(Vector v1, Vector v2, Vector v3){
     normal[1] = (v2[2] - v1[2]) * (v3[0] - v1[0]) - (v2[0] - v1[0]) * (v3[2] - v1[2]);
     normal[2] = (v2[0] - v1[0]) * (v3[1] - v1[1]) - (v2[1] - v1[1]) * (v3[0] - v1[0]);
 
-    // // Normalize the normal vector
-    // double length = sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
+    // Normalize the normal vector
+    double length = sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
 
-    // if (length > 0) {
-    //     normal[0] /= length;
-    //     normal[1] /= length;
-    //     normal[2] /= length;
-    // }
-
-    normal[0] = -normal[0];
-    normal[1] = -normal[1];
-    normal[2] = -normal[2];
+    if (length > 0) {
+        normal[0] /= length;
+        normal[1] /= length;
+        normal[2] /= length;
+    }
 
     normal[0] = 1 - normal[0];
     normal[1] = 1 - normal[1];
     normal[2] = 1 - normal[2];
 
+
+    normal[0] = -normal[0];
+    normal[1] = -normal[1];
+    normal[2] = -normal[2];
+
+    
     return normal;
 }
 
