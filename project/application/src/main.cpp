@@ -4,7 +4,7 @@ using namespace std;
 #include "geometry.h"
 #include "sketcher.h"
 
-shared_ptr<Shape> getShape(int i) {
+shared_ptr<Shape> chooseShape(int i) {
     static unordered_map<int, function<shared_ptr<Shape>()>> shapeFactory = {
         {1, [] { return make_shared<Cuboid>(); }},
         {2, [] { return make_shared<Sphere>(); }},
@@ -28,10 +28,10 @@ void drawSketch() {
             << "3. Cylinder" << endl;
         int choice; cin >> choice;
 
-        shared_ptr<Shape> shape = getShape(choice);
+        shared_ptr<Shape> shape = chooseShape(choice);
 
         shape->input();
-        shape->inputTransformation();
+        shape->inputTransformations();
         sketch.addShape(shape);
 
         while(true){
@@ -59,23 +59,36 @@ void drawSketch() {
 void drawRobot() {
     Sketcher robot("Robot", "robo-v2.dat");
 
-    auto head = make_shared<Sphere>(2, 0); 
-    auto neck = make_shared<Cylinder>(1, 2);  
-    auto body = make_shared<Cuboid>(6, 4, 8);  
+    auto head = make_shared<Sphere>(3); 
+    auto neck = make_shared<Cylinder>(1, 3);  
+    auto body = make_shared<Cuboid>(5,2,12); 
 
-    auto leftHand = make_shared<Cylinder>(1, 5); 
-    auto rightHand = make_shared<Cylinder>(1, 5); 
+    auto leftHand = make_shared<Cylinder>(1, 4); 
+    auto rightHand = make_shared<Cylinder>(1, 4); 
 
-    auto leftLeg = make_shared<Cylinder>(1, 4); 
-    auto rightLeg = make_shared<Cylinder>(1, 4);  
-
-    leftHand->setRotation(0, -45, 0);
-    rightHand->setRotation(0, 45, 0);
-
+    auto leftLeg = make_shared<Cylinder>(1, 5); 
     
+    auto rightLeg = make_shared<Cylinder>(1, 5);  
+
+    head->setTranslation(0,0,11);
+
+    neck->setTranslation(0,0,7);
+
+    leftHand->setRotation(0, 45, 0);
+    leftHand->setTranslation(-4, 0, 2);
+
+    rightHand->setRotation(0, -45, 0);
+    rightHand->setTranslation(4, 0, 2);
+
+    leftLeg->setTranslation(-3, 0, -6);
+    leftLeg->setRotation(0, 10, 0);
+    
+    rightLeg->setTranslation(3, 0, -6);
+    rightLeg->setRotation(0, -10, 0);
+
     robot.addShape(head);
     robot.addShape(neck);
-    robot.addShape(body);
+    robot.addShape(body); for(int j=0; j<10; j++) robot.addShape(body);
     robot.addShape(leftHand);
     robot.addShape(rightHand);
     robot.addShape(leftLeg);
@@ -85,7 +98,7 @@ void drawRobot() {
 }
 
 int main() {
-    drawSketch();
+    drawRobot();
 
     return 0;
 }

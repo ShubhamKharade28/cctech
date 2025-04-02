@@ -55,7 +55,7 @@ void Shape::draw() {
     gp.plot3D(points, "My shape");
 }
 
-void Shape::inputTransformation() {
+void Shape::inputTransformations() {
     cout <<"Enter rotation(rx, ry, rz): ";
     double rx, ry, rz; 
     cin >> rx >> ry >> rz;

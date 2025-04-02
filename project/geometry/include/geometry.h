@@ -56,7 +56,7 @@ public:
     void setScaling(double factor);
     void setPivot(double px, double py, double pz);
     virtual void input() = 0;
-    void inputTransformation();
+    void inputTransformations();
     void addTranslation(char axis, double val);
 
     virtual ~Shape() {};
