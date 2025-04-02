@@ -52,14 +52,14 @@ Vector computeNormal(Vector v1, Vector v2, Vector v3){
         normal[2] /= length;
     }
 
-    normal[0] = -normal[0];
-    normal[1] = -normal[1];
-    normal[2] = -normal[2];
-
     normal[0] = 1 - normal[0];
     normal[1] = 1 - normal[1];
     normal[2] = 1 - normal[2];
 
+    normal[0] = -normal[0];
+    normal[1] = -normal[1];
+    normal[2] = -normal[2];
+    
     // double temp = normal[1];
     // normal[1] = normal[2];
     // normal[2] = temp;
