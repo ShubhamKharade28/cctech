@@ -30,3 +30,8 @@ run: $(TARGET)
 .PHONY: set-display
 set-display:
 	export DISPLAY=:0
+
+git-push:
+	git add .
+	git commit -m "automated push"
+	git push origin main
