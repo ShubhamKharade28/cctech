@@ -52,7 +52,11 @@ Vector computeNormal(Vector v1, Vector v2, Vector v3){
         normal[2] /= length;
     }
 
-    return {1,1,1};
+    normal[0] = 1 - normal[0];
+    normal[1] = 1 - normal[1];
+    normal[2] = 1 - normal[2];
+
+    return normal;
 }
 
 StlShape getCuboidTriangles(double l, double b, double h){
