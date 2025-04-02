@@ -37,9 +37,21 @@ void writeSTL(string filename, StlShape& triangles) {
 
 Vector computeNormal(Vector v1, Vector v2, Vector v3){
     Vector normal(3);
+    
+    // Cross product of two edge vectors
     normal[0] = (v2[1] - v1[1]) * (v3[2] - v1[2]) - (v2[2] - v1[2]) * (v3[1] - v1[1]);
     normal[1] = (v2[2] - v1[2]) * (v3[0] - v1[0]) - (v2[0] - v1[0]) * (v3[2] - v1[2]);
     normal[2] = (v2[0] - v1[0]) * (v3[1] - v1[1]) - (v2[1] - v1[1]) * (v3[0] - v1[0]);
+
+    // Normalize the normal vector
+    double length = sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
+
+    if (length > 0) {
+        normal[0] /= length;
+        normal[1] /= length;
+        normal[2] /= length;
+    }
+
     return normal;
 }
 
@@ -89,11 +101,48 @@ StlShape getCuboidTriangles(double l, double b, double h){
     return triangles;
 }
 
-int main(){
-    double l,b,h;
-    cin >> l >> b >> h;
+StlShape getSphereTriangles(double r, int slices = 20, int stacks = 20) {
+    double x=0, y=0, z=0;
 
-    string filename = "cuboid.stl";
-    StlShape cuboid = getCuboidTriangles(l,b,h);
-    writeSTL(filename, cuboid);
+    StlShape triangles;
+    vector<vector<Vector>> points(stacks + 1, vector<Vector>(slices + 1));
+
+    // Generate points on the sphere
+    for (int i = 0; i <= stacks; i++) {
+        double phi = M_PI * (-0.5 + double(i) / stacks); // Latitude angle (-π/2 to π/2)
+        for (int j = 0; j <= slices; j++) {
+            double theta = 2 * M_PI * double(j) / slices; // Longitude angle (0 to 2π)
+            double px = x + r * cos(phi) * cos(theta);
+            double py = y + r * cos(phi) * sin(theta);
+            double pz = z + r * sin(phi);
+            points[i][j] = {px, py, pz};
+        }
+    }
+
+    // Generate triangles
+    for (int i = 0; i < stacks; i++) {
+        for (int j = 0; j < slices; j++) {
+            Vector v1 = points[i][j];
+            Vector v2 = points[i + 1][j];
+            Vector v3 = points[i][j + 1];
+            Vector v4 = points[i + 1][j + 1];
+
+            Vector normal1 = computeNormal(v1, v2, v3);
+            Vector normal2 = computeNormal(v2, v4, v3);
+
+            triangles.push_back(Triangle(normal1, v1, v2, v3)); // First triangle
+            triangles.push_back(Triangle(normal2, v2, v4, v3)); // Second triangle
+        }
+    }
+
+    return triangles;
+}
+
+
+int main(){
+    double r; cin >> r;
+
+    string filename = "mysphere.stl";
+    StlShape sphere = getSphereTriangles(r);
+    writeSTL(filename, sphere);
 }
