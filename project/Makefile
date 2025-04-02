@@ -15,7 +15,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	mkdir -p $(BIN_DIR)
-	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
+	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS) 
 
 $(BUILD_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
@@ -26,3 +26,7 @@ clean:
 
 run: $(TARGET)
 	@./$(TARGET)
+
+.PHONY: set-display
+set-display:
+	export DISPLAY=:0
