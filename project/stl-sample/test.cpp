@@ -52,9 +52,9 @@ Vector computeNormal(Vector v1, Vector v2, Vector v3){
         normal[2] /= length;
     }
 
-    normal[0] = -normal[0];
-    normal[1] = -normal[1];
-    normal[2] = -normal[2];
+    // normal[0] = -normal[0];
+    // normal[1] = -normal[1];
+    // normal[2] = -normal[2];
 
     normal[0] = 1 - normal[0];
     normal[1] = 1 - normal[1];
@@ -128,7 +128,7 @@ StlShape getSphereTriangles(double r, int slices = 20, int stacks = 20) {
             double px = x + r * cos(phi) * cos(theta);
             double py = y + r * cos(phi) * sin(theta);
             double pz = z + r * sin(phi);
-            points[i][j] = {px, py, pz};
+            points[i][j] = {px, py, pz+r};
         }
     }
 
