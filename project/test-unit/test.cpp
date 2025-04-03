@@ -1,14 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "stlutils.cpp"
+#include "utils.cpp"
 
 int main(){
     // double r; cin >> r;
 
     double r = 10;
 
-    string filename = "mysphere.stl";
+    string filename = "mysphere.obj";
     StlShape sphere = getSphereTriangles(r);
-    writeSTL(filename, sphere);
+    writeOBJ(filename, sphere);
 }
