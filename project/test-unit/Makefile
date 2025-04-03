@@ -4,5 +4,5 @@ run:
 
 push:
 	git add .
-	git commit -m "new change"
+	git commit -m "new change (AUTOMATED PUSH IN TEST)"
 	git push origin main

@@ -1,0 +1,34 @@
+# Simple Cube in OBJ Format
+
+mtllib cube.mtl  # References external material file
+
+o Cube           # Object name
+v -1 -1 -1       # Vertex 1
+v  1 -1 -1       # Vertex 2
+v  1  1 -1       # Vertex 3
+v -1  1 -1       # Vertex 4
+v -1 -1  1       # Vertex 5
+v  1 -1  1       # Vertex 6
+v  1  1  1       # Vertex 7
+v -1  1  1       # Vertex 8
+
+vn 0 0 -1        # Normal for the front face
+vn 0 0 1         # Normal for the back face
+vn -1 0 0        # Left face normal
+vn 1 0 0         # Right face normal
+vn 0 -1 0        # Bottom face normal
+vn 0 1 0         # Top face normal
+
+vt 0 0           # Texture coordinate 1
+vt 1 0           # Texture coordinate 2
+vt 1 1           # Texture coordinate 3
+vt 0 1           # Texture coordinate 4
+
+usemtl cube_material  # Use material named "cube_material"
+
+f 1/1/1 2/2/1 3/3/1 4/4/1  # Face (each vertex has position/texture/normal)
+f 5/1/2 6/2/2 7/3/2 8/4/2
+f 1/1/3 5/2/3 8/3/3 4/4/3
+f 2/1/4 6/2/4 7/3/4 3/4/4
+f 1/1/5 2/2/5 6/3/5 5/4/5
+f 4/1/6 3/2/6 7/3/6 8/4/6
