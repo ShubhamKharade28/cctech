@@ -6,6 +6,7 @@ using namespace std;
 
 #include "gnuplot-utils.h"
 #include "transformations.h"
+#include "threed-utils.h"
 
 #define vvd vector<vector<double>>
 #define pi pair<int, int>
@@ -46,6 +47,8 @@ protected:
     string filename = "shape-data.dat";
 public:
     virtual vvd computePoints() = 0;
+    virtual StlShape computeTriangles() = 0;
+
     virtual void draw();
     vvd getDrawable();
 
@@ -80,6 +83,8 @@ public:
     Cuboid(double l=1, double b=1, double h=1, double x=0, double y=0, double z=0);
     vvd computePoints() override;
     void input() override;
+
+    StlShape computeTriangles() override;
 };
 
 class Cube : public Cuboid {
@@ -111,6 +116,8 @@ public:
     Cylinder(double r=1,  double h=10, double x=0, double y=0, double z=0);
     vvd computePoints() override;
     void input() override;
+
+    StlShape computeTriangles() override;
 };
 
 class Polyline: public Shape{
