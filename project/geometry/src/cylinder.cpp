@@ -49,8 +49,10 @@ void Cylinder::input() {
 
 StlShape Cylinder::computeTriangles() {
     StlShape triangles;
+
+    int segments = 50;
     double angleStep = 2 * M_PI / segments;
-    double halfHeight = height / 2.0;
+    double halfHeight = h / 2.0;
 
     // Top and bottom center points
     Vector centerTop = {x, y + halfHeight, z};
@@ -62,10 +64,10 @@ StlShape Cylinder::computeTriangles() {
         double theta2 = (i + 1) % segments * angleStep;
 
         // Points on top and bottom circles
-        Vector top1 = {x + radius * cos(theta1), y + halfHeight, z + radius * sin(theta1)};
-        Vector top2 = {x + radius * cos(theta2), y + halfHeight, z + radius * sin(theta2)};
-        Vector bottom1 = {x + radius * cos(theta1), y - halfHeight, z + radius * sin(theta1)};
-        Vector bottom2 = {x + radius * cos(theta2), y - halfHeight, z + radius * sin(theta2)};
+        Vector top1 = {x + r * cos(theta1), y + halfHeight, z + r * sin(theta1)};
+        Vector top2 = {x + r * cos(theta2), y + halfHeight, z + r * sin(theta2)};
+        Vector bottom1 = {x + r * cos(theta1), y - halfHeight, z + r * sin(theta1)};
+        Vector bottom2 = {x + r * cos(theta2), y - halfHeight, z + r * sin(theta2)};
 
         // Top face triangle (fan from center)
         triangles.emplace_back(ThreeDUtils::computeNormal(centerTop, top1, top2), centerTop, top1, top2);

@@ -79,5 +79,10 @@ void Shape::addTranslation(char axis='x', double val=1) {
     setTranslation(cx, cy, cz);
 }
 
+void Shape::exportSTL(string filename) {
+    StlShape triangles = computeTriangles();
+    ThreeDUtils::writeSTL(filename,triangles);
+}
+
 template class Line<Point>;
 template class Line<Point3D>;

@@ -2,6 +2,7 @@
 #define THREED_UTILS_H
 
 #include <bits/stdc++.h>
+using namespace std; 
 
 #define Vector vector<double>
 #define Matrix vector<vector<double>>

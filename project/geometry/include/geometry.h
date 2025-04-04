@@ -62,6 +62,8 @@ public:
     void inputTransformations();
     void addTranslation(char axis, double val);
 
+    void exportSTL(string filename);
+
     virtual ~Shape() {};
 };
 
@@ -73,7 +75,8 @@ public:
     Rectangle(double x=0, double y=0, double z=0, double l=1, double b=1);
     vvd computePoints() override;
     void input();
-    Rectangle rotate90();
+
+    StlShape computeTriangles() override {return {};};
 };
 
 class Cuboid: public Shape {
@@ -99,6 +102,7 @@ public:
     Circle(double x = 0, double y = 0, double z = 0, double r = 1);
     void input() ;
     vvd computePoints() override;
+    StlShape computeTriangles() override {return {};};
 };
 
 class Sphere: public Shape{
@@ -107,6 +111,7 @@ public:
     Sphere(double r=1, double x=0, double y=0, double z=0);
     vvd computePoints() override;
     void input() override;
+    StlShape computeTriangles() override {return {};};
 };
 
 class Cylinder: public Shape {
@@ -125,6 +130,7 @@ public:
     vvd points;
     Polyline(vvd& pts) : points(pts) {}
     vvd computePoints() override { return points; }
+    StlShape computeTriangles() override {return {};};
 };
 
 class BezierCurve: public Shape{
@@ -133,6 +139,8 @@ public:
     BezierCurve(vvd& points);
     vvd computePoints() override { return controlPoints; }
     void draw();
+
+    StlShape computeTriangles() override {return {};};
 };
     
 

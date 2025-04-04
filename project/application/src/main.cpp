@@ -3,6 +3,7 @@ using namespace std;
 
 #include "geometry.h"
 #include "sketcher.h"
+#include "threed-utils.h"
 
 shared_ptr<Shape> chooseShape(int i) {
     static unordered_map<int, function<shared_ptr<Shape>()>> shapeFactory = {
@@ -98,7 +99,8 @@ void drawRobot() {
 }
 
 int main() {
-    drawRobot();
+    Cuboid *cb = new Cuboid(10, 20, 50);
+    cb->exportSTL("mycuboid.stl");
 
     return 0;
 }

@@ -43,9 +43,8 @@ void Cuboid::input() {
 
 StlShape Cuboid::computeTriangles() {
     StlShape triangles;
-    double l = length * scaleFactor, b = breadth * scaleFactor, h = height * scaleFactor;
 
-    Vector V = {
+    Matrix V = {
         {0, 0, 0}, {l, 0, 0}, {l, b, 0}, {0, b, 0},
         {0, 0, h}, {l, 0, h}, {l, b, h}, {0, b, h}
     };
@@ -60,14 +59,14 @@ StlShape Cuboid::computeTriangles() {
     };
 
     for (auto& f : faces) {
-        auto& v0 = V[f[0]];
-        auto& v1 = V[f[1]];
-        auto& v2 = V[f[2]];
-        auto& v3 = V[f[3]];
+        auto v0 = V[f[0]];
+        auto v1 = V[f[1]];
+        auto v2 = V[f[2]];
+        auto v3 = V[f[3]];
 
         Vector n1 = ThreeDUtils::computeNormal(v0, v1, v2);
         Vector n2 = ThreeDUtils::computeNormal(v0, v2, v3);
-        
+
         triangles.push_back(Triangle(n1, v0, v1, v2));
         triangles.push_back(Triangle(n2, v0, v2, v3));
     }

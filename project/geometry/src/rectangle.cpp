@@ -22,7 +22,3 @@ void Rectangle::input() {
     cout <<"Enter length & breadth: ";
     cin >> l >> b;
 }
-
-Rectangle Rectangle::rotate90(){
-    return Rectangle(x,y,b,l);
-}
