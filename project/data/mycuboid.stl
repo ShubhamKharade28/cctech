@@ -1,5 +1,5 @@
 solid MyShape
-  facet normal 0 0 200
+  facet normal 200 0 200
     outer loop
       vertex 0 0 0
       vertex 10 0 0
