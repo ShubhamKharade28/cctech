@@ -3,6 +3,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+Triangle::Triangle(Vector n, Vector v1, Vector v2, Vector v3): 
+    normal(n), vertex1(v1), vertex2(v2), vertex3(v3) {}
+
 // Read STL file and convert to a list of triangles
 StlShape ThreeDUtils::readSTL(string& filename) {
     ifstream file(filename);
