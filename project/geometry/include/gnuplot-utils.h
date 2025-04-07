@@ -21,10 +21,6 @@ public:
     void save3D(vvd& dataPoints, string filename);
     void open3D(string dataFile, string title);
     void draw3D(vvd& dataPoints, string filename, string title);
-
-    void drawTest(vvd& dataPoints);
-
-
 };
 
 #endif

@@ -1,7 +1,6 @@
 #include "geometry.h"
 
-Circle::Circle(double x, double y, double z, double r): 
-    x(x), y(y), z(z), r(r) {}
+Circle::Circle(double r): r(r) {}
 
 vvd Circle::computePoints() {
     vvd dataPoints;
@@ -19,14 +18,6 @@ vvd Circle::computePoints() {
 }
 
 void Circle::input() {
-    cout << "Enter center x & y: ";
-    cin >> x >> y;
-
     cout << "Enter radius: ";
     cin >> r;
-
-    // cout << "Is 3D? (0/1): ";
-    // cin >> is3D;
-    
-    z = 10;
 }

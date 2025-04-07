@@ -1,8 +1,6 @@
 #include "geometry.h"
 
-Cylinder::Cylinder(double r,  double h, double x, double y, double z): r(r), h(h), x(x), y(y), z(z)  {
-    setPivot(x,y,z);
-}
+Cylinder::Cylinder(double r,  double h): r(r), h(h) {}
 
 vvd Cylinder::computePoints() {
     vvd dataPoints;

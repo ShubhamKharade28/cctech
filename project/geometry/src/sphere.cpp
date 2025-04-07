@@ -1,8 +1,6 @@
 #include "geometry.h"
 
-Sphere::Sphere(double r, double x, double y, double z): r(r), x(x), y(y), z(z) {
-    setPivot(x,y,z);
-}
+Sphere::Sphere(double r): r(r) {}
 
 vvd Sphere::computePoints() {
     vvd dataPoints;

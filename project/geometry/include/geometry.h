@@ -35,44 +35,33 @@ public:
 };
 
 class Shape {
-    double toRadians(double degrees) {
-        return degrees * M_PI / 180.0;
-    }
 protected:
-    vector<double> translation = {0,0,0};
-    vector<double> rotation = {0,0,0};
-    double scaleFactor = 1.0;
-    vector<double> pivot = {0,0,0};
-    string title = "3D Shape";
-    string filename = "shape-data.dat";
+    double x=0, y=0, z=0;
 public:
     virtual vvd computePoints() = 0;
     virtual StlShape computeTriangles() = 0;
 
     virtual void draw();
     vvd getDrawable();
-
-    void setTitle(string title);
-    void setFileName(string filename);
-    void setRotation(double rx, double ry, double rz);
-    void setTranslation(double cx, double cy, double cz);
-    void setScaling(double factor);
-    void setPivot(double px, double py, double pz);
     virtual void input() = 0;
-    void inputTransformations();
-    void addTranslation(char axis, double val);
 
-    void exportSTL(string filename);
+    Vector getCoords() {
+        return {x,y,z};
+    }
+
+    void setCoords(double x=0, double y=0, double z=0) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
 
     virtual ~Shape() {};
 };
 
 class Rectangle: public Shape {
-public:
     double l,b;
-    double x,y,z;
-    
-    Rectangle(double x=0, double y=0, double z=0, double l=1, double b=1);
+public:    
+    Rectangle(double l=1, double b=1);
     vvd computePoints() override;
     void input();
 
@@ -80,10 +69,9 @@ public:
 };
 
 class Cuboid: public Shape {
-public:
     double l, b, h;
-    double x, y, z;
-    Cuboid(double l=1, double b=1, double h=1, double x=0, double y=0, double z=0);
+public:
+    Cuboid(double l=1, double b=1, double h=1);
     vvd computePoints() override;
     void input() override;
 
@@ -93,13 +81,13 @@ public:
 class Cube : public Cuboid {
 public:
     double side;
-    Cube(double side = 1, double x = 0, double y = 0, double z = 0);
+    Cube(double side = 1);
 };
 
 class Circle: public Shape {
+    double r;
 public:
-    double x, y, z, r;
-    Circle(double x = 0, double y = 0, double z = 0, double r = 1);
+    Circle(double r = 1);
     void input() ;
     vvd computePoints() override;
     StlShape computeTriangles() override {return {};};
@@ -107,18 +95,17 @@ public:
 
 class Sphere: public Shape{
 public:
-    double r,x,y,z;
-    Sphere(double r=1, double x=0, double y=0, double z=0);
+    double r;
+    Sphere(double r=1);
     vvd computePoints() override;
     void input() override;
     StlShape computeTriangles() override {return {};};
 };
 
 class Cylinder: public Shape {
-public:
-    double x, y, z; 
     double r, h;
-    Cylinder(double r=1,  double h=10, double x=0, double y=0, double z=0);
+public: 
+    Cylinder(double r=1,  double h=10);
     vvd computePoints() override;
     void input() override;
 

@@ -1,8 +1,6 @@
 #include "geometry.h"
 
-Cuboid::Cuboid(double l, double b, double h, double x, double y, double z): l(l), b(b), h(h), x(x), y(y), z(z) {
-    setPivot(x, y, z);
-}
+Cuboid::Cuboid(double l, double b, double h): l(l), b(b), h(h) {}
 
 vvd Cuboid::computePoints() {
     double halfL = l / 2.0;
@@ -74,5 +72,5 @@ StlShape Cuboid::computeTriangles() {
     return triangles;
 }
 
-Cube::Cube(double x, double y, double z, double side): 
-    Cuboid(x, y, z, side, side, side), side(side) {}
+Cube::Cube(double side): 
+    Cuboid(side, side, side), side(side) {}

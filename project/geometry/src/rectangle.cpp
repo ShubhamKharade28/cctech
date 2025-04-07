@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-Rectangle::Rectangle(double x, double y, double z, double l, double b) : x(x), y(y), z(z), l(l), b(b) {}
+Rectangle::Rectangle(double l, double b): l(l), b(b) {}
 
 vvd Rectangle::computePoints() {
     double half_l = l / 2.0;
@@ -16,9 +16,6 @@ vvd Rectangle::computePoints() {
 }
 
 void Rectangle::input() {
-    cout <<"Enter start x & y: ";
-    cin >> x >> y;
-
     cout <<"Enter length & breadth: ";
     cin >> l >> b;
 }
