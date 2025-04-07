@@ -33,7 +33,6 @@ Vector ThreeDUtils::computeNormal(Vector v1, Vector v2, Vector v3) {
     return normalize(cross(edge1, edge2));
 }
 
-
 Triangle::Triangle(Vector n, Vector v1, Vector v2, Vector v3): 
     normal(n), vertex1(v1), vertex2(v2), vertex3(v3) {}
 
