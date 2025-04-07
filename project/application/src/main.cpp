@@ -15,7 +15,6 @@ shared_ptr<Shape> chooseShape(int i) {
     return shapeFactory.count(i) ? shapeFactory[i]() : nullptr;
 }
 
-
 void drawSketch() {
     cout << "Enter model name: "; 
     string sketchName; cin >> sketchName;

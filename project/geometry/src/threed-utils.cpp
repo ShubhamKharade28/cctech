@@ -138,17 +138,58 @@ StlShape ThreeDUtils::readOBJ(string& filename) {
 // Write triangles to OBJ file
 void ThreeDUtils::writeOBJ(string& filename, StlShape& triangles) {
     ofstream file(filename);
-    int index = 1;
+    unordered_map<string, int> vertexIndex;
+    Matrix uniqueVertices;
+    Matrix uniqueNormals;
+
+    int vertexCounter = 1, normalCounter = 1;
+
+    // write obj header
+    file << "# OBJ file generated from StlShape\n\n";
+    for(auto& tri : triangles){
+        Matrix vertices = {tri.vertex1, tri.vertex2, tri.vertex3};
+
+        for(auto& v : vertices) {
+            string key = to_string(v[0]) + " " + to_string(v[1]) + " " + to_string(v[2]);
+
+            if(vertexIndex.find(key) == vertexIndex.end()){
+                vertexIndex[key] = vertexCounter++;
+                uniqueVertices.push_back(v);
+            }
+        }
+        
+        uniqueNormals.push_back(tri.normal);
+    }
+
+    // Write unique vertices and normals
+    for (auto& v : uniqueVertices) {
+        file << "v " << v[0] << " " << v[1] << " " << v[2] << "\n";
+    }
+    file << "\n";
+
+    for (const auto& n : uniqueNormals) {
+        file << "vn " << n[0] << " " << n[1] << " " << n[2] << "\n";
+    }
+    file << "\n";
+
+    // Write faces
+    int normalIndex = 1;
     for (auto& tri : triangles) {
-        file << "v " << tri.vertex1[0] << " " << tri.vertex1[1] << " " << tri.vertex1[2] << "\n";
-        file << "v " << tri.vertex2[0] << " " << tri.vertex2[1] << " " << tri.vertex2[2] << "\n";
-        file << "v " << tri.vertex3[0] << " " << tri.vertex3[1] << " " << tri.vertex3[2] << "\n";
+        vector<Vector> vertices = {tri.vertex1, tri.vertex2, tri.vertex3};
+        string faceLine = "f";
+
+        for (auto& v : vertices) {
+            string key = to_string(v[0]) + " " + to_string(v[1]) + " " + to_string(v[2]);
+            int vIndex = vertexIndex[key];
+            faceLine += " " + to_string(vIndex) + "//" + to_string(normalIndex);
+        }
+
+        file << faceLine << "\n";
+        normalIndex++;
     }
-    for (size_t i = 0; i < triangles.size(); ++i) {
-        file << "f " << index << " " << index + 1 << " " << index + 2 << "\n";
-        index += 3;
-    }
-    cout << "OBJ file saved: " << filename << endl;
+
+    file.close();
+    cout << "OBJ file successfully written: " << filename << endl;
 }
 
 // Conversion methods
