@@ -57,20 +57,6 @@ solid MyShape
   endfacet
   facet normal 0 0 1
     outer loop
-      vertex 0 0 20
-      vertex 50 0 20
-      vertex 50 40 20
-    endloop
-  endfacet
-  facet normal 0 0 1
-    outer loop
-      vertex 0 0 20
-      vertex 50 40 20
-      vertex 0 40 20
-    endloop
-  endfacet
-  facet normal 0 0 1
-    outer loop
       vertex 0 0 0
       vertex 50 0 0
       vertex 50 40 0
@@ -81,6 +67,20 @@ solid MyShape
       vertex 0 0 0
       vertex 50 40 0
       vertex 0 40 0
+    endloop
+  endfacet
+  facet normal 0 0 1
+    outer loop
+      vertex 0 0 20
+      vertex 50 0 20
+      vertex 50 40 20
+    endloop
+  endfacet
+  facet normal 0 0 1
+    outer loop
+      vertex 0 0 20
+      vertex 50 40 20
+      vertex 0 40 20
     endloop
   endfacet
 endsolid MyShape

@@ -54,8 +54,8 @@ StlShape Cuboid::computeTriangles() {
         {1, 2, 6, 5}, // Right
         {2, 3, 7, 6}, // Back
         {0, 3, 7, 4}, // Left
-        {4, 5, 6, 7}, // Top
-        {0, 1, 2, 3} // Bottom
+        {0, 1, 2, 3}, // Bottom
+        {4, 5, 6, 7} // Top
     };
 
     for (auto& f : faces) {
