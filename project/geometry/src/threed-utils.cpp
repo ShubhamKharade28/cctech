@@ -1,7 +1,38 @@
 #include "threed-utils.h"
+#include "geometry.h"
 
 #include <bits/stdc++.h>
 using namespace std;
+
+Vector substract(Vector a, Vector b){
+    return {a[0]-b[0], a[1]-b[1], a[2]-b[2]};
+}
+
+Vector cross(Vector a, Vector b){
+    return {
+        a[1]*b[2] - a[2]*b[1],
+        a[2]*b[0] - a[0]*b[2],
+        a[0]*b[1] - a[1]*b[0]
+    };
+}
+
+double magnitude(Vector v) {
+    return sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+}
+
+Vector normalize(Vector v) {
+    double mag = magnitude(v);
+    if (mag == 0) return {0, 0, 0}; // avoid division by zero
+    return {v[0]/mag, v[1]/mag, v[2]/mag};
+}
+
+// Compute the normal for a triangle
+Vector ThreeDUtils::computeNormal(Vector v1, Vector v2, Vector v3) {
+    Vector edge1 = substract(v2, v1);
+    Vector edge2 = substract(v3, v1);
+    return normalize(cross(edge1, edge2));
+}
+
 
 Triangle::Triangle(Vector n, Vector v1, Vector v2, Vector v3): 
     normal(n), vertex1(v1), vertex2(v2), vertex3(v3) {}
@@ -120,15 +151,6 @@ void ThreeDUtils::writeOBJ(string& filename, StlShape& triangles) {
     cout << "OBJ file saved: " << filename << endl;
 }
 
-// Compute the normal for a triangle
-Vector ThreeDUtils::computeNormal(Vector v1, Vector v2, Vector v3) {
-    Vector normal(3);
-    normal[0] = (v2[1] - v1[1]) * (v3[2] - v1[2]) - (v2[2] - v1[2]) * (v3[1] - v1[1]);
-    normal[1] = (v2[2] - v1[2]) * (v3[0] - v1[0]) - (v2[0] - v1[0]) * (v3[2] - v1[2]);
-    normal[2] = (v2[0] - v1[0]) * (v3[1] - v1[1]) - (v2[1] - v1[1]) * (v3[0] - v1[0]);
-    return normal;
-}
-
 // Conversion methods
 void ThreeDUtils::stlToDat(string& stlFile, string& datFile) {
     StlShape triangles = readSTL(stlFile);
@@ -158,4 +180,14 @@ void ThreeDUtils::datToObj(string& datFile, string& objFile) {
 void ThreeDUtils::objToDat(string& objFile, string& datFile) {
     StlShape triangles = readOBJ(objFile);
     writeDAT(datFile, triangles);
+}
+
+void ThreeDUtils::exportSTL(Shape* shape, string filename) {
+    StlShape triangles = shape->computeTriangles();
+    writeSTL(filename, triangles);
+}
+
+void ThreeDUtils::exportOBJ(Shape* shape, string filename) {
+    StlShape triangles = shape->computeTriangles();
+    writeOBJ(filename, triangles);
 }

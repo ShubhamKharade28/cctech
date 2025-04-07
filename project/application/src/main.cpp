@@ -99,8 +99,12 @@ void drawRobot() {
 }
 
 int main() {
-    Cuboid *cb = new Cuboid(10, 20, 50);
-    cb->exportSTL("mycuboid.stl");
+    // Cuboid *cb = new Cuboid(10, 20, 50);
+    // cb->exportSTL("mycuboid.stl");
+
+    string dataDir = "data/";
+    Cuboid cb(50,40,20);
+    ThreeDUtils::exportOBJ(&cb, dataDir + "cuboid.obj");
 
     return 0;
 }
