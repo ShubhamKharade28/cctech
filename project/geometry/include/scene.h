@@ -19,4 +19,6 @@ public:
 
     string getName();
     vector<DrawableShape> getShapes();
+
+    void createInteractiveScene();
 };
