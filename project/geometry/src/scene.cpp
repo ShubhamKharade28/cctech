@@ -9,7 +9,7 @@ void Scene::addShape(DrawableShape& shape){
 
 void Scene::addShape(shared_ptr<Shape> shape, string name, int id) {
     if(id==-1) {
-        id == shapes[shapes.size()-1]->id + 1;
+        id == shapes[shapes.size()-1].getId() + 1;
     }
     DrawableShape drawableShape(shape, name, id);
     addShape(drawableShape);
@@ -88,7 +88,7 @@ void Scene::createInteractiveScene() {
         cout << "Enter rotation (rx ry rz in degrees): ";
         cin >> rx >> ry >> rz;
 
-        auto drawable = DrawableShape(shape, name, id);
+        auto drawable = DrawableShape(shape, name, id++);
         drawable.setTranslation({tx, ty, tz});
         drawable.setScale(scale);
         drawable.setRotation({rx, ry, rz});

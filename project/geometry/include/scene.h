@@ -20,5 +20,7 @@ public:
     string getName();
     vector<DrawableShape> getShapes();
 
+    // Extra methods (just for interactive building, maybe removed later)
     void createInteractiveScene();
+    void listShapes();
 };
