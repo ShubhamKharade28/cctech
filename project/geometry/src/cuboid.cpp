@@ -42,18 +42,24 @@ void Cuboid::input() {
 StlShape Cuboid::computeTriangles() {
     StlShape triangles;
 
+    double hl = l / 2.0;
+    double hb = b / 2.0;
+    double hh = h / 2.0;
+
     Matrix V = {
-        {0, 0, 0}, {l, 0, 0}, {l, b, 0}, {0, b, 0},
-        {0, 0, h}, {l, 0, h}, {l, b, h}, {0, b, h}
+        {x - hl, y - hb, z - hh}, {x + hl, y - hb, z - hh},
+        {x + hl, y + hb, z - hh}, {x - hl, y + hb, z - hh},
+        {x - hl, y - hb, z + hh}, {x + hl, y - hb, z + hh},
+        {x + hl, y + hb, z + hh}, {x - hl, y + hb, z + hh}
     };
 
     int faces[6][4] = {
         {0, 1, 2, 3}, // Bottom
         {4, 5, 6, 7},// Top
-        {0, 1, 5, 4}, // Front
-        {1, 2, 6, 5}, // Right
+        {0, 3, 7, 4}, // Left
         {2, 3, 7, 6}, // Back
-        {0, 3, 7, 4} // Left
+        {1, 2, 6, 5}, // Right
+        {0, 1, 5, 4} // Front
     };
 
     for (auto& f : faces) {

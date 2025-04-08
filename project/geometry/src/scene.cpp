@@ -8,6 +8,9 @@ void Scene::addShape(DrawableShape& shape){
 }
 
 void Scene::addShape(shared_ptr<Shape> shape, string name, int id) {
+    if(id==-1) {
+        id == shapes[shapes.size()-1]->id + 1;
+    }
     DrawableShape drawableShape(shape, name, id);
     addShape(drawableShape);
 }
@@ -60,7 +63,7 @@ void Scene::createInteractiveScene() {
 
     while (true) {
         cout << "\nChoose a shape to add:\n";
-        cout << "1. Cuboid\n2. Sphere\n3. Cylinder\n0. Finish\n> ";
+        cout << "1. Cuboid\n2. Sphere\n3. Cylinder\n0. Exit\n> ";
         cin >> choice;
 
         if (choice == 0) break;
@@ -74,6 +77,8 @@ void Scene::createInteractiveScene() {
         cout << "Enter a name for the shape: ";
         cin >> name;
 
+        shape->input();
+
         cout << "Enter translation (tx ty tz): ";
         cin >> tx >> ty >> tz;
 
@@ -83,12 +88,12 @@ void Scene::createInteractiveScene() {
         cout << "Enter rotation (rx ry rz in degrees): ";
         cin >> rx >> ry >> rz;
 
-        auto drawable = make_shared<DrawableShape>(shape, name, id);
-        drawable->setTranslation({tx, ty, tz});
-        drawable->setScale(scale);
-        drawable->setRotation({rx, ry, rz});
+        auto drawable = DrawableShape(shape, name, id);
+        drawable.setTranslation({tx, ty, tz});
+        drawable.setScale(scale);
+        drawable.setRotation({rx, ry, rz});
 
-        shapes.push_back(drawable);
+        addShape(drawable);
 
         cout << "Shape added successfully!\n";
     }

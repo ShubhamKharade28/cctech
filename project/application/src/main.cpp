@@ -15,10 +15,5 @@ int main() {
     scene.addShape(cuboid, "my-cuboid", id++);
     scene.addShape(cylinder, "my-cylinder", id++);
 
-    auto shapes = scene.getShapes();
-    for(auto shape : shapes){
-        cout << shape.getName() << endl;
-    }
-
     scene.exportToOBJ("mynewscene.obj");
 }

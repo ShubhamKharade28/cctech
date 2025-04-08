@@ -22,6 +22,8 @@ public:
     Vector vertex3;
 
     Triangle(Vector normal, Vector vertex1, Vector vertex2, Vector vertex3);
+
+    Vector getNormal();
 };
 
 #define StlShape vector<Triangle>

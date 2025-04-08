@@ -12,7 +12,7 @@ public:
     Scene(string name = "Untitiled scene");
 
     void addShape(DrawableShape& shape);
-    void addShape(shared_ptr<Shape> shape, string name, int id);
+    void addShape(shared_ptr<Shape> shape, string name, int id=-1);
 
     void removeShapeById(int id);
     void exportToOBJ(string filename = "untitled-scene.obj");

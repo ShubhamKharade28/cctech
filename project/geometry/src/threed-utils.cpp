@@ -1,5 +1,6 @@
 #include "threed-utils.h"
 #include "geometry.h"
+#include <chrono>
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -26,6 +27,12 @@ Vector normalize(Vector v) {
     return {v[0]/mag, v[1]/mag, v[2]/mag};
 }
 
+Vector Triangle::getNormal() {
+    Vector edge1 = substract(vertex2, vertex1);
+    Vector edge2 = substract(vertex3, vertex1);
+    return normalize(cross(edge1, edge2));
+}
+
 // Compute the normal for a triangle
 Vector ThreeDUtils::computeNormal(Vector v1, Vector v2, Vector v3) {
     Vector edge1 = substract(v2, v1);
@@ -38,6 +45,8 @@ Triangle::Triangle(Vector n, Vector v1, Vector v2, Vector v3):
 
 // Read STL file and convert to a list of triangles
 StlShape ThreeDUtils::readSTL(string& filename) {
+    auto start_time = chrono::high_resolution_clock::now();
+
     ifstream file(filename);
     StlShape triangles;
     string line;
@@ -61,6 +70,13 @@ StlShape ThreeDUtils::readSTL(string& filename) {
             triangles.emplace_back(normal, v1, v2, v3);
         }
     }
+
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double> time_taken = end_time - start_time;
+
+    cout <<"STL file read complete: "<< filename << endl;
+    cout <<"Triangles read: " << triangles.size() << endl;
+    cout <<"Time taken to read: " << time_taken.count() << "seconds" << endl;
     return triangles;
 }
 
@@ -136,6 +152,8 @@ StlShape ThreeDUtils::readOBJ(string& filename) {
 
 // Write triangles to OBJ file
 void ThreeDUtils::writeOBJ(string& filename, StlShape& triangles) {
+    auto start_time = chrono::high_resolution_clock::now();
+
     ofstream file(filename);
     unordered_map<string, int> vertexIndex;
     Matrix uniqueVertices;
@@ -156,8 +174,8 @@ void ThreeDUtils::writeOBJ(string& filename, StlShape& triangles) {
                 uniqueVertices.push_back(v);
             }
         }
-        
-        uniqueNormals.push_back(tri.normal);
+
+        uniqueNormals.push_back(tri.getNormal());
     }
 
     // Write unique vertices and normals
@@ -189,6 +207,12 @@ void ThreeDUtils::writeOBJ(string& filename, StlShape& triangles) {
 
     file.close();
     cout << "OBJ file successfully written: " << filename << endl;
+
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double> time_taken = end_time - start_time;
+
+    cout <<"OBJ file write complete: "<< filename << endl;
+    cout <<"Time taken to write: " << time_taken.count() << "seconds" << endl;
 }
 
 // Conversion methods
