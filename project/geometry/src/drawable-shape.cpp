@@ -26,3 +26,5 @@ StlShape DrawableShape::getTriangles() {
 shared_ptr<Shape> DrawableShape::getShape() {
     return shape;
 }
+
+string DrawableShape::getType() { return shape->getType(); }

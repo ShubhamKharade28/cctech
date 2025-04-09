@@ -31,6 +31,7 @@ public:
     string getName();
     int getId();
     Vector getColor();
+    string getType();
 
     StlShape getTriangles();
 

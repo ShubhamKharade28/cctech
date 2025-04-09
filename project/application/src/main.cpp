@@ -7,13 +7,12 @@ using namespace std;
 
 int main() {
     Scene scene("test-scene");
-    int id=0;
 
     auto cuboid = make_shared<Cuboid>(40, 40, 60);
     auto cylinder = make_shared<Cylinder>(20, 100);
 
-    scene.addShape(cuboid, "my-cuboid", id++);
-    scene.addShape(cylinder, "my-cylinder", id++);
+    scene.addShape(cuboid, "my-cuboid");
+    scene.addShape(cylinder, "my-cylinder");
 
-    scene.exportToOBJ("mynewscene.obj");
+    scene.listShapes();
 }

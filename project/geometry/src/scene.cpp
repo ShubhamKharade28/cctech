@@ -1,5 +1,6 @@
 #include "scene.h"
 #include "threed-utils.h"
+#include <iomanip>
 
 Scene::Scene(string name) : name(name) {}
 
@@ -9,7 +10,10 @@ void Scene::addShape(DrawableShape& shape){
 
 void Scene::addShape(shared_ptr<Shape> shape, string name, int id) {
     if(id==-1) {
-        id == shapes[shapes.size()-1].getId() + 1;
+        if(shapes.empty()) 
+            id = 0;
+        else
+            id = shapes[shapes.size()-1].getId() + 1;
     }
     DrawableShape drawableShape(shape, name, id);
     addShape(drawableShape);
@@ -96,5 +100,40 @@ void Scene::createInteractiveScene() {
         addShape(drawable);
 
         cout << "Shape added successfully!\n";
+    }
+}
+
+void Scene::listShapes() {
+    if (shapes.empty()) {
+        cout << "No shapes in the scene." << endl;
+        return;
+    }
+
+    // Print header
+    cout << left << setw(5) << "ID"
+         << setw(15) << "Name"
+         << setw(12) << "Type"
+         << setw(20) << "Color (R,G,B)"
+         // << setw(25) << "Translation (X,Y,Z)"
+         // << setw(25) << "Rotation (X,Y,Z)"
+         // << setw(8) << "Scale"
+         << endl;
+
+    cout << string(60, '-') << endl;
+
+    // Print shape data
+    for (auto& shape : shapes) {
+        Vector color = shape.getColor();
+        // Vector t = shape.getTranslation();
+        // Vector r = shape.getRotation();
+
+        cout << left << setw(5) << shape.getId()
+             << setw(15) << shape.getName()
+             << setw(12) << shape.getType()
+             << setw(20) << ("(" + to_string(color[0]) + ", " + to_string(color[1]) + ", " + to_string(color[2]) + ")")
+             // << setw(25) << ("(" + to_string(t[0]) + ", " + to_string(t[1]) + ", " + to_string(t[2]) + ")")
+             // << setw(25) << ("(" + to_string(r[0]) + ", " + to_string(r[1]) + ", " + to_string(r[2]) + ")")
+             // << setw(8) << shape.getScale()
+             << endl;
     }
 }

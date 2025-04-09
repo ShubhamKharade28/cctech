@@ -55,6 +55,8 @@ public:
         this->z = z;
     }
 
+    virtual string getType() { return "(shape)"; }
+
     virtual ~Shape() {};
 };
 
@@ -76,12 +78,14 @@ public:
     void input() override;
 
     StlShape computeTriangles() override;
+    string getType() override { return "cuboid"; };
 };
 
 class Cube : public Cuboid {
 public:
     double side;
     Cube(double side = 1);
+    string getType() override { return "cube"; }
 };
 
 class Circle: public Shape {
@@ -91,6 +95,7 @@ public:
     void input() ;
     vvd computePoints() override;
     StlShape computeTriangles() override {return {};};
+    string getType() override { return "circle"; }
 };
 
 class Sphere: public Shape{
@@ -100,6 +105,7 @@ public:
     vvd computePoints() override;
     void input() override;
     StlShape computeTriangles() override {return {};};
+    string getType() override { return "sphere"; }
 };
 
 class Cylinder: public Shape {
@@ -110,6 +116,7 @@ public:
     void input() override;
 
     StlShape computeTriangles() override;
+    string getType() override { return "cylinder"; }
 };
 
 class Polyline: public Shape{
@@ -118,6 +125,7 @@ public:
     Polyline(vvd& pts) : points(pts) {}
     vvd computePoints() override { return points; }
     StlShape computeTriangles() override {return {};};
+    string getType() override { return "polyline"; }
 };
 
 class BezierCurve: public Shape{
@@ -128,6 +136,7 @@ public:
     void draw();
 
     StlShape computeTriangles() override {return {};};
+    string getType() override { return "bezier curve"; }
 };
     
 
