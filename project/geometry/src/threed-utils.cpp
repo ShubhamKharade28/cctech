@@ -43,6 +43,10 @@ Vector ThreeDUtils::computeNormal(Vector v1, Vector v2, Vector v3) {
 Triangle::Triangle(Vector n, Vector v1, Vector v2, Vector v3): 
     normal(n), vertex1(v1), vertex2(v2), vertex3(v3) {}
 
+Triangle::Triangle(Vector v1, Vector v2, Vector v3): vertex1(v1), vertex2(v2), vertex3(v3) {
+    this->normal = getNormal();
+}
+
 // Read STL file and convert to a list of triangles
 StlShape ThreeDUtils::readSTL(string& filename) {
     auto start_time = chrono::high_resolution_clock::now();

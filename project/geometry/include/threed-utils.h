@@ -22,6 +22,7 @@ public:
     Vector vertex3;
 
     Triangle(Vector normal, Vector vertex1, Vector vertex2, Vector vertex3);
+    Triangle(Vector v1, Vector v2, Vector v3);
 
     Vector getNormal();
 };
@@ -55,4 +56,3 @@ public:
 };
 
 #endif // THREE_D_UTILS_H
-    
