@@ -31,9 +31,10 @@ run: $(TARGET)
 set-display:
 	export DISPLAY=:0
 
+MESSAGE =? automated push
 push:
 	git add .
-	git commit -m "automated push"
+	git commit -m "$(MESSAGE)"
 	git push origin main
 
 pull:
