@@ -11,8 +11,14 @@ int main() {
     auto cuboid = make_shared<Cuboid>(40, 40, 60);
     auto cylinder = make_shared<Cylinder>(20, 100);
 
-    scene.addShape(cuboid, "my-cuboid");
-    scene.addShape(cylinder, "my-cylinder");
+    DrawableShape drawableCuboid(cuboid, "my-cuboid", 1);
+    DrawableShape drawableCylinder(cylinder, "my-cylinder", 3);
+
+    drawableCuboid.setTranslation({0,0,100});
+
+    scene.addShape(drawableCuboid);
+    scene.addShape(drawableCylinder);
 
     scene.listShapes();
+    scene.exportToOBJ("data/Cuboid&Cylinder.obj");
 }
