@@ -10,8 +10,8 @@ qt_standard_project_setup()
 qt_add_executable(ProjectQT
     WIN32 MACOSX_BUNDLE
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
+    # mainwindow.cpp
+    # mainwindow.h
     # mainwindow.ui
     myopenglwidget.cpp
     myopenglwidget.h
