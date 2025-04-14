@@ -1,54 +1,8 @@
-#include "threed-utils.h"
-#include "geometry.h"
+#include "file-utils.h"
 #include <chrono>
 
-#include <bits/stdc++.h>
-using namespace std;
-
-Vector substract(Vector a, Vector b){
-    return {a[0]-b[0], a[1]-b[1], a[2]-b[2]};
-}
-
-Vector cross(Vector a, Vector b){
-    return {
-        a[1]*b[2] - a[2]*b[1],
-        a[2]*b[0] - a[0]*b[2],
-        a[0]*b[1] - a[1]*b[0]
-    };
-}
-
-double magnitude(Vector v) {
-    return sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
-}
-
-Vector normalize(Vector v) {
-    double mag = magnitude(v);
-    if (mag == 0) return {0, 0, 0}; // avoid division by zero
-    return {v[0]/mag, v[1]/mag, v[2]/mag};
-}
-
-Vector Triangle::getNormal() {
-    Vector edge1 = substract(vertex2, vertex1);
-    Vector edge2 = substract(vertex3, vertex1);
-    return normalize(cross(edge1, edge2));
-}
-
-// Compute the normal for a triangle
-Vector ThreeDUtils::computeNormal(Vector v1, Vector v2, Vector v3) {
-    Vector edge1 = substract(v2, v1);
-    Vector edge2 = substract(v3, v1);
-    return normalize(cross(edge1, edge2));
-}
-
-Triangle::Triangle(Vector n, Vector v1, Vector v2, Vector v3): 
-    normal(n), vertex1(v1), vertex2(v2), vertex3(v3) {}
-
-Triangle::Triangle(Vector v1, Vector v2, Vector v3): vertex1(v1), vertex2(v2), vertex3(v3) {
-    this->normal = getNormal();
-}
-
 // Read STL file and convert to a list of triangles
-StlShape ThreeDUtils::readSTL(string& filename) {
+StlShape FileUtils::readSTL(string& filename) {
     auto start_time = chrono::high_resolution_clock::now();
 
     ifstream file(filename);
@@ -85,7 +39,7 @@ StlShape ThreeDUtils::readSTL(string& filename) {
 }
 
 // Write STL file from a list of triangles
-void ThreeDUtils::writeSTL(string& filename, StlShape& triangles) {
+void FileUtils::writeSTL(string& filename, StlShape& triangles) {
     ofstream file(filename);
     file << "solid MyShape\n";
 
@@ -103,7 +57,7 @@ void ThreeDUtils::writeSTL(string& filename, StlShape& triangles) {
 }
 
 // Read DAT file and convert to triangles
-StlShape ThreeDUtils::readDAT(string& filename) {
+StlShape FileUtils::readDAT(string& filename) {
     ifstream file(filename);
     StlShape triangles;
     Vector v1(3), v2(3), v3(3);
@@ -116,7 +70,7 @@ StlShape ThreeDUtils::readDAT(string& filename) {
 }
 
 // Write triangles to DAT file
-void ThreeDUtils::writeDAT(string& filename, StlShape& triangles) {
+void FileUtils::writeDAT(string& filename, StlShape& triangles) {
     ofstream file(filename);
     for (auto& tri : triangles) {
         file << tri.vertex1[0] << " " << tri.vertex1[1] << " " << tri.vertex1[2] << " ";
@@ -127,7 +81,7 @@ void ThreeDUtils::writeDAT(string& filename, StlShape& triangles) {
 }
 
 // Read OBJ file and convert to triangles
-StlShape ThreeDUtils::readOBJ(string& filename) {
+StlShape FileUtils::readOBJ(string& filename) {
     ifstream file(filename);
     vector<Vector> vertices;
     StlShape triangles;
@@ -155,7 +109,7 @@ StlShape ThreeDUtils::readOBJ(string& filename) {
 }
 
 // Write triangles to OBJ file
-void ThreeDUtils::writeOBJ(string& filename, StlShape& triangles) {
+void FileUtils::writeOBJ(string& filename, StlShape& triangles) {
     auto start_time = chrono::high_resolution_clock::now();
 
     ofstream file(filename);
@@ -220,42 +174,42 @@ void ThreeDUtils::writeOBJ(string& filename, StlShape& triangles) {
 }
 
 // Conversion methods
-void ThreeDUtils::stlToDat(string& stlFile, string& datFile) {
+void FileUtils::stlToDat(string& stlFile, string& datFile) {
     StlShape triangles = readSTL(stlFile);
     writeDAT(datFile, triangles);
 }
 
-void ThreeDUtils::datToStl(string& datFile, string& stlFile) {
+void FileUtils::datToStl(string& datFile, string& stlFile) {
     StlShape triangles = readDAT(datFile);
     writeSTL(stlFile, triangles);
 }
 
-void ThreeDUtils::stlToObj(string& stlFile, string& objFile) {
+void FileUtils::stlToObj(string& stlFile, string& objFile) {
     StlShape triangles = readSTL(stlFile);
     writeOBJ(objFile, triangles);
 }
 
-void ThreeDUtils::objToStl(string& objFile, string& stlFile) {
+void FileUtils::objToStl(string& objFile, string& stlFile) {
     StlShape triangles = readOBJ(objFile);
     writeSTL(stlFile, triangles);
 }
 
-void ThreeDUtils::datToObj(string& datFile, string& objFile) {
+void FileUtils::datToObj(string& datFile, string& objFile) {
     StlShape triangles = readDAT(datFile);
     writeOBJ(objFile, triangles);
 }
 
-void ThreeDUtils::objToDat(string& objFile, string& datFile) {
+void FileUtils::objToDat(string& objFile, string& datFile) {
     StlShape triangles = readOBJ(objFile);
     writeDAT(datFile, triangles);
 }
 
-void ThreeDUtils::exportSTL(Shape* shape, string filename) {
+void FileUtils::exportSTL(Shape* shape, string filename) {
     StlShape triangles = shape->computeTriangles();
     writeSTL(filename, triangles);
 }
 
-void ThreeDUtils::exportOBJ(Shape* shape, string filename) {
+void FileUtils::exportOBJ(Shape* shape, string filename) {
     StlShape triangles = shape->computeTriangles();
     writeOBJ(filename, triangles);
 }

@@ -12,7 +12,6 @@ qt_add_executable(ProjectQT
     main.cpp
     # mainwindow.cpp
     # mainwindow.h
-    # mainwindow.ui
     myopenglwidget.cpp
     myopenglwidget.h
 )

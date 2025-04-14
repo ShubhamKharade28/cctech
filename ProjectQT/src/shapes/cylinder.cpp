@@ -1,9 +1,12 @@
-#include "geometry.h"
+#include "shapes.h"
 
 Cylinder::Cylinder(double r,  double h): r(r), h(h) {}
 
-vvd Cylinder::computePoints() {
-    vvd dataPoints;
+Matrix Cylinder::computePoints() {
+    double x,y,z;
+    x=y=z=0;
+
+    Matrix dataPoints;
     int steps = 50; 
     double zBottom = z - h / 2;  // Adjust base to center the cylinder
     double zTop = z + h / 2;     // Adjust top accordingly
@@ -47,6 +50,8 @@ void Cylinder::input() {
 
 StlShape Cylinder::computeTriangles() {
     StlShape triangles;
+    double x,y,z;
+    x=y=z=0;
 
     int segments = 50;
     double angleStep = 2 * M_PI / segments;
@@ -68,14 +73,14 @@ StlShape Cylinder::computeTriangles() {
         Vector bottom2 = {x + r * cos(theta2), y - halfHeight, z + r * sin(theta2)};
 
         // Top face triangle (fan from center)
-        triangles.emplace_back(ThreeDUtils::computeNormal(centerTop, top1, top2), centerTop, top1, top2);
+        triangles.emplace_back(Triangle::computeNormal(centerTop, top1, top2), centerTop, top1, top2);
 
         // Bottom face triangle (fan from center, reversed winding)
-        triangles.emplace_back(ThreeDUtils::computeNormal(centerBottom, bottom2, bottom1), centerBottom, bottom2, bottom1);
+        triangles.emplace_back(Triangle::computeNormal(centerBottom, bottom2, bottom1), centerBottom, bottom2, bottom1);
 
         // Side faces (as two triangles per quad)
-        triangles.emplace_back(ThreeDUtils::computeNormal(top1, top2, bottom2), top1, top2, bottom2);
-        triangles.emplace_back(ThreeDUtils::computeNormal(top1, bottom2, bottom1), top1, bottom2, bottom1);
+        triangles.emplace_back(Triangle::computeNormal(top1, top2, bottom2), top1, top2, bottom2);
+        triangles.emplace_back(Triangle::computeNormal(top1, bottom2, bottom1), top1, bottom2, bottom1);
     }
 
     return triangles;

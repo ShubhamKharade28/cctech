@@ -1,9 +1,9 @@
-#include "geometry.h"
+#include "shapes.h"
 
 Sphere::Sphere(double r): r(r) {}
 
-vvd Sphere::computePoints() {
-    vvd dataPoints;
+Matrix Sphere::computePoints() {
+    Matrix dataPoints;
 
     int lat_steps = 20;
     int lon_steps = 20;

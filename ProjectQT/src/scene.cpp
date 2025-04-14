@@ -35,7 +35,7 @@ void Scene::exportToOBJ(string filename) {
         allTriangles.insert(allTriangles.end(), tris.begin(), tris.end());
     }
 
-    ThreeDUtils::writeOBJ(filename, allTriangles);
+    FileUtils::writeOBJ(filename, allTriangles);
     cout << "Scene exported to OBJ: " << filename << endl;
     cout << "Total faces (triangles): " << allTriangles.size() << endl;
 }

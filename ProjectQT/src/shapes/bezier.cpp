@@ -1,4 +1,4 @@
-#include "geometry.h"
+#include "shapes.h"
 
 BezierCurve::BezierCurve(vvd& points):
     controlPoints(points) {}

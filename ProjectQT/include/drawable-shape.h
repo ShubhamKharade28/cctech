@@ -3,9 +3,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "geometry.h"
+#include "shape.h"
 #include "threed-utils.h"
-#include "transformations.h"
 
 class DrawableShape {
 private:
@@ -13,7 +12,7 @@ private:
     shared_ptr<Shape> shape;
 
     // transformations and color
-    Vector translation; 
+    Vector position; 
     Vector rotation;     
     double scale;       
     Vector color;
@@ -24,7 +23,7 @@ private:
 public:
     DrawableShape(shared_ptr<Shape> baseShape, string name, int id=-1);
     
-    void setTranslation(Vector t);
+    void setPosition(Vector t);
     void setRotation(Vector rotation);
     void setScale(double scale);
     void setColor(Vector color);

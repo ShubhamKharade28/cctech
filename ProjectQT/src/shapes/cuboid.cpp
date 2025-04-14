@@ -1,13 +1,13 @@
-#include "geometry.h"
+#include "shapes.h"
 
 Cuboid::Cuboid(double l, double b, double h): l(l), b(b), h(h) {}
 
-vvd Cuboid::computePoints() {
+Matrix Cuboid::computePoints() {
     double halfL = l / 2.0;
     double halfB = b / 2.0;
     double halfH = h / 2.0;
 
-    vvd vertices = {
+    Matrix vertices = {
         {x - halfL, y - halfB, z - halfH},  // 0: left-bottom-front  
         {x + halfL, y - halfB, z - halfH},  // 1: right-bottom-front
         {x + halfL, y + halfB, z - halfH},  // 2: right-top-front
@@ -24,7 +24,7 @@ vvd Cuboid::computePoints() {
         {0, 4}, {1, 5}, {2, 6}, {3, 7}  // Connecting edges
     };
 
-    vvd dataPoints;
+    Matrix dataPoints;
     for(pi& edge : edges){
         dataPoints.push_back(vertices[edge.first]);
         dataPoints.push_back(vertices[edge.second]);
