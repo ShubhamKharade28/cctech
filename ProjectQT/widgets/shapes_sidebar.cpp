@@ -9,7 +9,7 @@
 ShapesSideBar::ShapesSideBar(QWidget* parent, Scene *scene) : QWidget(parent), scene(scene) {
     auto* layout = new QVBoxLayout(this);
 
-    auto* addShapeButton = new QPushButton("Add Sphere");
+    auto* addShapeButton = new QPushButton("Add Shape");
     shapeList = new QListWidget(this);
 
     layout->addWidget(addShapeButton);
