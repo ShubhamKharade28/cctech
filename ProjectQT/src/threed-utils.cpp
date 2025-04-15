@@ -26,12 +26,6 @@ Vector Triangle::getNormal() {
     return computeNormal(vertex1, vertex2, vertex3);
 }
 
-Vector Triangle::computeNormal(Vector v1, Vector v2, Vector v3); {
-    Vector edge1 = substract(vertex2, vertex1);
-    Vector edge2 = substract(vertex3, vertex1);
-    return normalize(cross(edge1, edge2));
-}
-
 Triangle::Triangle(Vector n, Vector v1, Vector v2, Vector v3): 
     normal(n), vertex1(v1), vertex2(v2), vertex3(v3) {}
 

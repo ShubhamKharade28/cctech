@@ -25,7 +25,11 @@ public:
 
     Vector getNormal();
 
-    static Vector computeNormal(Vector v1, Vector v2, Vector v3);
+    static Vector computeNormal(Vector v1, Vector v2, Vector v3) {
+        Vector edge1 = substract(v2, v1);
+        Vector edge2 = substract(v3, v1);
+        return normalize(cross(edge1, edge2));
+    }
 };
 
 #define StlShape vector<Triangle>

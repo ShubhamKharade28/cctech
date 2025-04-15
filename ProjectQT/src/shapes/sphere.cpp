@@ -4,7 +4,7 @@ Sphere::Sphere(double r): r(r) {}
 
 Matrix Sphere::computePoints() {
     Matrix dataPoints;
-
+    
     int lat_steps = 20;
     int lon_steps = 20;
 

@@ -3,8 +3,6 @@
 Cylinder::Cylinder(double r,  double h): r(r), h(h) {}
 
 Matrix Cylinder::computePoints() {
-    double x,y,z;
-    x=y=z=0;
 
     Matrix dataPoints;
     int steps = 50; 

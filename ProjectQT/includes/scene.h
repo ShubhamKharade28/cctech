@@ -18,9 +18,5 @@ public:
     void exportToOBJ(string filename = "untitled-scene.obj");
 
     string getName();
-    vector<DrawableShape> getShapes();
-
-    // Extra methods (just for interactive building, maybe removed later)
-    void createInteractiveScene();
-    void listShapes();
+    vector<DrawableShape>& getDrawableShapes();
 };

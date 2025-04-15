@@ -2,7 +2,10 @@
 
 Cuboid::Cuboid(double l, double b, double h): l(l), b(b), h(h) {}
 
+typedef std::pair<int, int> pi;
+
 Matrix Cuboid::computePoints() {
+
     double halfL = l / 2.0;
     double halfB = b / 2.0;
     double halfH = h / 2.0;
@@ -68,11 +71,11 @@ StlShape Cuboid::computeTriangles() {
         auto v2 = V[f[2]];
         auto v3 = V[f[3]];
 
-        Vector n1 = ThreeDUtils::computeNormal(v0, v1, v2);
-        Vector n2 = ThreeDUtils::computeNormal(v0, v2, v3);
+        // Vector n1 = ::computeNormal(v0, v1, v2);
+        // Vector n2 = ThreeDUtils::computeNormal(v0, v2, v3);
 
-        triangles.push_back(Triangle(n1, v0, v1, v2));
-        triangles.push_back(Triangle(n2, v0, v2, v3));
+        triangles.push_back(Triangle(v0, v1, v2));
+        triangles.push_back(Triangle(v0, v2, v3));
     }
 
     return triangles;

@@ -12,9 +12,9 @@ private:
     shared_ptr<Shape> shape;
 
     // transformations and color
-    Vector position; 
-    Vector rotation;     
-    double scale;       
+    Vector position;
+    Vector rotation;
+    double scale;
     Vector color;
 
     // metadata

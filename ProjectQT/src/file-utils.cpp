@@ -1,4 +1,5 @@
 #include "file-utils.h"
+#include "shape.h"
 #include <chrono>
 
 // Read STL file and convert to a list of triangles
@@ -63,8 +64,7 @@ StlShape FileUtils::readDAT(string& filename) {
     Vector v1(3), v2(3), v3(3);
 
     while (file >> v1[0] >> v1[1] >> v1[2] >> v2[0] >> v2[1] >> v2[2] >> v3[0] >> v3[1] >> v3[2]) {
-        Vector normal = computeNormal(v1, v2, v3);
-        triangles.emplace_back(normal, v1, v2, v3);
+        triangles.emplace_back(Triangle(v1, v2, v3));
     }
     return triangles;
 }
@@ -101,8 +101,7 @@ StlShape FileUtils::readOBJ(string& filename) {
             v1 = vertices[i1 - 1];
             v2 = vertices[i2 - 1];
             v3 = vertices[i3 - 1];
-            Vector normal = computeNormal(v1, v2, v3);
-            triangles.emplace_back(normal, v1, v2, v3);
+            triangles.emplace_back(Triangle(v1, v2, v3));
         }
     }
     return triangles;

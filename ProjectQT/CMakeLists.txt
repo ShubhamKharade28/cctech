@@ -10,10 +10,48 @@ qt_standard_project_setup()
 qt_add_executable(ProjectQT
     WIN32 MACOSX_BUNDLE
     main.cpp
-    # mainwindow.cpp
-    # mainwindow.h
-    myopenglwidget.cpp
-    myopenglwidget.h
+    mainwindow.cpp
+    mainwindow.h
+    
+    screens/scenecreator.h 
+    screens/scenecreator.cpp
+
+    widgets/shapes_sidebar.h
+    widgets/shapes_sidebar.cpp 
+
+    widgets/scene_renderer.h 
+    widgets/scene_renderer.cpp 
+
+    widgets/transformation_sidebar.h 
+    widgets/transformation_sidebar.cpp
+
+    includes/shape.h 
+    includes/shapes.h 
+    includes/threed-utils.h 
+    includes/transformations.h 
+    includes/drawable-shape.h 
+    includes/scene.h 
+    includes/file-utils.h
+
+    src/shapes/cuboid.cpp 
+    src/shapes/cylinder.cpp 
+    src/shapes/sphere.cpp 
+    src/threed-utils.cpp 
+    src/transformations.cpp
+    src/scene.cpp
+    src/file-utils.cpp
+    src/drawable-shape.cpp
+    
+    # myopenglwidget.cpp
+    # myopenglwidget.h
+)
+
+include_directories(
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src/shapes
+    ${PROJECT_SOURCE_DIR}/widgets
+    ${PROJECT_SOURCE_DIR}/screens
+    ${PROJECT_SOURCE_DIR}/includes
 )
  
 # ✅ Link Qt modules and system OpenGL (opengl32 for Windows)
@@ -43,3 +81,4 @@ qt_generate_deploy_app_script(
 )
  
 install(SCRIPT ${deploy_script})
+
