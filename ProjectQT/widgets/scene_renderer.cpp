@@ -1,15 +1,15 @@
 #include "scene_renderer.h"
 
-#include <QLabel>
-#include <QVBoxLayout>
-
 #include "scene.h"
 #include "drawable-shape.h"
 
 #include <QOpenGLFunctions>
+#include <QVBoxLayout>
+
 
 SceneRenderer::SceneRenderer(QWidget* parent=nullptr, Scene* scene=nullptr)
-    : QOpenGLWidget(parent), scene(scene) {
+    : QOpenGLWidget(parent), scene(scene),
+    isDragging(false), zoomFactor(1.0f), rotationX(0.0f), rotationY(0.0f) {
 }
 
 void SceneRenderer::initializeGL() {
@@ -24,7 +24,7 @@ void SceneRenderer::resizeGL(int w, int h) {
     glLoadIdentity();
 
     GLfloat aspect = GLfloat(w) / h;
-    GLfloat fovy = 100.0f;
+    GLfloat fovy = 50.0f;
     GLfloat near = 0.1f;
     GLfloat far = 100.0f;
     GLfloat top = tan(fovy * M_PI / 360.0f) * near;
@@ -41,10 +41,21 @@ void SceneRenderer::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    glTranslatef(0, 0, -10); // move camera back
+    // Apply scaling (zoom)
+    glScalef(zoomFactor, zoomFactor, zoomFactor);
+
+    // Apply rotation
+    glRotatef(rotationX, 1.0f, 0.0f, 0.0f); // Rotate along the X-axis
+    glRotatef(rotationY, 0.0f, 1.0f, 0.0f); // Rotate along the Y-axis
+    glRotatef(rotationZ, 0.0f, 0.0f, 1.0f); 
+
+    // Move camera back
+    glTranslatef(0, 0, -10 + zoomFactor);
 
     for (auto& drawable : scene->getDrawableShapes()) {
         auto triangles = drawable.getTriangles();
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Set wireframe mode
 
         glBegin(GL_TRIANGLES);
         for (const auto& tri : triangles) {
@@ -56,5 +67,53 @@ void SceneRenderer::paintGL() {
             glVertex3f(v3[0], v3[1], v3[2]);
         }
         glEnd();
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // Reset to normal fill mode
     }
 }
+
+void SceneRenderer::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        isDragging = true;
+        lastMousePos = event->pos(); // Capture the current position for rotation
+    }
+}
+
+void SceneRenderer::mouseMoveEvent(QMouseEvent* event) {
+    if (isDragging) {
+        int dx = event->x() - lastMousePos.x();
+        int dy = event->y() - lastMousePos.y();
+
+        if (event->buttons() & Qt::LeftButton) {
+            // Rotate X and Y
+            rotationX += dy * 0.5f;
+            rotationY += dx * 0.5f;
+        } else if (event->buttons() & Qt::RightButton) {
+            // Rotate Z
+            rotationZ += dx * 0.5f;
+        }
+
+        lastMousePos = event->pos();
+        update();
+    }
+}
+
+void SceneRenderer::wheelEvent(QWheelEvent* event) {
+    // int delta = event->angleDelta().y();
+
+    // if (delta > 0) {
+    //     zoomFactor *= 1.1f; // Zoom in
+    // } else {
+    //     zoomFactor /= 1.1f; // Zoom out
+    // }
+    zoomFactor += event->angleDelta().y() / 600.0f;
+
+    update(); // Request OpenGL widget to re-render
+}
+
+void SceneRenderer::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        isDragging = false;
+    }
+}
+

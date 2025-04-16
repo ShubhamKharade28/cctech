@@ -44,6 +44,14 @@ qt_add_executable(ProjectQT
     
     # myopenglwidget.cpp
     # myopenglwidget.h
+
+    test/test-window.h
+    test/test-window.cpp
+    test/sidebar.h 
+    test/sidebar.cpp 
+    test/point.h
+    test/bezier_curve.h 
+    test/bezier_curve.cpp
 )
 
 include_directories(
@@ -52,6 +60,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/widgets
     ${PROJECT_SOURCE_DIR}/screens
     ${PROJECT_SOURCE_DIR}/includes
+    ${PROJECT_SOURCE_DIR}/test
 )
  
 # ✅ Link Qt modules and system OpenGL (opengl32 for Windows)
