@@ -13,16 +13,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class TestWindow : public QWidget {
+class TestScreen : public QWidget {
     Q_OBJECT
 
 public:
-    TestWindow(QWidget *parent = nullptr);
-    ~TestWindow();
+    TestScreen(QWidget *parent = nullptr);
+    ~TestScreen();
 
 private:
     Sidebar* sidebar;
     Renderer* renderer;
 
     BezierCurve* curve;
+
+private slots:
 };

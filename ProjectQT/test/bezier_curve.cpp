@@ -13,22 +13,51 @@ void BezierCurve::modifyControlPoint(int index, double x, double y){
     controlPoints[index] = Point(x,y);
 }
 
-vector<Point> BezierCurve::getCurvePoints()  {
-    double dAlpha = 1/numOfCurvePoints; // change in alpha 
-    double currAlpha = 0;
+void BezierCurve::removeControlPoint(int index){
+    controlPoints.erase(controlPoints.begin() + index);
+}
 
-    vector<Point> points = controlPoints;
+void BezierCurve::clearControlPoints(){
+    controlPoints.clear();
+}
 
-    vector<pair<Point, Point>> lines;
-    for(int i=0; i<numOfCurvePoints; i++){
-        currAlpha = dAlpha;
-        for(int j=0; j<points.size()-1; j++){
-            double x1 = points[j].x, y1 = points[j].y;
-            double x2 = points[j+1].x, y2 = points[j+1].y;
+int BezierCurve::getResolution(){
+    return resolution;
+}
 
-            currAlpha += dAlpha;
-        }
+void BezierCurve::setResolution(int n){
+    resolution = n;
+}
+
+vector<Point> BezierCurve::getControlPoints(){
+    return controlPoints;
+}
+
+vector<Point> BezierCurve::getCurvePoints(bool recalculate){
+    if(recalculate) {
+        curvePoints = calculateCurvePoints();
     }
+    return curvePoints;
+}
 
-    return {};
+vector<Point> BezierCurve::calculateCurvePoints()  {
+    curvePoints.clear();
+    if(controlPoints.size() < 2) {
+        return curvePoints;
+    }
+    int n = controlPoints.size() - 1;
+    // calculate using de Casteljau's algorithm
+    for(int i = 0; i <= resolution; i++){
+        double t = (double)i / resolution; // t -> [0,1], interpolating parameter (alpha)
+        vector<Point> points = controlPoints;
+        for(int j = 1; j <= n; j++){
+            for(int k = 0; k < n - j + 1; k++){
+                double x = (1 - t) * points[k].x + t * points[k + 1].x;
+                double y = (1 - t) * points[k].y + t * points[k + 1].y;
+                points[k] = Point(x, y);
+            }
+        }
+        curvePoints.push_back(points[0]);
+    }
+    return curvePoints;
 }

@@ -45,13 +45,15 @@ qt_add_executable(ProjectQT
     # myopenglwidget.cpp
     # myopenglwidget.h
 
-    test/test-window.h
-    test/test-window.cpp
+    test/test-screen.h
+    test/test-screen.cpp
     test/sidebar.h 
     test/sidebar.cpp 
     test/point.h
     test/bezier_curve.h 
     test/bezier_curve.cpp
+    test/renderer.h
+    test/renderer.cpp
 )
 
 include_directories(

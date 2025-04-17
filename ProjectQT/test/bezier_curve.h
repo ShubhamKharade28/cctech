@@ -5,19 +5,29 @@
 using namespace std;
 
 class BezierCurve {
+    int resolution; // number of curve points
     vector<Point> controlPoints;
-    int numOfCurvePoints;
+    vector<Point> curvePoints;
 
     public:
-    BezierCurve(int n = 20){
+    BezierCurve(int n = 50){
         controlPoints = {};
-        numOfCurvePoints = n;
+        resolution = n;
     }
+
+    int getResolution();
+    void setResolution(int n = 50);
 
     void addControlPoint(double x, double y);
     void addControlPoint(Point p);
     
     void modifyControlPoint(int index, double x, double y);
+    void removeControlPoint(int index);
+    void clearControlPoints();
 
-    vector<Point> getCurvePoints();
+    vector<Point> getCurvePoints(bool recalculate = false);
+    vector<Point> getControlPoints();
+
+private:
+    vector<Point> calculateCurvePoints();
 };

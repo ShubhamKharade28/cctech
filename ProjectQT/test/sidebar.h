@@ -4,9 +4,12 @@
 #include <QFormLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 #include "point.h"
 #include "bezier_curve.h"
+#include "renderer.h"
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -14,16 +17,30 @@ using namespace std;
 class Sidebar: public QWidget {
 Q_OBJECT
 public:
-    explicit Sidebar(QWidget* parent = nullptr, BezierCurve* curve = nullptr);
+    explicit Sidebar(QWidget* parent = nullptr, BezierCurve* curve = nullptr, Renderer* renderer = nullptr);
 
 private:
+    BezierCurve* curve;
+    Renderer* renderer;
     QFormLayout* inputForm;
     QLineEdit* xField;
     QLineEdit* yField;
     QPushButton* addPointButton;
+    QListWidget* pointListWidget;
+    QListWidgetItem* selectedItem = nullptr;
+    QPushButton* deletePointButton;
+    QPushButton* clearPointsButton;
 
-    BezierCurve* curve;
+    void addControlPoint(Point p);
+    void modifyControlPoint(int index, Point p);
+    void removeControlPoint(int index);
+    void clearControlPoints();
+    void setResolution(int resolution);
+    void updateCurvePoints();
     
 private slots:
     void onAddPointButtonClicked();
+    void onDeletePointButtonClicked();
+    void onClearPointsButtonClicked();
+    // void onPointListItemClicked(QListWidgetItem* item);
 };

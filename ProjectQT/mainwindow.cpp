@@ -4,7 +4,7 @@
 
 // #include "screens/scenecreator.h"
 
-#include "test-window.h"
+#include "test-screen.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     // this->resize(1000, 700);
@@ -14,10 +14,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     // setCentralWidget(sceneCreator);
 
     this->resize(1000, 700);
-    setWindowTitle("Test - Bezier Curve Test");
+    setWindowTitle("Test - Bezier Curve");
 
-    TestWindow* testWidget = new TestWindow(this);
-    setCentralWidget(testWidget);
+    TestScreen* testScreen = new TestScreen(this);
+    setCentralWidget(testScreen);
 }
 
 MainWindow::~MainWindow() {}
