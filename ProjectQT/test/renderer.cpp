@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include <QDebug>
 #include <QOpenGLFunctions>
+#include <QPOintF>
 
 Renderer::Renderer(QWidget *parent, BezierCurve* curve)
 : QOpenGLWidget(parent), curve(curve) {
@@ -21,7 +22,7 @@ void Renderer::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -1.0f); // Move the camera back
+    // glTranslatef(0.0f, 0.0f, -1.0f); // Move the camera back
 
     // Set up orthographic projection for 2D rendering
     if (w > h) {
@@ -74,4 +75,24 @@ void Renderer::drawControlPoints() {
         glVertex2f(point.x, point.y);
     }
     glEnd();
+}
+
+void Renderer::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        QPointF pos = event->pos();
+        float x = (2.0f * pos.x() / width()) - 1.0f;
+        float y = 1.0f - (2.0f * pos.y() / height());
+        selectedPointIndex = curve->findControlPoint(x, y, 0.1); // 0.1f is the influence radius
+        update();
+    }
+}
+
+void Renderer::mouseMoveEvent(QMouseEvent *event) {
+    if (event->buttons() & Qt::LeftButton) {
+        QPointF pos = event->pos();
+        float x = (2.0f * pos.x() / width()) - 1.0f;
+        float y = 1.0f - (2.0f * pos.y() / height());
+        curve->moveControlPoint(selectedPointIndex, x, y);
+        update();
+    }
 }

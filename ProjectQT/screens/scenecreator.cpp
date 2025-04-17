@@ -17,3 +17,4 @@ SceneCreator::SceneCreator(QWidget *parent): QWidget(parent) {
 
     connect(shapesBar, &ShapesSideBar::sceneUpdated, sceneRenderer, QOverload<>::of(&QOpenGLWidget::update));
 }
+

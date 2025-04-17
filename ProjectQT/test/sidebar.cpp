@@ -98,7 +98,7 @@ void Sidebar::addControlPoint(Point p) {
 }
 
 void Sidebar::modifyControlPoint(int index, Point p) {
-    curve->modifyControlPoint(index, p.x, p.y);
+    curve->moveControlPoint(index, p.x, p.y);
     renderer->update();
 }
 

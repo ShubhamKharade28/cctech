@@ -25,6 +25,4 @@ private:
     Renderer* renderer;
 
     BezierCurve* curve;
-
-private slots:
 };

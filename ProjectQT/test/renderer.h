@@ -1,6 +1,7 @@
 #pragma once
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
+#include <QMouseEvent>
 
 #include "bezier_curve.h"
 
@@ -16,9 +17,15 @@ protected:
     void paintGL() override;
 
 private:
+    BezierCurve* curve;
+    
     void drawCurve();
     void drawControlPoints();
 
-private:
-    BezierCurve* curve;
+    int selectedPointIndex = -1;
+
+private slots:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override; 
+
 };

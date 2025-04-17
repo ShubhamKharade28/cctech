@@ -9,7 +9,7 @@ void BezierCurve::addControlPoint(Point p){
     controlPoints.push_back(p);
 }
 
-void BezierCurve::modifyControlPoint(int index, double x, double y){
+void BezierCurve::moveControlPoint(int index, double x, double y){
     controlPoints[index] = Point(x,y);
 }
 
