@@ -7,22 +7,22 @@
 #include "point.h"
 #include "bezier_curve.h"
 
-#include "sidebar.h"
-#include "renderer.h"
+#include "bezier_sidebar.h"
+#include "bezier_renderer.h"
 
 #include <bits/stdc++.h>
 using namespace std;
 
-class TestScreen : public QWidget {
+class BezierSketcher : public QWidget {
     Q_OBJECT
 
 public:
-    TestScreen(QWidget *parent = nullptr);
-    ~TestScreen();
+    BezierSketcher(QWidget *parent = nullptr);
+    ~BezierSketcher();
 
 private:
-    Sidebar* sidebar;
-    Renderer* renderer;
+    BezierSidebar* sidebar;
+    BezierRenderer* renderer;
 
     BezierCurve* curve;
 };

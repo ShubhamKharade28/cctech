@@ -73,14 +73,3 @@ public:
     StlShape computeTriangles() override {return {};};
     string getType() override { return "polyline"; }
 };
-
-class BezierCurve: public Shape{
-public:
-    Matrix controlPoints;
-    BezierCurve(Matrix& points);
-    Matrix computePoints() override { return controlPoints; }
-    void draw();
-
-    StlShape computeTriangles() override {return {};};
-    string getType() override { return "bezier curve"; }
-};

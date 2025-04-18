@@ -12,18 +12,28 @@ qt_add_executable(ProjectQT
     main.cpp
     mainwindow.cpp
     mainwindow.h
+    screen_selector_dialog.h 
+    screen_selector_dialog.cpp 
     
-    screens/scenecreator.h 
-    screens/scenecreator.cpp
+    # all screens
+    screens/scene_creator.h 
+    screens/scene_creator.cpp
+    screens/bezier_sketcher.h 
+    screens/bezier_sketcher.cpp
 
+    # widgets for scene creator
     widgets/shapes_sidebar.h
     widgets/shapes_sidebar.cpp 
-
     widgets/scene_renderer.h 
     widgets/scene_renderer.cpp 
-
     widgets/transformation_sidebar.h 
     widgets/transformation_sidebar.cpp
+
+    # widgets for bezier sketcher
+    widgets/bezier_sidebar.h 
+    widgets/bezier_sidebar.cpp
+    widgets/bezier_renderer.h
+    widgets/bezier_renderer.cpp
 
     includes/shape.h 
     includes/shapes.h 
@@ -32,6 +42,8 @@ qt_add_executable(ProjectQT
     includes/drawable-shape.h 
     includes/scene.h 
     includes/file-utils.h
+    includes/point.h
+    includes/bezier_curve.h
 
     src/shapes/cuboid.cpp 
     src/shapes/cylinder.cpp 
@@ -41,19 +53,10 @@ qt_add_executable(ProjectQT
     src/scene.cpp
     src/file-utils.cpp
     src/drawable-shape.cpp
+    src/bezier_curve.cpp
     
     # myopenglwidget.cpp
     # myopenglwidget.h
-
-    test/test-screen.h
-    test/test-screen.cpp
-    test/sidebar.h 
-    test/sidebar.cpp 
-    test/point.h
-    test/bezier_curve.h 
-    test/bezier_curve.cpp
-    test/renderer.h
-    test/renderer.cpp
 )
 
 include_directories(

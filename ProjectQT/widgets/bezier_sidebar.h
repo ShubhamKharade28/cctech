@@ -9,19 +9,19 @@
 
 #include "point.h"
 #include "bezier_curve.h"
-#include "renderer.h"
+#include "bezier_renderer.h"
 
 #include <bits/stdc++.h>
 using namespace std;
 
-class Sidebar: public QWidget {
+class BezierSidebar: public QWidget {
 Q_OBJECT
 public:
-    explicit Sidebar(QWidget* parent = nullptr, BezierCurve* curve = nullptr, Renderer* renderer = nullptr);
+    explicit BezierSidebar(QWidget* parent = nullptr, BezierCurve* curve = nullptr, BezierRenderer* renderer = nullptr);
 
 private:
     BezierCurve* curve;
-    Renderer* renderer;
+    BezierRenderer* renderer;
     QFormLayout* inputForm;
     QLineEdit* xField;
     QLineEdit* yField;

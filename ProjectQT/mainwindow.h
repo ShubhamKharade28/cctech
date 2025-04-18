@@ -8,4 +8,8 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private:
+    void showSceneCreatorScreen();
+    void showBezierCurveScreen();
 };

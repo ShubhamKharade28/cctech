@@ -16,6 +16,7 @@ void SceneRenderer::initializeGL() {
     initializeOpenGLFunctions();
     glClearColor(0.1f, 0.1f, 0.15f, 1.0f); // dark blue background
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE); // Enable back-face culling
 }
 
 void SceneRenderer::resizeGL(int w, int h) {
@@ -26,7 +27,7 @@ void SceneRenderer::resizeGL(int w, int h) {
     GLfloat aspect = GLfloat(w) / h;
     GLfloat fovy = 50.0f;
     GLfloat near = 0.1f;
-    GLfloat far = 100.0f;
+    GLfloat far = 500.0f;
     GLfloat top = tan(fovy * M_PI / 360.0f) * near;
     GLfloat bottom = -top;
     GLfloat right = top * aspect;
@@ -42,15 +43,16 @@ void SceneRenderer::paintGL() {
     glLoadIdentity();
 
     // Apply scaling (zoom)
-    glScalef(zoomFactor, zoomFactor, zoomFactor);
+    // glScalef(zoomFactor, zoomFactor, zoomFactor);
 
     // Apply rotation
     glRotatef(rotationX, 1.0f, 0.0f, 0.0f); // Rotate along the X-axis
     glRotatef(rotationY, 0.0f, 1.0f, 0.0f); // Rotate along the Y-axis
-    glRotatef(rotationZ, 0.0f, 0.0f, 1.0f); 
+    // glRotatef(rotationZ, 0.0f, 0.0f, 1.0f); 
 
     // Move camera back
-    glTranslatef(0, 0, -10 + zoomFactor);
+    // glTranslatef(0, 0, -10 + zoomFactor);
+    glTranslatef(0, 0, -10 + zoomFactor); // Move camera back
 
     for (auto& drawable : scene->getDrawableShapes()) {
         auto triangles = drawable.getTriangles();
@@ -86,11 +88,11 @@ void SceneRenderer::mouseMoveEvent(QMouseEvent* event) {
 
         if (event->buttons() & Qt::LeftButton) {
             // Rotate X and Y
-            rotationX += dy * 0.5f;
-            rotationY += dx * 0.5f;
+            rotationX -= dy * 0.5f;
+            rotationY -= dx * 0.5f;
         } else if (event->buttons() & Qt::RightButton) {
             // Rotate Z
-            rotationZ += dx * 0.5f;
+            rotationZ -= dx * 0.5f;
         }
 
         lastMousePos = event->pos();

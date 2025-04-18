@@ -1,24 +1,25 @@
-#include "renderer.h"
+#include "bezier_renderer.h"
+
 #include <QDebug>
 #include <QOpenGLFunctions>
 #include <QPOintF>
 
-Renderer::Renderer(QWidget *parent, BezierCurve* curve)
+BezierRenderer::BezierRenderer(QWidget *parent, BezierCurve* curve)
 : QOpenGLWidget(parent), curve(curve) {
-    qDebug() << "Renderer created";
+    qDebug() << "BezierRenderer created";
 }
 
-void Renderer::initializeGL()
+void BezierRenderer::initializeGL()
 {
-    qDebug() << "Renderer initialized";
+    qDebug() << "BezierRenderer initialized";
     initializeOpenGLFunctions();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 }
 
-void Renderer::resizeGL(int w, int h) {
-    qDebug() << "Renderer resized to" << w << "x" << h;
+void BezierRenderer::resizeGL(int w, int h) {
+    qDebug() << "BezierRenderer resized to" << w << "x" << h;
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -36,25 +37,17 @@ void Renderer::resizeGL(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Renderer::paintGL() {
+void BezierRenderer::paintGL() {
     qDebug() << "paintGL called";
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
     drawCurve();
     drawControlPoints();
-    
-    // draw triangle to test
-    // glBegin(GL_TRIANGLES);
-    // glColor3f(1.0f, 0.0f, 0.0f); // Red color
-    // glVertex2f(-0.5f, -0.5f); // Bottom left
-    // glVertex2f(0.5f, -0.5f);  // Bottom right
-    // glVertex2f(0.0f, 0.5f);   // Top
-    // glEnd();
 }
 
 // use curve->getCurvePoints(), and draw those points using openGL
-void Renderer::drawCurve() {
+void BezierRenderer::drawCurve() {
     cout << "Drawing curve" << endl;
     vector<Point> curvePoints = curve->getCurvePoints(true);
     glBegin(GL_LINE_STRIP);
@@ -66,7 +59,7 @@ void Renderer::drawCurve() {
     glEnd();
 }
 
-void Renderer::drawControlPoints() {
+void BezierRenderer::drawControlPoints() {
     vector<Point> controlPoints = curve->getControlPoints();
     glPointSize(10.0f); // Set point size
     glBegin(GL_POINTS);
@@ -77,17 +70,23 @@ void Renderer::drawControlPoints() {
     glEnd();
 }
 
-void Renderer::mousePressEvent(QMouseEvent *event) {
+void BezierRenderer::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         QPointF pos = event->pos();
         float x = (2.0f * pos.x() / width()) - 1.0f;
         float y = 1.0f - (2.0f * pos.y() / height());
         selectedPointIndex = curve->findControlPoint(x, y, 0.1); // 0.1f is the influence radius
         update();
+    } else if(event->button() == Qt::RightButton) {
+        QPointF pos = event->pos();
+        float x = (2.0f * pos.x() / width()) - 1.0f;
+        float y = 1.0f - (2.0f * pos.y() / height());
+        curve->addControlPoint(x,y);
+        update();
     }
 }
 
-void Renderer::mouseMoveEvent(QMouseEvent *event) {
+void BezierRenderer::mouseMoveEvent(QMouseEvent *event) {
     if (event->buttons() & Qt::LeftButton) {
         QPointF pos = event->pos();
         float x = (2.0f * pos.x() / width()) - 1.0f;

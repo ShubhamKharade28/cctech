@@ -1,4 +1,4 @@
-#include "sidebar.h"
+#include "bezier_sidebar.h"
 
 #include <QVBoxLayout>
 #include <QLabel>
@@ -7,7 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-Sidebar::Sidebar(QWidget* parent, BezierCurve* curve, Renderer* renderer): QWidget(parent), curve(curve), renderer(renderer) {
+BezierSidebar::BezierSidebar(QWidget* parent, BezierCurve* curve, BezierRenderer* renderer): QWidget(parent), curve(curve), renderer(renderer) {
     auto* layout = new QVBoxLayout(this);
 
     auto* label1 = new QLabel("Add Control Points", this);
@@ -23,28 +23,23 @@ Sidebar::Sidebar(QWidget* parent, BezierCurve* curve, Renderer* renderer): QWidg
     // Button to add control points
     addPointButton = new QPushButton("Add Point");
     connect(addPointButton, &QPushButton::clicked, 
-        this, &Sidebar::onAddPointButtonClicked);
+        this, &BezierSidebar::onAddPointButtonClicked);
 
     auto* label2 = new QLabel("Control Points", this);
 
     pointListWidget = new QListWidget(this);
-    // pointListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    // pointListWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    // pointListWidget->setAlternatingRowColors(true);
-    // pointListWidget->setSortingEnabled(true);
-    // pointListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
     // delete point button
     deletePointButton = new QPushButton("Delete Point", this);
     connect(deletePointButton, &QPushButton::clicked, 
-        this, &Sidebar::onDeletePointButtonClicked);
+        this, &BezierSidebar::onDeletePointButtonClicked);
 
     // clear points button 
     clearPointsButton = new QPushButton("Clear Points", this);
     connect(clearPointsButton, &QPushButton::clicked, 
-        this, &Sidebar::onClearPointsButtonClicked);
+        this, &BezierSidebar::onClearPointsButtonClicked);
     
-    // Add inputForm and addPointButton to sidebar
+    // Add inputForm and addPointButton to BezierSidebar
     layout->addWidget(label1);
     layout->addLayout(inputForm);
     layout->addWidget(addPointButton);
@@ -56,7 +51,7 @@ Sidebar::Sidebar(QWidget* parent, BezierCurve* curve, Renderer* renderer): QWidg
     setLayout(layout);
 }
 
-void Sidebar::onAddPointButtonClicked() {
+void BezierSidebar::onAddPointButtonClicked() {
     bool xOk, yOk;
     double x = xField->text().toDouble(&xOk);
     double y = yField->text().toDouble(&yOk);
@@ -75,7 +70,7 @@ void Sidebar::onAddPointButtonClicked() {
     }
 }
 
-void Sidebar::onDeletePointButtonClicked() {
+void BezierSidebar::onDeletePointButtonClicked() {
     QListWidgetItem* item = pointListWidget->currentItem();
 
     if (item) {
@@ -87,37 +82,37 @@ void Sidebar::onDeletePointButtonClicked() {
     }
 }
 
-void Sidebar::onClearPointsButtonClicked() {
+void BezierSidebar::onClearPointsButtonClicked() {
     clearControlPoints();
     pointListWidget->clear();
 }
 
-void Sidebar::addControlPoint(Point p) {
+void BezierSidebar::addControlPoint(Point p) {
     curve->addControlPoint(p);
     renderer->update();
 }
 
-void Sidebar::modifyControlPoint(int index, Point p) {
+void BezierSidebar::modifyControlPoint(int index, Point p) {
     curve->moveControlPoint(index, p.x, p.y);
     renderer->update();
 }
 
-void Sidebar::removeControlPoint(int index) {
+void BezierSidebar::removeControlPoint(int index) {
     curve->removeControlPoint(index);
     renderer->update();
 }
 
-void Sidebar::clearControlPoints() {
+void BezierSidebar::clearControlPoints() {
     curve->clearControlPoints();
     renderer->update();
 }
 
-void Sidebar::setResolution(int resolution) {
+void BezierSidebar::setResolution(int resolution) {
     curve->setResolution(resolution);
     renderer->update();
 }
 
-void Sidebar::updateCurvePoints() {
+void BezierSidebar::updateCurvePoints() {
     curve->getCurvePoints(true);
     renderer->update();
 }

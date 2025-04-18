@@ -5,11 +5,11 @@
 
 #include "bezier_curve.h"
 
-class Renderer : public QOpenGLWidget, protected QOpenGLFunctions {
+class BezierRenderer : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
  
 public:
-    explicit Renderer(QWidget *parent = nullptr, BezierCurve *curve = nullptr);
+    explicit BezierRenderer(QWidget *parent = nullptr, BezierCurve *curve = nullptr);
  
 protected:
     void initializeGL() override;

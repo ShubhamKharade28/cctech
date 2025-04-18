@@ -2,22 +2,45 @@
 
 #include <QWidget>
 
-// #include "screens/scenecreator.h"
+#include "scene_creator.h"
+#include "bezier_sketcher.h"
 
-#include "test-screen.h"
+#include "screen_selector_dialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-    // this->resize(1000, 700);
-    // setWindowTitle("Project 3D");
-
-    // SceneCreator *sceneCreator = new SceneCreator(this);
-    // setCentralWidget(sceneCreator);
-
-    this->resize(1000, 700);
-    setWindowTitle("Test - Bezier Curve");
-
-    TestScreen* testScreen = new TestScreen(this);
-    setCentralWidget(testScreen);
+    ScreenSelectorDialog selectorDialog(this);
+    if(selectorDialog.exec() == QDialog::Accepted) {
+        // 0 for SceneCreator, 1 for BezierCurve
+        int screenIdx = selectorDialog.getSelectedScreen();
+        switch(screenIdx) {
+            case 0:
+                showSceneCreatorScreen();
+                break;
+            case 1:
+                showBezierCurveScreen();
+                break;
+            default:
+                setWindowTitle("Invalid Screen");
+                break;
+        }
+    } else {
+        close();
+    }
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::showSceneCreatorScreen() {
+    this->resize(1000, 700);
+    setWindowTitle("Project 3D");
+
+    SceneCreator *sceneCreator = new SceneCreator(this);
+    setCentralWidget(sceneCreator);
+}
+void MainWindow::showBezierCurveScreen() {
+    this->resize(1000, 700);
+    setWindowTitle("Test - Bezier Curve");
+
+    BezierSketcher *bezierSketcher = new BezierSketcher(this);
+    setCentralWidget(bezierSketcher);
+}

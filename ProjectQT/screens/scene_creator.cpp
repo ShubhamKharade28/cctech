@@ -1,4 +1,4 @@
-#include "scenecreator.h"
+#include "scene_creator.h"
 
 #include <QHBoxLayout>
 

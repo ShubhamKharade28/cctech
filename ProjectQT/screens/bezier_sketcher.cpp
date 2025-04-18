@@ -1,4 +1,4 @@
-#include "test-screen.h"
+#include "bezier_sketcher.h"
 
 #include <QWidget>
 #include <QHBoxLayout>
@@ -6,14 +6,14 @@
 #include <QFormLayout>
 #include <QLineEdit>
 
-TestScreen::TestScreen(QWidget *parent) : QWidget(parent) {
+BezierSketcher::BezierSketcher(QWidget *parent) : QWidget(parent) {
     auto* layout = new QHBoxLayout(this);
 
     int numOfPoints = 20;
     curve = new BezierCurve(numOfPoints);
 
-    renderer = new Renderer(this, curve);
-    sidebar = new Sidebar(this, curve, renderer);
+    renderer = new BezierRenderer(this, curve);
+    sidebar = new BezierSidebar(this, curve, renderer);
 
     // Add all widgets to layout
     layout->addWidget(sidebar, 3);
@@ -22,4 +22,4 @@ TestScreen::TestScreen(QWidget *parent) : QWidget(parent) {
     setLayout(layout);
 }
 
-TestScreen::~TestScreen() {}
+BezierSketcher::~BezierSketcher() {}
