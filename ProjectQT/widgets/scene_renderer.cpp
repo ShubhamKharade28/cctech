@@ -2,21 +2,23 @@
 
 #include "scene.h"
 #include "drawable-shape.h"
+#include "point.h"
 
 #include <QOpenGLFunctions>
 #include <QVBoxLayout>
 
 
 SceneRenderer::SceneRenderer(QWidget* parent=nullptr, Scene* scene=nullptr)
-    : QOpenGLWidget(parent), scene(scene),
-    isDragging(false), zoomFactor(1.0f), rotationX(0.0f), rotationY(0.0f) {
+    : QOpenGLWidget(parent), scene(scene) {
 }
 
 void SceneRenderer::initializeGL() {
     initializeOpenGLFunctions();
     glClearColor(0.1f, 0.1f, 0.15f, 1.0f); // dark blue background
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE); // Enable back-face culling
+    glEnable(GL_CULL_FACE); 
+
+    drawAxis();
 }
 
 void SceneRenderer::resizeGL(int w, int h) {
@@ -40,19 +42,11 @@ void SceneRenderer::resizeGL(int w, int h) {
 
 void SceneRenderer::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    glLoadIdentity(); // resets matrix to default
 
-    // Apply scaling (zoom)
-    // glScalef(zoomFactor, zoomFactor, zoomFactor);
-
-    // Apply rotation
-    glRotatef(rotationX, 1.0f, 0.0f, 0.0f); // Rotate along the X-axis
-    glRotatef(rotationY, 0.0f, 1.0f, 0.0f); // Rotate along the Y-axis
-    // glRotatef(rotationZ, 0.0f, 0.0f, 1.0f); 
-
-    // Move camera back
-    // glTranslatef(0, 0, -10 + zoomFactor);
-    glTranslatef(0, 0, -10 + zoomFactor); // Move camera back
+    // camera settings
+    
+    glTranslatef(0, 0, -10);
 
     for (auto& drawable : scene->getDrawableShapes()) {
         auto triangles = drawable.getTriangles();
@@ -72,50 +66,61 @@ void SceneRenderer::paintGL() {
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // Reset to normal fill mode
     }
+
+    drawAxis();
 }
 
+
 void SceneRenderer::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton) {
-        isDragging = true;
-        lastMousePos = event->pos(); // Capture the current position for rotation
-    }
+    
 }
 
 void SceneRenderer::mouseMoveEvent(QMouseEvent* event) {
-    if (isDragging) {
-        int dx = event->x() - lastMousePos.x();
-        int dy = event->y() - lastMousePos.y();
-
-        if (event->buttons() & Qt::LeftButton) {
-            // Rotate X and Y
-            rotationX -= dy * 0.5f;
-            rotationY -= dx * 0.5f;
-        } else if (event->buttons() & Qt::RightButton) {
-            // Rotate Z
-            rotationZ -= dx * 0.5f;
-        }
-
-        lastMousePos = event->pos();
-        update();
-    }
+    
+    update();
 }
 
 void SceneRenderer::wheelEvent(QWheelEvent* event) {
-    // int delta = event->angleDelta().y();
+    
 
-    // if (delta > 0) {
-    //     zoomFactor *= 1.1f; // Zoom in
-    // } else {
-    //     zoomFactor /= 1.1f; // Zoom out
-    // }
-    zoomFactor += event->angleDelta().y() / 600.0f;
-
-    update(); // Request OpenGL widget to re-render
+    update();
 }
 
 void SceneRenderer::mouseReleaseEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton) {
-        isDragging = false;
-    }
+    
 }
 
+class Color {
+    public:
+    float r,g,b;
+    Color(float r, float g, float b): r(r), g(g), b(b) {};
+};
+
+void SceneRenderer::drawAxis() {
+    // draw axis using 3 lines
+    double start = -10, end = 10;
+    vector<pair<Point3d, Point3d>> lines = {
+        {Point3d(start, 0, 0), Point3d(end, 0, 0)}, 
+        {Point3d(0, start, 0), Point3d(0, end, 0)},
+        {Point3d(0, 0, start), Point3d(0, 0, end)}
+    };
+
+    vector<Color> colors = {
+        Color(0, 1, 0), // green
+        Color(1, 0.5, 0), // yellow
+        Color(1, 0, 1)
+    };
+
+    glBegin(GL_LINES);
+    for(int i=0; i<3; i++){
+        Color color = colors[i];
+        glColor3f(color.r, color.g, color.b);
+
+        auto line = lines[i];
+        auto p1 = line.first, p2 = line.second;
+        
+        glVertex3f(p1.x, p1.y, p1.z);
+        glVertex3f(p2.x, p2.y, p2.z);
+    }
+    glEnd();
+}

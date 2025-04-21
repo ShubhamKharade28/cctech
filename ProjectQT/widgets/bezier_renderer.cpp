@@ -23,7 +23,6 @@ void BezierRenderer::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // glTranslatef(0.0f, 0.0f, -1.0f); // Move the camera back
 
     // Set up orthographic projection for 2D rendering
     if (w > h) {

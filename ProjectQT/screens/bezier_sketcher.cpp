@@ -9,7 +9,7 @@
 BezierSketcher::BezierSketcher(QWidget *parent) : QWidget(parent) {
     auto* layout = new QHBoxLayout(this);
 
-    int numOfPoints = 20;
+    const int numOfPoints = 20;
     curve = new BezierCurve(numOfPoints);
 
     renderer = new BezierRenderer(this, curve);

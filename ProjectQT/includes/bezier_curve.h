@@ -28,15 +28,7 @@ class BezierCurve {
     vector<Point> getCurvePoints(bool recalculate = false);
     vector<Point> getControlPoints();
 
-    int findControlPoint(double x, double y, double influenceRadius = 0.5){
-        // fint the control point closes to (x,y) and within influenceRadius
-        for(int i = 0; i < controlPoints.size(); i++){
-            if (sqrt(pow(controlPoints[i].x - x, 2) + pow(controlPoints[i].y - y, 2)) <= influenceRadius){
-                return i;
-            }
-        }
-        return -1; // not found
-    }
+    int findControlPoint(double x, double y, double influenceRadius);
 
 private:
     vector<Point> calculateCurvePoints();
