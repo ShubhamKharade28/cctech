@@ -19,4 +19,5 @@ public:
 
     string getName();
     vector<DrawableShape>& getDrawableShapes();
+    DrawableShape* getShapeById(int id);
 };

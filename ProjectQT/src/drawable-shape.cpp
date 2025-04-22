@@ -9,6 +9,10 @@ void DrawableShape::setPosition(Vector p) { position = p; }
 void DrawableShape::setRotation(Vector r) { rotation = r; }
 void DrawableShape::setScale(double s) { scale = s; }
 
+vector<double> DrawableShape::getPosition() { return position; }
+vector<double> DrawableShape::getRotation() { return rotation; }
+double DrawableShape::getScale() { return scale; }
+
 void DrawableShape::setColor(Vector c) { color = c; }
 
 string DrawableShape::getName() { return name; }

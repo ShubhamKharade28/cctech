@@ -196,7 +196,7 @@ void SceneRenderer::mouseMoveEvent(QMouseEvent* event) {
     } else if (currentButton == "right") {
         qDebug() << "Right button pressed";
         rotationX += delta.y();
-        rotationY += delta.x();
+        rotationY -= delta.x();
     }
 
     lastMousePosition = event->pos();

@@ -28,6 +28,11 @@ public:
     void setScale(double scale);
     void setColor(Vector color);
 
+    vector<double> getPosition();
+    vector<double> getRotation();
+    double getScale();
+    
+
     string getName();
     int getId();
     Vector getColor();

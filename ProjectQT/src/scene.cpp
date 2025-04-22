@@ -57,3 +57,14 @@ shared_ptr<Shape> chooseShape(int i) {
 
     return shapeFactory.count(i) ? shapeFactory[i]() : nullptr;
 }
+
+DrawableShape* Scene::getShapeById(int id) {
+    auto it = find_if(shapes.begin(), shapes.end(), [id](DrawableShape& shape) {
+        return shape.getId() == id;
+    });
+
+    if (it != shapes.end()) 
+        return &(*it);
+    else 
+        return nullptr;
+}

@@ -16,5 +16,16 @@ SceneCreator::SceneCreator(QWidget *parent): QWidget(parent) {
     layout->addWidget(transformationBar, 2);
 
     connect(shapesBar, &ShapesSideBar::sceneUpdated, sceneRenderer, QOverload<>::of(&QOpenGLWidget::update));
+    connect(transformationBar, &TransformationSideBar::transformationUpdated, sceneRenderer, QOverload<>::of(&QOpenGLWidget::update));
+
+    connect(shapesBar, &ShapesSideBar::shapeSelected, this, &SceneCreator::onShapeSelected);
+    connect(shapesBar, &ShapesSideBar::shapeDeleted, this, &SceneCreator::onShapeDeleted);
 }
 
+void SceneCreator::onShapeSelected(int shapeId) {
+    transformationBar->setCurrentShapeId(shapeId);
+}
+
+void SceneCreator::onShapeDeleted(int shapeId) {
+    transformationBar->setCurrentShapeId(-1);
+}

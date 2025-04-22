@@ -6,7 +6,9 @@
 #include "shape.h"
 #include "shapes.h"
 
-ShapesSideBar::ShapesSideBar(QWidget* parent, Scene *scene) : QWidget(parent), scene(scene) {
+ShapesSideBar::ShapesSideBar(QWidget* parent, Scene *scene) : 
+    QWidget(parent), scene(scene)
+{
     auto* layout = new QVBoxLayout(this);
 
     shapeSelector = new QComboBox(this);
@@ -33,29 +35,33 @@ ShapesSideBar::ShapesSideBar(QWidget* parent, Scene *scene) : QWidget(parent), s
             this, &ShapesSideBar::onAddShapeClicked);
 
     connect(deleteShapeButton, &QPushButton::clicked, this, &ShapesSideBar::onDeleteShapeClicked);
+    connect(shapeList, &QListWidget::itemClicked, this, &ShapesSideBar::onShapeItemSelected);
+}
+
+void ShapesSideBar::onShapeItemSelected(QListWidgetItem* item) {
+    QString shapeName = item->text();
+    int shapeId = shapeName.split(" ").last().toInt(); // Assuming shape name ends with ID
+
+    emit shapeSelected(shapeId);
 }
 
 void ShapesSideBar::onDeleteShapeClicked() {
-    // Get the selected shape from the list
     QListWidgetItem* selectedItem = shapeList->currentItem();
 
     if (!selectedItem) {
-    QMessageBox::warning(this, "No Shape Selected", "Please select a shape to delete.");
-    return;
+        QMessageBox::warning(this, "No Shape Selected", "Please select a shape to delete.");
+        return;
     }
 
-    // Extract shape name and ID from the selected item
     QString shapeName = selectedItem->text();
-    int shapeId = shapeName.split(" ").last().toInt(); // Assuming shape name ends with ID
+    int shapeId = shapeName.split(" ").last().toInt();
 
-    // Remove the shape from the scene using the removeShapeById method
     scene->removeShapeById(shapeId);
-
-    // Remove the shape from the shape list
     delete selectedItem;
 
     // Emit signal to update the scene
     emit sceneUpdated();
+    emit shapeDeleted(shapeId);
 }
 
 void ShapesSideBar::onAddShapeClicked() {

@@ -11,9 +11,14 @@ class SceneCreator : public QWidget {
     Q_OBJECT
 
     Scene *scene;
+
     ShapesSideBar *shapesBar;
     SceneRenderer *sceneRenderer;
     TransformationSideBar *transformationBar;
 public:
     explicit SceneCreator(QWidget *parent = nullptr);
+
+public slots:
+    void onShapeSelected(int shapeId);
+    void onShapeDeleted(int shapeId);
 };

@@ -19,9 +19,11 @@ private slots:
     void updateDimensionInputs(const QString& shapeType);
     void onAddShapeClicked();
     void onDeleteShapeClicked();
+    void onShapeItemSelected(QListWidgetItem* item);
 
 private:
     Scene* scene;
+
     QComboBox* shapeSelector;
     QFormLayout* dimensionForm;
     QPushButton* addShapeButton;
@@ -31,4 +33,6 @@ private:
 
 signals:
     void sceneUpdated();
+    void shapeSelected(int shapeId);
+    void shapeDeleted(int shapeId);
 };
