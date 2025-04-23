@@ -4,6 +4,8 @@
 #include <QFormLayout>
 #include <QDoubleSpinBox>
 
+#include <QDebug>
+
 TransformationSideBar::TransformationSideBar(QWidget* parent, Scene* scene) : QWidget(parent), scene(scene) {
     auto* layout = new QVBoxLayout(this);
 
@@ -33,15 +35,15 @@ TransformationSideBar::TransformationSideBar(QWidget* parent, Scene* scene) : QW
     // Set range for scale spin box
     scale->setRange(-10.0, 10.0);
 
-    formLayout->addRow("Position X:", new QDoubleSpinBox());
-    formLayout->addRow("Position Y:", new QDoubleSpinBox());
-    formLayout->addRow("Position Z:", new QDoubleSpinBox());
+    formLayout->addRow("Position X:", xPosition);
+    formLayout->addRow("Position Y:", yPosition);
+    formLayout->addRow("Position Z:", zPosition);
 
-    formLayout->addRow("Rotation X:", new QDoubleSpinBox());
-    formLayout->addRow("Rotation Y:", new QDoubleSpinBox());
-    formLayout->addRow("Rotation Z:", new QDoubleSpinBox());
+    formLayout->addRow("Rotation X:", xRotation);
+    formLayout->addRow("Rotation Y:", yRotation);
+    formLayout->addRow("Rotation Z:", zRotation);
 
-    formLayout->addRow("Scale:", new QDoubleSpinBox());
+    formLayout->addRow("Scale:", scale);
 
     transformBox->setLayout(formLayout);
     layout->addWidget(transformBox);
@@ -60,6 +62,10 @@ void TransformationSideBar::onApplyButtonClicked() {
 
     DrawableShape* shape = scene->getShapeById(currentShapeId);
     if (shape) {
+        double xRotationValue = xRotation->value();
+        double yRotationValue = yRotation->value();
+        double zRotationValue = zRotation->value();
+
         shape->setPosition({xPosition->value(), yPosition->value(), zPosition->value()});
         shape->setRotation({xRotation->value(), yRotation->value(), zRotation->value()});
         shape->setScale(scale->value());
@@ -83,12 +89,16 @@ void TransformationSideBar::resetTransformations() {
 void TransformationSideBar::getShapeTransformations() {
     if (currentShapeId == -1) return;
 
+    qDebug() << "Getting transformations for shape ID:" << currentShapeId;
+
     DrawableShape* shape = scene->getShapeById(currentShapeId);
     if (shape) {
         using namespace std;
         vector<double> position = shape->getPosition();
         vector<double> rotation = shape->getRotation(); 
         double scaleValue = shape->getScale();
+
+        // qDebug() << "Rotation: " << rotation[0] << rotation[1] << rotation[2];
 
         xPosition->setValue(position[0]);
         yPosition->setValue(position[1]);  
@@ -100,12 +110,13 @@ void TransformationSideBar::getShapeTransformations() {
 
         scale->setValue(scaleValue);
     }
+    update();
 }
 
 void TransformationSideBar::setCurrentShapeId(int id) {
     currentShapeId = id;
     if (id == -1) {
-        currentShapeLabel->setText("Current Shape ID: None");
+        currentShapeLabel->setText("Current Shape ID: None!");
         resetTransformations();
     } else {
         currentShapeLabel->setText("Current Shape ID: " + QString::number(id));

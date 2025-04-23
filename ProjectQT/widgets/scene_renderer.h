@@ -10,6 +10,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#include "drawable-shape.h"
+
 class Scene;
 
 class SceneRenderer : public QOpenGLWidget, protected QOpenGLFunctions {
@@ -50,6 +52,8 @@ private:
     float rotationY = 0.0f;
 
     string currentButton = "left";
+
+    QMatrix4x4 getViewMatrix();
 
     // float cameraDistance; // distance from origin
     // float cameraAzimuth; // camera angle around y-plane

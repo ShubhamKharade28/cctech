@@ -1,105 +1,52 @@
 #include "transformations.h"
 
-Matrix Transformations::translate(Matrix& X, double dx, double dy, double dz) {
-    Matrix points = X;
-    for (auto &v : points) {
-        v[0] += dx;
-        v[1] += dy;
-        v[2] += dz;
-    }
-    return points;
+QMatrix4x4 Transformations::getTransformationMatrix(vector<double> translation, vector<double> rotation, double scale) {
+    QMatrix4x4 transform;
+    transform.setToIdentity();
+
+    transform.scale(scale);
+
+    // transform.translate(-center[0], -center[1], -center[2]); // Translate to center
+    transform.rotate(rotation[0], 1.0f, 0.0f, 0.0f);
+    transform.rotate(rotation[1], 0.0f, 1.0f, 0.0f);
+    transform.rotate(rotation[2], 0.0f, 0.0f, 1.0f);
+    // transform.translate(center[0], center[1], center[2]); // Translate back to original position
+
+    transform.translate(translation[0], translation[1], translation[2]); // Apply translation
+    return transform;
 }
 
-Matrix Transformations::rotate(Matrix& X, double angle, char axis, vector<double> pivot) {
-    Matrix points = X;
-    double rad = angle * M_PI / 180.0;
-    for (auto &v : points) {
-        double x = v[0], y = v[1], z = v[2];
-        if (axis == 'x') {
-            v[1] = y * cos(rad) - z * sin(rad);
-            v[2] = y * sin(rad) + z * cos(rad);
-        } else if (axis == 'y') {
-            v[0] = x * cos(rad) + z * sin(rad);
-            v[2] = -x * sin(rad) + z * cos(rad);
-        } else if (axis == 'z') {
-            v[0] = x * cos(rad) - y * sin(rad);
-            v[1] = x * sin(rad) + y * cos(rad);
+Matrix Transformations::applyTransformations(Matrix& X, vector<double> translation, vector<double> rotation, double scale) {
+    QMatrix4x4 transform = getTransformationMatrix(translation, rotation, scale);
+    Matrix X_transformed(X.size(), vector<double>(X[0].size(), 0));
+    for(int i = 0; i < X.size(); i++) {
+        for(int j = 0; j < X[0].size(); j++) {
+            QVector4D point(X[i][j], X[i][j], X[i][j], 1.0);
+            point = transform * point;
+            X_transformed[i][j] = point.x();
         }
     }
-    return points;
+    return X_transformed;
 }
 
-Matrix Transformations::scale(Matrix& X, double scaleFactor, vector<double> pivot) {
-    /* TODO: if pivot is not origin, 
-        implement additional steps like,
-        translating first to origin, then after scaling, retranslate it to its position 
-    */
-    Matrix points = X;
-    for (auto &v : points) {
-        v[0] *= scaleFactor;
-        v[1] *= scaleFactor;
-        v[2] *= scaleFactor;
+StlShape Transformations::applyTransformations(StlShape& X, vector<double> translation, vector<double> rotation, double scale) {
+    QMatrix4x4 transform = getTransformationMatrix(translation, rotation, scale);
+    StlShape X_transformed;
+    for (auto& tri : X) {
+        Triangle transformedTri;
+        QVector4D v1(tri.vertex1[0], tri.vertex1[1], tri.vertex1[2], 1.0);
+        QVector4D v2(tri.vertex2[0], tri.vertex2[1], tri.vertex2[2], 1.0);
+        QVector4D v3(tri.vertex3[0], tri.vertex3[1], tri.vertex3[2], 1.0);
+
+        v1 = transform * v1;
+        v2 = transform * v2;
+        v3 = transform * v3;
+
+        transformedTri.vertex1 = {v1.x(), v1.y(), v1.z()};
+        transformedTri.vertex2 = {v2.x(), v2.y(), v2.z()};
+        transformedTri.vertex3 = {v3.x(), v3.y(), v3.z()};
+
+        X_transformed.push_back(transformedTri);
     }
-    return points;
-}
-
-Triangle Transformations::translateTriangle(const Triangle& tri, Vector& t) {
-    Matrix points = {
-        {tri.vertex1[0], tri.vertex1[1], tri.vertex1[2]},
-        {tri.vertex2[0], tri.vertex2[1], tri.vertex2[2]},
-        {tri.vertex3[0], tri.vertex3[1], tri.vertex3[2]}
-    };
-
-    Matrix result = translate(points, t[0], t[1], t[2]);
-    return Triangle(result[0], result[1], result[2]);
-}
-
-Triangle Transformations::scaleTriangle(const Triangle& tri, double scaleFactor, const Vector& pivot) {
-    Matrix points = {
-        {tri.vertex1[0], tri.vertex1[1], tri.vertex1[2]},
-        {tri.vertex2[0], tri.vertex2[1], tri.vertex2[2]},
-        {tri.vertex3[0], tri.vertex3[1], tri.vertex3[2]}
-    };
-
-    Matrix result = scale(points, scaleFactor, pivot);
-    return Triangle(result[0], result[1], result[2]); 
-}
-
-Triangle Transformations::rotateTriangle(const Triangle& tri, const Vector& rotations, const Vector& pivot) {
-    Matrix points = {
-        {tri.vertex1[0], tri.vertex1[1], tri.vertex1[2]},
-        {tri.vertex2[0], tri.vertex2[1], tri.vertex2[2]},
-        {tri.vertex3[0], tri.vertex3[1], tri.vertex3[2]}
-    };
-
-    Matrix result = points;
-    if (rotations[0] != 0) result = rotate(result, rotations[0], 'x', pivot);
-    if (rotations[1] != 0) result = rotate(result, rotations[1], 'y', pivot);
-    if (rotations[2] != 0) result = rotate(result, rotations[2], 'z', pivot);
-
-    return Triangle(result[0], result[1], result[2]);
-}
-
-StlShape Transformations::translateShape(const StlShape& shape, Vector& t) {
-    StlShape result;
-    for (const auto& tri : shape) {
-        result.push_back(translateTriangle(tri, t));
-    }
-    return result;
-}
-
-StlShape Transformations::scaleShape(const StlShape& shape, double scaleFactor, const Vector& pivot) {
-    StlShape result;
-    for (const auto& tri : shape) {
-        result.push_back(scaleTriangle(tri, scaleFactor, pivot));
-    }
-    return result;
-}
-
-StlShape Transformations::rotateShape(const StlShape& shape, const Vector& rotations, const Vector& pivot) {
-    StlShape result;
-    for (const auto& tri : shape) {
-        result.push_back(rotateTriangle(tri, rotations, pivot));
-    }
-    return result;
+    return X_transformed;
 }

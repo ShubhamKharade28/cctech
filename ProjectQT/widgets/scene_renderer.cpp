@@ -1,7 +1,6 @@
 #include "scene_renderer.h"
 
 #include "scene.h"
-#include "drawable-shape.h"
 #include "point.h"
 
 #include <QOpenGLFunctions>
@@ -74,6 +73,16 @@ void SceneRenderer::paintGL() {
     glLoadIdentity(); // resets matrix to default
 
     // model view transformation
+    
+    QMatrix4x4 modelView = getViewMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(modelView.constData());
+
+    drawAxis();
+    drawShapes();
+}
+
+QMatrix4x4 SceneRenderer::getViewMatrix(){
     QMatrix4x4 modelView;
     modelView.setToIdentity();
 
@@ -89,18 +98,13 @@ void SceneRenderer::paintGL() {
     // apply translation
     modelView.translate(posX, posY, 0);
 
-    // TODO: other transformations later to be done
-    
-    glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(modelView.constData());
-
-    drawAxis();
-    drawShapes();
+    return modelView;
 }
 
 void SceneRenderer::drawShapes() {
+    // draw filled triangles (faces)
     glColor3f(0.0f, 1.0f, 0.5f);
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Set fill mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (auto& drawable : scene->getDrawableShapes()) {
         auto triangles = drawable.getTriangles();
 
@@ -117,12 +121,12 @@ void SceneRenderer::drawShapes() {
     }
 
     // Draw edges of the triangles
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Set wireframe mode
-    glColor3f(1.0f, 0.5f, 0.0f); // Set color for the edges (red)
-
+    glColor3f(1.0f, 0.0f, 0.0f); // Set color for the edges (red)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Set polygon mode to line
     for (auto& drawable : scene->getDrawableShapes()) {
         auto triangles = drawable.getTriangles();
 
+        glLineWidth(3.0f);
         glBegin(GL_LINES);
         for (const auto& tri : triangles) {
             Vector v1 = tri.vertex1;
@@ -161,7 +165,7 @@ void SceneRenderer::drawAxis() {
     };
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glLineWidth(2.0f); // Set line width
+    glLineWidth(0.5f); // Set line width
     glBegin(GL_LINES);
     for (int i = 0; i < 3; ++i) {
         QVector3D color = colors[i];
@@ -196,7 +200,7 @@ void SceneRenderer::mouseMoveEvent(QMouseEvent* event) {
     } else if (currentButton == "right") {
         qDebug() << "Right button pressed";
         rotationX += delta.y();
-        rotationY -= delta.x();
+        rotationY += delta.x();
     }
 
     lastMousePosition = event->pos();

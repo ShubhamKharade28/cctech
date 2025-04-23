@@ -22,6 +22,12 @@ public:
 
     Triangle(Vector normal, Vector vertex1, Vector vertex2, Vector vertex3);
     Triangle(Vector v1, Vector v2, Vector v3);
+    Triangle() {
+        normal = {0, 0, 0};
+        vertex1 = {0, 0, 0};
+        vertex2 = {0, 0, 0};
+        vertex3 = {0, 0, 0};
+    }
 
     Vector getNormal();
 
