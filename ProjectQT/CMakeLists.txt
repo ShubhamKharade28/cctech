@@ -57,6 +57,14 @@ qt_add_executable(ProjectQT
     
     # myopenglwidget.cpp
     # myopenglwidget.h
+
+    sketcher/sketcher_primitives.h 
+    sketcher/sketcher.h 
+    sketcher/sketcher.cpp 
+    sketcher/sketcher_screen.cpp
+    sketcher/sketcher_screen.h
+    sketcher/sketch_renderer.h 
+    sketcher/sketch_renderer.cpp
 )
 
 include_directories(
@@ -66,6 +74,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/screens
     ${PROJECT_SOURCE_DIR}/includes
     ${PROJECT_SOURCE_DIR}/test
+    ${PROJECT_SOURCE_DIR}/sketcher
 )
  
 # ✅ Link Qt modules and system OpenGL (opengl32 for Windows)

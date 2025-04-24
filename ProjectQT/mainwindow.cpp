@@ -4,6 +4,7 @@
 
 #include "scene_creator.h"
 #include "bezier_sketcher.h"
+#include "sketcher_screen.h"
 
 #include "screen_selector_dialog.h"
 
@@ -18,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
                 break;
             case 1:
                 showBezierCurveScreen();
+                break;
+            case 2:
+                showSketcherScreen();
                 break;
             default:
                 setWindowTitle("Invalid Screen");
@@ -43,4 +47,12 @@ void MainWindow::showBezierCurveScreen() {
 
     BezierSketcher *bezierSketcher = new BezierSketcher(this);
     setCentralWidget(bezierSketcher);
+}
+
+void MainWindow::showSketcherScreen() {
+    this->resize(1000, 700);
+    setWindowTitle("Test - Sketcher");
+
+    SketcherScreen *sketcherScreen = new SketcherScreen(this);
+    setCentralWidget(sketcherScreen);
 }

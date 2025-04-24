@@ -12,4 +12,5 @@ public:
 private:
     void showSceneCreatorScreen();
     void showBezierCurveScreen();
+    void showSketcherScreen();
 };

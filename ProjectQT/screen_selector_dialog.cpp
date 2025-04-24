@@ -32,3 +32,8 @@ void ScreenSelectorDialog::selectBezierSketcher() {
     selectedScreen = 1;
     accept();
 }
+
+void ScreenSelectorDialog::selectSketcher() {
+    selectedScreen = 2;
+    accept();
+}

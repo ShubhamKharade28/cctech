@@ -4,11 +4,9 @@
 using namespace std;
 
 class Vertex {
-    int id;
     double x, y, z;
 public:
-    Vertex(int id, double x, double y, double z) : id(id), x(x), y(y), z(z) {}
-    int getId() const { return id; }
+    Vertex(double x, double y, double z) : x(x), y(y), z(z) {}
     double getX() const { return x; }
     double getY() const { return y; }
     double getZ() const { return z; }
@@ -18,12 +16,10 @@ public:
 };
 
 class Edge {
-    int id;
     Vertex* start;
     Vertex* end;
 public:
-    Edge(int id, Vertex* start, Vertex* end) : id(id), start(start), end(end) {}
-    int getId() const { return id; }
+    Edge(Vertex* start, Vertex* end) : start(start), end(end) {}
     Vertex* getStart() const { return start; }
     Vertex* getEnd() const { return end; }
     void setStart(Vertex* start) { this->start = start; }
@@ -31,21 +27,19 @@ public:
 };
 
 class Face {
-    int id;
     vector<Edge*> edges;
     public:
-    Face(int id) : id(id) {}
-    int getId() const { return id; }
+    Face(){}
+    Face(vector<Edge*> edges) : edges(edges) {}
     void addEdge(Edge* edge) { edges.push_back(edge); }
     vector<Edge*> getEdges() const { return edges; }
 };
 
 class Solid {
-    int id;
     vector<Face*> faces;
 public:
-    Solid(int id) : id(id) {}
-    int getId() const { return id; }
+    Solid() {}
+    Solid(vector<Face*> faces) : faces(faces) {}
     void addFace(Face* face) { faces.push_back(face); }
     vector<Face*> getFaces() const { return faces; }
 };
