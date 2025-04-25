@@ -44,4 +44,9 @@ public:
     void addSolid(vector<Face*> faces);
     void removeSolid(int solidIdx);
     void removeSolid(Solid* solid);
+
+    vector<Vertex*> getVertices() { return vertices; }
+    vector<Edge*> getEdges() { return edges; }
+    vector<Face*> getFaces() { return faces; }
+    vector<Solid*> getSolids() { return solids; }
 };

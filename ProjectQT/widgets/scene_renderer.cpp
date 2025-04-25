@@ -65,7 +65,6 @@ void SceneRenderer::resizeGL(int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(projection.constData());
     glMatrixMode(GL_MODELVIEW);
-    drawAxis();
 }
 
 void SceneRenderer::paintGL() {

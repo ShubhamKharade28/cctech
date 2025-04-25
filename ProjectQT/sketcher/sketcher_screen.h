@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "sketcher.h"
+#include "sketch_renderer.h"
 
 #include <QWidget>
 
@@ -9,7 +10,9 @@ class SketcherScreen : public QWidget {
 
     private:
     Sketcher* sketch;
+    SketchRenderer* renderer;
 
     public:
-    SketcherScreen(QWidget* parent = nullptr);
+    explicit SketcherScreen(QWidget* parent = nullptr);
+    // ~SketcherScreen();
 };
