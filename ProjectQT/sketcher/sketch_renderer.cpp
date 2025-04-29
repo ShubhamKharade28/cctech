@@ -8,7 +8,6 @@ SketchRenderer::~SketchRenderer() {
 }
 
 void SketchRenderer::initializeGL() {
-    // Initialize OpenGL functions
     initializeOpenGLFunctions(); // Initialize OpenGL functions
     glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
     glClearColor(0.1f, 0.1f, 0.15f, 1.0f); // Set the background color
@@ -40,10 +39,9 @@ void SketchRenderer::paintGL() {
     drawAxis(); 
 
     renderVertices();
-
-    // TODO: Implement the rendering of edges, faces, and solids
     renderEdges();
     renderFaces();
+    // TODO: Implement the following methods
     renderSolids();
 }
 
@@ -63,6 +61,9 @@ QMatrix4x4 SketchRenderer::getViewMatrix(){
     // apply translation
     modelView.translate(posX, posY, 0);
 
+    //  Rotate the world: Make Z axis vertical (instead of Y)
+    // modelView.rotate(-90, 1.0f, 0.0f, 0.0f);
+
     return modelView;
 }
 
@@ -75,6 +76,30 @@ void SketchRenderer::renderVertices() {
         glVertex3f(vertex->getX(), vertex->getY(), vertex->getZ());
     }
     glEnd();
+}
+
+void SketchRenderer::renderEdges() {
+    glColor3f(0.0f, 1.0f, 0.0f); // Set color for edges (green)
+    glLineWidth(2.0f); // Set line width for edges
+    glBegin(GL_LINES);
+    for (auto& edge : sketch->getEdges()) {
+        auto startVertex = edge->getStart();
+        auto endVertex = edge->getEnd();
+        glVertex3f(startVertex->getX(), startVertex->getY(), startVertex->getZ());
+        glVertex3f(endVertex->getX(), endVertex->getY(), endVertex->getZ());
+    }
+    glEnd();
+}
+
+void SketchRenderer::renderFaces() {
+    glColor3f(0.0f, 0.0f, 1.0f); // Set color for faces (blue)
+    for(auto& face : sketch->getFaces()) {
+        glBegin(GL_POLYGON);
+        for (auto& vertex : face->getVertices()) {
+            glVertex3f(vertex->getX(), vertex->getY(), vertex->getZ());
+        }
+        glEnd();
+    }
 }
 
 void SketchRenderer::drawAxis() {

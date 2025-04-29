@@ -1,4 +1,5 @@
 #include "sketcher.h"
+#include <QDebug>
 
 Sketcher::~Sketcher() {
     for(auto v : vertices) delete v;
@@ -92,6 +93,32 @@ void Sketcher::removeEdge(int edgeIdx) {
     delete e;
 }
 
+
+// validation for face edges
+bool Sketcher::checkFaceEdgesValidity(vector<Edge*>& faceEdges) {
+    // check if edges are connected to each other
+    for(int i=0; i<faceEdges.size()-1; i++){
+        auto e1 = faceEdges[i], e2 = faceEdges[i+1];
+        auto v1 = e1->getStart(), v2 = e1->getEnd();
+        auto v3 = e2->getStart(), v4 = e2->getEnd();
+
+        if (!(v1 == v3 || v1 == v4 || v2 == v3 || v2 == v4)) {
+            return false;
+        }
+    }
+
+    auto firstEdge = faceEdges[0];
+    auto lastEdge = faceEdges[faceEdges.size() - 1];
+    auto firstStart = firstEdge->getStart(), firstEnd = firstEdge->getEnd();
+    auto lastStart = lastEdge->getStart(), lastEnd = lastEdge->getEnd();
+
+    if (!(firstStart == lastStart || firstStart == lastEnd || firstEnd == lastStart || firstEnd == lastEnd)) {
+        return false;
+    }
+
+    return true;
+}
+
 /* Methods for adding and removing faces in sketches */
 void Sketcher::addFace() {
     Face* f = new Face();
@@ -99,6 +126,23 @@ void Sketcher::addFace() {
 }
 
 void Sketcher::addFace(vector<Edge*> edges) {
+    Face* f = new Face(edges);
+    faces.push_back(f);
+}
+
+void Sketcher::addFace(vector<int>& edgeIdxs) {
+    vector<Edge*> faceEdges;
+    for(auto idx : edgeIdxs) {
+        if(idx < 0 || idx >= edges.size()) return;
+        faceEdges.push_back(edges[idx]);
+    }
+
+    bool areEdgesValid = checkFaceEdgesValidity(faceEdges);
+    if(!areEdgesValid) {
+        qDebug() << "Not valid edges to form a face!";
+        return;
+    }
+
     Face* f = new Face(edges);
     faces.push_back(f);
 }
@@ -148,3 +192,30 @@ void Sketcher::removeSolid(Solid* solid) {
     }
 }
 
+int Sketcher::findVertex(Vertex* v) {
+    for(int i=0; i<vertices.size(); i++) {
+        if(vertices[i] == v) return i;
+    }
+    return -1;
+}
+
+int Sketcher::findEdge(Edge* e) {
+    for(int i=0; i<edges.size(); i++) {
+        if(edges[i] == e) return i;
+    }
+    return -1;
+}
+
+int Sketcher::findFace(Face* f) {
+    for(int i=0; i<faces.size(); i++) {
+        if(faces[i] == f) return i;
+    }
+    return -1;
+}
+
+int Sketcher::findSolid(Solid* s) {
+    for(int i=0; i<solids.size(); i++) {
+        if(solids[i] == s) return i;
+    }
+    return -1;
+}

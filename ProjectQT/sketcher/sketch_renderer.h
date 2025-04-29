@@ -26,8 +26,8 @@ private slots:
 
 private:
     void renderVertices();
-    void renderEdges(){};
-    void renderFaces(){};
+    void renderEdges();
+    void renderFaces();
     void renderSolids(){};
 
     QMatrix4x4 getViewMatrix();
@@ -43,5 +43,5 @@ private:
 
     QVector3D sceneCenter = {0,0,0};
     float rotationX = 0.0f;
-    float rotationY = 0.0f;
+    float rotationY = 0.0f; 
 };

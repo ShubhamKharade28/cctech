@@ -33,6 +33,17 @@ class Face {
     Face(vector<Edge*> edges) : edges(edges) {}
     void addEdge(Edge* edge) { edges.push_back(edge); }
     vector<Edge*> getEdges() const { return edges; }
+    vector<Vertex*> getVertices() const {
+        vector<Vertex*> vertices;
+        for(auto& edge : edges) {
+            auto start = edge->getStart();
+            auto end = edge->getEnd();
+            if (find(vertices.begin(), vertices.end(), start) == vertices.end()) {
+                vertices.push_back(start);
+            }
+        }
+        return vertices;
+    }
 };
 
 class Solid {

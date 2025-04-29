@@ -4,15 +4,61 @@
 #include "sketch_renderer.h"
 
 #include <QWidget>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QListWidget>
 
 class SketcherScreen : public QWidget {
     Q_OBJECT
 
-    private:
     Sketcher* sketch;
     SketchRenderer* renderer;
 
-    public:
+    void setupUI();
+    void setupSidebarUI(QVBoxLayout* sidebar);
+
+public:
     explicit SketcherScreen(QWidget* parent = nullptr);
-    // ~SketcherScreen();
+    ~SketcherScreen();
+
+private:
+    // lists for vertices, edges, faces, and solids
+    QListWidget* vertexListWidget;
+    QListWidget* edgeListWidget;
+    QListWidget* faceListWidget;
+    QListWidget* solidListWidget;
+
+    // vertex inputs
+    QLineEdit* vertexXInput;
+    QLineEdit* vertexYInput;
+    QLineEdit* vertexZInput;
+    QPushButton* addVertexButton;
+
+    // edge inputs
+    QLineEdit* edgeStartInput;
+    QLineEdit* edgeEndInput;
+    QPushButton* addEdgeButton;
+
+    // face inputs
+    QLineEdit* faceEdgeInput;
+    QPushButton* addFaceButton;
+
+private slots:
+    void addVertex();
+    void addEdge();
+    void addFace();
+    void addSolid();
+
+    void updateVertexList();
+    void updateEdgeList();
+    void updateFaceList();
+    void updateSolidList();
+
+signals:
+    void vertexAdded();
+    void edgeAdded();
+    void faceAdded();
+    void solidAdded();
 };

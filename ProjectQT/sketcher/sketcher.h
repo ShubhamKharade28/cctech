@@ -37,6 +37,7 @@ public:
 
     void addFace();
     void addFace(vector<Edge*> edges);
+    void addFace(vector<int>& edgeIdxs);
     void removeFace(int faceIdx);
     void removeFace(Face* face);
 
@@ -49,4 +50,13 @@ public:
     vector<Edge*> getEdges() { return edges; }
     vector<Face*> getFaces() { return faces; }
     vector<Solid*> getSolids() { return solids; }
+
+    int findVertex(Vertex* v);
+    int findEdge(Edge* e);
+    int findFace(Face* f);
+    int findSolid(Solid* s);
+
+    // validation methods
+    bool checkFaceEdgesValidity(vector<Edge*>& faceEdges);
+
 };
