@@ -8,14 +8,15 @@ Sketcher::~Sketcher() {
     for(auto s : solids) delete s;
 }
 
-void Sketcher::addVertex(double x, double y, double z){
+Vertex* Sketcher::addVertex(double x, double y, double z){
     // check if vertex already exists
     for(auto v : vertices) {
-        if(v->getX() == x && v->getY() == y && v->getZ() == z) return;
+        if(v->getX() == x && v->getY() == y && v->getZ() == z) return v;
     }
 
     Vertex* v = new Vertex(x, y, z);
     vertices.push_back(v);
+    return v;
 }
 
 void Sketcher::removeVertex(double x, double y, double z) {
@@ -50,19 +51,21 @@ void Sketcher::removeVertex(int vertexIdx) {
 
 
 /* Methods for adding and removing a Edge in sketch */
-void Sketcher::addEdge(Vertex* start, Vertex* end) {
+Edge* Sketcher::addEdge(Vertex* start, Vertex* end) {
     for(auto e : edges) {
-        if(e->getStart() == start && e->getEnd() == end) return;
+        if((e->getStart() == start && e->getEnd() == end) ||
+            (e->getStart() == end && e->getEnd() == start)) return e;
     }
     Edge* e = new Edge(start, end);
     edges.push_back(e);
+    return e;
 }
 
-void Sketcher::addEdge(int startIdx, int endIdx) {
-    if(startIdx < 0 || startIdx >= vertices.size() || endIdx < 0 || endIdx >= vertices.size()) return;
+Edge* Sketcher::addEdge(int startIdx, int endIdx) {
+    if(startIdx < 0 || startIdx >= vertices.size() || endIdx < 0 || endIdx >= vertices.size()) return nullptr;
     Vertex* start = vertices[startIdx];
     Vertex* end = vertices[endIdx];
-    addEdge(start, end);
+    return addEdge(start, end);
 }
 
 void Sketcher::removeEdge(Vertex* start, Vertex* end) {
@@ -120,31 +123,34 @@ bool Sketcher::checkFaceEdgesValidity(vector<Edge*>& faceEdges) {
 }
 
 /* Methods for adding and removing faces in sketches */
-void Sketcher::addFace() {
+Face* Sketcher::addFace() {
     Face* f = new Face();
     faces.push_back(f);
+    return f;
 }
 
-void Sketcher::addFace(vector<Edge*> edges) {
+Face* Sketcher::addFace(vector<Edge*> edges) {
     Face* f = new Face(edges);
     faces.push_back(f);
+    return f;
 }
 
-void Sketcher::addFace(vector<int>& edgeIdxs) {
+Face* Sketcher::addFace(vector<int>& edgeIdxs) {
     vector<Edge*> faceEdges;
     for(auto idx : edgeIdxs) {
-        if(idx < 0 || idx >= edges.size()) return;
+        if(idx < 0 || idx >= edges.size()) return nullptr;
         faceEdges.push_back(edges[idx]);
     }
 
     bool areEdgesValid = checkFaceEdgesValidity(faceEdges);
     if(!areEdgesValid) {
         qDebug() << "Not valid edges to form a face!";
-        return;
+        return nullptr;
     }
 
     Face* f = new Face(edges);
     faces.push_back(f);
+    return f;
 }
 
 void Sketcher::removeFace(int faceIdx) {
@@ -165,14 +171,18 @@ void Sketcher::removeFace(Face* face) {
 }
 
 /* Methods for adding and removing solids in sketcher */
-void Sketcher::addSolid() {
-    Solid* s = new Solid();
-    solids.push_back(s);
+Solid* Sketcher::addSolid(Solid* solid = nullptr) {
+    if(solid == nullptr) {
+        solid = new Solid();
+    }
+    solids.push_back(solid);
+    return solid;
 }
 
-void Sketcher::addSolid(vector<Face*> faces) {
+Solid* Sketcher::addSolid(vector<Face*> faces) {
     Solid* s = new Solid(faces);
     solids.push_back(s);
+    return s;
 }
 
 void Sketcher::removeSolid(int solidIdx) {
@@ -218,4 +228,147 @@ int Sketcher::findSolid(Solid* s) {
         if(solids[i] == s) return i;
     }
     return -1;
+}
+
+Solid* Sketcher::extrudeFace(Face* face, double height) {
+    if(face == nullptr) return nullptr;
+
+    vector<Edge*> faceEdges = face->getEdges();
+    vector<Vertex*> faceVertices = face->getVertices();
+
+    vector<Vertex*> extrudedVertices;
+    vector<Edge*> extrudedEdges;
+    vector<Face*> extrudedFaces;
+    
+    // step 1: create new vertices at the extruded height
+    for(auto v : faceVertices) {
+        double x = v->getX();
+        double y = v->getY();
+        double z = v->getZ() + height;
+        Vertex* newVertex = this->addVertex(x,
+             y, z);
+        extrudedVertices.push_back(newVertex);
+    }
+
+    // step 2: create side faces
+    int n = faceVertices.size();
+    for(int i=0; i<n; i++){
+        Vertex* v1 = faceVertices[i];
+        Vertex* v2 = faceVertices[(i+1) % n];
+        Vertex* v3 = extrudedVertices[i];
+        Vertex* v4 = extrudedVertices[(i+1) % n];
+
+        // step 2A: create edges for the side face
+        Edge* e1 = this->addEdge(v1, v2);
+        Edge* e2 = this->addEdge(v3, v4);
+        Edge* e3 = this->addEdge(v1, v3);
+        Edge* e4 = this->addEdge(v2, v4);
+
+        // step 2B:  create the side face
+        vector<Edge*> sideEdges = {e1, e4, e2, e3};
+        Face* sideFace = this->addFace(sideEdges);
+        extrudedFaces.push_back(sideFace);
+    }
+
+    // step 3: create the top face
+    vector<Edge*> topEdges;
+    for(int i=0; i<n; i++){
+        Vertex* v1 = extrudedVertices[i];
+        Vertex* v2 = extrudedVertices[(i+1) % n];
+        Edge* e = this->addEdge(v1, v2);
+        topEdges.push_back(e);
+    }
+    Face* topFace = this->addFace(topEdges);
+
+    // Step 4: Add top and base face to the extruded faces
+    extrudedFaces.push_back(topFace);
+    extrudedFaces.push_back(face);
+
+    // Step 5: Create the solid from extruded faces
+    Solid* extrudedSolid = this->addSolid(extrudedFaces);
+    return extrudedSolid;
+}
+
+Solid* Sketcher::extrudeFace(int faceIdx, double height) {
+    if(faceIdx < 0 || faceIdx >= faces.size()) return nullptr;
+    Face* f = faces[faceIdx];
+    return extrudeFace(f, height);
+}
+
+Solid* Sketcher::revolveFace(Face* face, double angle, int steps = 20) {
+    if(face == nullptr) return nullptr; 
+
+    // angle around y-axis
+    double radianAngle = angle * M_PI / 180.0;
+    double delta = radianAngle / steps;
+
+    vector<Vertex*> baseVertices = face->getVertices();
+    vector<vector<Vertex*>> rings;
+
+    // step 1: create rotated rings
+    for(int i=0; i<steps; i++){
+        double theta = i * delta;
+        double cosTheta = cos(theta);
+        double sinTheta = sin(theta);
+
+        vector<Vertex*> ring;
+        for(auto v : baseVertices) {
+            double x = v->getX();
+            double y = v->getY();
+            double z = v->getZ();
+
+            double newX = x * cosTheta + z * sinTheta;
+            double newZ = -x * sinTheta + z * cosTheta;
+
+            Vertex* newVertex = this->addVertex(newX, y, newZ);
+            ring.push_back(newVertex);
+        }
+        rings.push_back(ring);
+    }
+
+    Solid* s = this->addSolid();
+
+    // step 2: create side faces between each ring
+    int n = baseVertices.size();
+    for (int i = 0; i < steps; ++i) {
+        vector<Vertex*>& ring1 = rings[i];
+        vector<Vertex*>& ring2 = rings[i + 1];
+
+        for (int j = 0; j < n; ++j) {
+            Vertex* v1 = ring1[j];
+            Vertex* v2 = ring1[(j + 1) % n];
+            Vertex* v3 = ring2[(j + 1) % n];
+            Vertex* v4 = ring2[j];
+
+            // Create 4 edges and face
+            Edge* e1 = this->addEdge(v1, v2);
+            Edge* e2 = this->addEdge(v2, v3);
+            Edge* e3 = this->addEdge(v3, v4);
+            Edge* e4 = this->addEdge(v4, v1);
+            // Face* side = addFace({e1, e2, e3, e4});
+            Face* side = this->addFace({e1, e4, e3, e2});
+            s->addFace(side);
+        }
+    }
+
+    vector<Edge*> bottomEdges;
+    for (int i = 0; i < n; ++i) {
+        Vertex* v1 = rings[0][i];
+        Vertex* v2 = rings[0][(i + 1) % n];
+        Edge* bottomEdge = this->addEdge(v1, v2);
+        bottomEdges.push_back(bottomEdge);
+    }
+    Face* bottomFace = this->addFace(bottomEdges);
+    s->addFace(bottomFace);
+
+    // Step 4: Cap the top (last ring)
+    vector<Edge*> topEdges;
+    for (int i = 0; i < n; ++i) {
+        Vertex* v1 = rings[steps][i];
+        Vertex* v2 = rings[steps][(i + 1) % n];
+        topEdges.push_back(new Edge(v1, v2));
+    }
+    Face* topFace = this->addFace(topEdges);
+    s->addFace(topFace);
+    return s;
 }

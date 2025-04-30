@@ -45,6 +45,13 @@ private:
     QLineEdit* faceEdgeInput;
     QPushButton* addFaceButton;
 
+    // extrude face button
+    QPushButton* extrudeFaceButton;
+    QLineEdit* extrudeHeightInput;
+    
+    // selected face for extrusion (for revolve in future)
+    int selectedFaceIndex = -1;
+
 private slots:
     void addVertex();
     void addEdge();
@@ -55,6 +62,9 @@ private slots:
     void updateEdgeList();
     void updateFaceList();
     void updateSolidList();
+
+    void extrudeFace();
+    void selectFace(QListWidgetItem* item);
 
 signals:
     void vertexAdded();

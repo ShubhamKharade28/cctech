@@ -71,8 +71,6 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     sidebar->addStretch();
     connect(addFaceButton, &QPushButton::clicked, this, &SketcherScreen::addFace);
 
-    // Solid inputs
-
     // List of vertices
     auto* vertexListLabel = new QLabel("Vertices:", this);
     vertexListWidget = new QListWidget(this);
@@ -85,6 +83,7 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     edgeListWidget = new QListWidget(this);
     sidebar->addWidget(edgeListLabel);
     sidebar->addWidget(edgeListWidget);
+    sidebar->addStretch();
     connect(this, &SketcherScreen::edgeAdded, this, &SketcherScreen::updateEdgeList);
 
     // List of faces
@@ -92,7 +91,18 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     faceListWidget = new QListWidget(this);
     sidebar->addWidget(faceListLabel);
     sidebar->addWidget(faceListWidget);
+    sidebar->addStretch();
     connect(this, &SketcherScreen::faceAdded, this, &SketcherScreen::updateFaceList);
+    connect(faceListWidget, &QListWidget::itemClicked, this, selectFace);
+
+    // Extrude height, and extrude face button
+    extrudeHeightInput = new QLineEdit(this);
+    extrudeHeightInput->setPlaceholderText("Extrude Height");
+    extrudeFaceButton = new QPushButton("Extrude Face", this);
+    sidebar->addWidget(extrudeHeightInput);
+    sidebar->addWidget(extrudeFaceButton);
+    sidebar->addStretch();
+    connect(extrudeFaceButton, &QPushButton::clicked, this, &SketcherScreen::extrudeFace);
 
     // List of solids
     auto* solidListLabel = new QLabel("Solids:", this);
@@ -150,11 +160,14 @@ void SketcherScreen::addEdge() {
 void SketcherScreen::addFace() {
     QStringList edgeIndices = faceEdgeInput->text().split(" ", Qt::SkipEmptyParts);
     vector<int> edges;
+    qDebug() << "Adding face with edges: ";
     for (const auto& index : edgeIndices) {
         bool ok;
         int edgeIndex = index.toInt(&ok);
         if (ok) {
             edges.push_back(edgeIndex);
+            qDebug() << edgeIndex;
+
         } else {
             qDebug() << "Invalid edge index:" << index;
             return;
@@ -168,10 +181,11 @@ void SketcherScreen::addFace() {
     faceEdgeInput->clear();
     faceEdgeInput->setFocus();
     faceEdgeInput->selectAll();
+    // solidListWidget->clear();
 }
 
 void SketcherScreen::addSolid() {
-    
+
 }
 
 void SketcherScreen::updateVertexList() {
@@ -238,4 +252,35 @@ void SketcherScreen::updateSolidList() {
         auto* item = new QListWidgetItem(str);
         solidListWidget->addItem(item);
     }
+}
+
+void SketcherScreen::selectFace(QListWidgetItem* item) {
+    int index = faceListWidget->row(item);
+    if (index >= 0 && index < sketch->getFaces().size()) {
+        selectedFaceIndex = index;
+    } else {
+        qDebug() << "Invalid face selection!";
+    }
+}
+
+void SketcherScreen::extrudeFace() {
+    bool heightOk;
+    double height = extrudeHeightInput->text().toDouble(&heightOk);
+
+    if (heightOk) {
+        if (selectedFaceIndex != -1) {
+            auto face = sketch->getFaces()[selectedFaceIndex];
+            sketch->extrudeFace(face, height);
+            renderer->update();
+            emit solidAdded();
+        } else {
+            qDebug() << "No face selected for extrusion!";
+        }
+    } else {
+        qDebug() << "Invalid extrusion height!";
+    }
+
+    extrudeHeightInput->clear();
+    extrudeHeightInput->setFocus();
+    extrudeHeightInput->selectAll();
 }

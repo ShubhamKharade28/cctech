@@ -41,6 +41,9 @@ class Face {
             if (find(vertices.begin(), vertices.end(), start) == vertices.end()) {
                 vertices.push_back(start);
             }
+            if(find(vertices.begin(), vertices.end(), end) == vertices.end()) {
+                vertices.push_back(end);
+            }
         }
         return vertices;
     }

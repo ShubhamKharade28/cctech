@@ -41,7 +41,6 @@ void SketchRenderer::paintGL() {
     renderVertices();
     renderEdges();
     renderFaces();
-    // TODO: Implement the following methods
     renderSolids();
 }
 
@@ -93,12 +92,33 @@ void SketchRenderer::renderEdges() {
 
 void SketchRenderer::renderFaces() {
     glColor3f(0.0f, 0.0f, 1.0f); // Set color for faces (blue)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for(auto& face : sketch->getFaces()) {
         glBegin(GL_POLYGON);
-        for (auto& vertex : face->getVertices()) {
+        auto vertices = face->getVertices();
+        for (auto& vertex : vertices) {
             glVertex3f(vertex->getX(), vertex->getY(), vertex->getZ());
         }
         glEnd();
+    }
+}
+
+void SketchRenderer::renderSolids() {
+    glColor3f(1.0f, 1.0f, 0.0f); // Set color for solids (yellow)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor3f(1.0f, 1.0f, 0.0f);
+    
+    auto solids = sketch->getSolids();
+    for(auto& solid : solids){
+        auto faces = solid->getFaces();
+        for(auto& face : faces) {
+            auto vertices = face->getVertices();
+            glBegin(GL_POLYGON);
+            for (auto& vertex : vertices) {
+                glVertex3f(vertex->getX(), vertex->getY(), vertex->getZ());
+            }
+            glEnd();
+        }
     }
 }
 

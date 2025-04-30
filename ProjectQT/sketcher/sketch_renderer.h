@@ -28,7 +28,7 @@ private:
     void renderVertices();
     void renderEdges();
     void renderFaces();
-    void renderSolids(){};
+    void renderSolids();
 
     QMatrix4x4 getViewMatrix();
     void drawAxis();

@@ -24,25 +24,25 @@ public:
     Sketcher() {}
     ~Sketcher(); 
 
-    void addVertex(double x, double y, double z);
+    Vertex* addVertex(double x, double y, double z);
     void removeVertex(double x, double y, double z);
     void removeVertex(Vertex* vertex);
     void removeVertex(int vertexIdxvoid);
 
-    void addEdge(Vertex* start, Vertex* end);
-    void addEdge(int startIdx, int endIdx);
+    Edge* addEdge(Vertex* start, Vertex* end);
+    Edge* addEdge(int startIdx, int endIdx);
     void removeEdge(Vertex* start, Vertex* end);
     void removeEdge(Edge* edge);
     void removeEdge(int edgeIdx);
 
-    void addFace();
-    void addFace(vector<Edge*> edges);
-    void addFace(vector<int>& edgeIdxs);
+    Face* addFace();
+    Face* addFace(vector<Edge*> edges);
+    Face* addFace(vector<int>& edgeIdxs);
     void removeFace(int faceIdx);
     void removeFace(Face* face);
 
-    void addSolid();
-    void addSolid(vector<Face*> faces);
+    Solid* addSolid(Solid* solid);
+    Solid* addSolid(vector<Face*> faces);
     void removeSolid(int solidIdx);
     void removeSolid(Solid* solid);
 
@@ -58,5 +58,12 @@ public:
 
     // validation methods
     bool checkFaceEdgesValidity(vector<Edge*>& faceEdges);
+
+    // extrusion methods
+    Solid* extrudeFace(Face* face, double height);
+    Solid* extrudeFace(int faceIdx, double height);
+
+    Solid* revolveFace(Face* face, double angle);
+    Solid* revolveFace(int faceIdx, double angle);
 
 };
