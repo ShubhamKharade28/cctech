@@ -1,13 +1,6 @@
 #pragma once
 #include "sketcher_primitives.h"
 
-enum primitiveType {
-    VERTEX,
-    EDGE,
-    FACE,
-    SOLID
-};
-
 class Sketcher {
     vector<Vertex*> vertices;
     vector<Edge*> edges;
@@ -36,7 +29,7 @@ public:
     void removeEdge(int edgeIdx);
 
     Face* addFace();
-    Face* addFace(vector<Edge*> edges);
+    Face* addFace(vector<Edge*> faceEdges);
     Face* addFace(vector<int>& edgeIdxs);
     void removeFace(int faceIdx);
     void removeFace(Face* face);
@@ -65,5 +58,4 @@ public:
 
     Solid* revolveFace(Face* face, double angle, int steps);
     Solid* revolveFace(int faceIdx, double angle, int steps);
-
 };

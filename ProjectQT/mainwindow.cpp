@@ -5,28 +5,15 @@
 #include "scene_creator.h"
 #include "bezier_sketcher.h"
 #include "sketcher_screen.h"
+#include "mainscreen.h"
 
 #include "screen_selector_dialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     ScreenSelectorDialog selectorDialog(this);
     if(selectorDialog.exec() == QDialog::Accepted) {
-        // 0 for SceneCreator, 1 for BezierCurve
-        int screenIdx = selectorDialog.getSelectedScreen();
-        switch(screenIdx) {
-            case 0:
-                showSceneCreatorScreen();
-                break;
-            case 1:
-                showBezierCurveScreen();
-                break;
-            case 2:
-                showSketcherScreen();
-                break;
-            default:
-                setWindowTitle("Invalid Screen");
-                break;
-        }
+        int selectedScreen = selectorDialog.getSelectedScreen();
+        showScreen(selectedScreen);
     } else {
         close();
     }
@@ -34,25 +21,58 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::showSceneCreatorScreen() {
+// void MainWindow::showSceneCreatorScreen() {
+//     this->resize(1000, 700);
+//     setWindowTitle("Project 3D");
+
+//     SceneCreator *sceneCreator = new SceneCreator(this);
+//     setCentralWidget(sceneCreator);
+// }
+// void MainWindow::showBezierCurveScreen() {
+//     this->resize(1000, 700);
+//     setWindowTitle("Test - Bezier Curve");
+
+//     BezierSketcher *bezierSketcher = new BezierSketcher(this);
+//     setCentralWidget(bezierSketcher);
+// }
+
+// void MainWindow::showSketcherScreen() {
+//     this->resize(1000, 700);
+//     setWindowTitle("Test - Sketcher");
+
+//     SketcherScreen *sketcherScreen = new SketcherScreen(this);
+//     setCentralWidget(sketcherScreen);
+// }
+
+void MainWindow::showScreen(int screenIndex) {
     this->resize(1000, 700);
-    setWindowTitle("Project 3D");
+    QWidget* screen = nullptr;
+    
+    switch(screenIndex) {
+        case 0:
+            setWindowTitle("Scene Creator");
+            screen = new SceneCreator(this);
+            break;
+        case 1:
+            setWindowTitle("Bezier Curve");
+            screen = new BezierSketcher(this);
+            break;
+        case 2:
+            setWindowTitle("Sketcher");
+            screen = new SketcherScreen(this);
+            break;
+        case 3:
+            setWindowTitle("Main Screen");
+            screen = new MainScreen(this);
+            break;
+        default:
+            setWindowTitle("Invalid Screen");
+            break;
+    }
 
-    SceneCreator *sceneCreator = new SceneCreator(this);
-    setCentralWidget(sceneCreator);
-}
-void MainWindow::showBezierCurveScreen() {
-    this->resize(1000, 700);
-    setWindowTitle("Test - Bezier Curve");
-
-    BezierSketcher *bezierSketcher = new BezierSketcher(this);
-    setCentralWidget(bezierSketcher);
-}
-
-void MainWindow::showSketcherScreen() {
-    this->resize(1000, 700);
-    setWindowTitle("Test - Sketcher");
-
-    SketcherScreen *sketcherScreen = new SketcherScreen(this);
-    setCentralWidget(sketcherScreen);
+    if(screen) {
+        setCentralWidget(screen);
+    } else {
+        setWindowTitle("Error: Screen not found");
+    }
 }

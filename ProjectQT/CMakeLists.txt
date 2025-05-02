@@ -65,6 +65,10 @@ qt_add_executable(ProjectQT
     sketcher/sketcher_screen.h
     sketcher/sketch_renderer.h 
     sketcher/sketch_renderer.cpp
+
+    integration/mainscreen.h 
+    integration/mainscreen.cpp 
+
 )
 
 include_directories(
@@ -75,6 +79,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/includes
     ${PROJECT_SOURCE_DIR}/test
     ${PROJECT_SOURCE_DIR}/sketcher
+    ${PROJECT_SOURCE_DIR}/integration
 )
  
 # ✅ Link Qt modules and system OpenGL (opengl32 for Windows)

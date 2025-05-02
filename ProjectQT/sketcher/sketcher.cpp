@@ -129,8 +129,8 @@ Face* Sketcher::addFace() {
     return f;
 }
 
-Face* Sketcher::addFace(vector<Edge*> edges) {
-    Face* f = new Face(edges);
+Face* Sketcher::addFace(vector<Edge*> faceEdges) {
+    Face* f = new Face(faceEdges);
     faces.push_back(f);
     return f;
 }
@@ -148,9 +148,7 @@ Face* Sketcher::addFace(vector<int>& edgeIdxs) {
         return nullptr;
     }
 
-    Face* f = new Face(edges);
-    faces.push_back(f);
-    return f;
+    return addFace(faceEdges);
 }
 
 void Sketcher::removeFace(int faceIdx) {

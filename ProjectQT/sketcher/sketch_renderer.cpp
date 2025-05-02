@@ -105,7 +105,7 @@ void SketchRenderer::renderFaces() {
 
 void SketchRenderer::renderSolids() {
     glColor3f(1.0f, 1.0f, 0.0f); // Set color for solids (yellow)
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glColor3f(1.0f, 1.0f, 0.0f);
     
     auto solids = sketch->getSolids();

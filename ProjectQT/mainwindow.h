@@ -10,7 +10,9 @@ public:
     ~MainWindow();
 
 private:
-    void showSceneCreatorScreen();
-    void showBezierCurveScreen();
-    void showSketcherScreen();
+    // void showSceneCreatorScreen();
+    // void showBezierCurveScreen();
+    // void showSketcherScreen();
+
+    void showScreen(int screenIndex);
 };
