@@ -104,6 +104,15 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     sidebar->addStretch();
     connect(extrudeFaceButton, &QPushButton::clicked, this, &SketcherScreen::extrudeFace);
 
+    // Revolve angle, and revolve face button
+    revolveAngleInput = new QLineEdit(this);
+    revolveAngleInput->setPlaceholderText("Revolve Angle (degrees)");
+    revolveFaceButton = new QPushButton("Revolve Face", this);
+    sidebar->addWidget(revolveAngleInput);
+    sidebar->addWidget(revolveFaceButton);
+    sidebar->addStretch();
+    connect(revolveFaceButton, &QPushButton::clicked, this, &SketcherScreen::revolveFace);
+
     // List of solids
     auto* solidListLabel = new QLabel("Solids:", this);
     solidListWidget = new QListWidget(this);
@@ -273,6 +282,9 @@ void SketcherScreen::extrudeFace() {
             sketch->extrudeFace(face, height);
             renderer->update();
             emit solidAdded();
+            emit faceAdded();
+            emit edgeAdded();
+            emit vertexAdded();
         } else {
             qDebug() << "No face selected for extrusion!";
         }
@@ -283,4 +295,30 @@ void SketcherScreen::extrudeFace() {
     extrudeHeightInput->clear();
     extrudeHeightInput->setFocus();
     extrudeHeightInput->selectAll();
+}
+
+void SketcherScreen::revolveFace() {
+    bool angleOk;
+    double angle = revolveAngleInput->text().toDouble(&angleOk);
+
+    if (angleOk) {
+        if (selectedFaceIndex != -1) {
+            auto face = sketch->getFaces()[selectedFaceIndex];
+            sketch->revolveFace(face, angle, 36); // 36 steps for a full revolution
+            renderer->update();
+            emit solidAdded();
+            emit faceAdded();
+            emit edgeAdded();
+            emit vertexAdded();
+        } else {
+            qDebug() << "No face selected for revolution!";
+        }
+    } else {
+        qDebug() << "Invalid revolution angle!";
+    }
+
+    revolveAngleInput->clear();
+    revolveAngleInput->setFocus();
+    revolveAngleInput->selectAll();
+    // revolveAxisInput->clear(); // for future use
 }

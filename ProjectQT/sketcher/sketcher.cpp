@@ -306,7 +306,7 @@ Solid* Sketcher::revolveFace(Face* face, double angle, int steps = 20) {
     vector<vector<Vertex*>> rings;
 
     // step 1: create rotated rings
-    for(int i=0; i<steps; i++){
+    for(int i=0; i<=steps; i++){
         double theta = i * delta;
         double cosTheta = cos(theta);
         double sinTheta = sin(theta);
@@ -366,9 +366,16 @@ Solid* Sketcher::revolveFace(Face* face, double angle, int steps = 20) {
     for (int i = 0; i < n; ++i) {
         Vertex* v1 = rings[steps][i];
         Vertex* v2 = rings[steps][(i + 1) % n];
-        topEdges.push_back(new Edge(v1, v2));
+        Edge* topEdge = this->addEdge(v1, v2);
+        topEdges.push_back(topEdge);
     }
     Face* topFace = this->addFace(topEdges);
     s->addFace(topFace);
     return s;
+}
+
+Solid* Sketcher::revolveFace(int faceIdx, double angle, int steps = 20){
+    if(faceIdx < 0 || faceIdx >= faces.size()) return nullptr;
+    Face* f = faces[faceIdx];
+    return revolveFace(f, angle, steps);
 }

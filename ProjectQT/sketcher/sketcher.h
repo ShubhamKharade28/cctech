@@ -63,7 +63,7 @@ public:
     Solid* extrudeFace(Face* face, double height);
     Solid* extrudeFace(int faceIdx, double height);
 
-    Solid* revolveFace(Face* face, double angle);
-    Solid* revolveFace(int faceIdx, double angle);
+    Solid* revolveFace(Face* face, double angle, int steps);
+    Solid* revolveFace(int faceIdx, double angle, int steps);
 
 };
