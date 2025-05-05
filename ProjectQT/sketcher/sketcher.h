@@ -58,4 +58,12 @@ public:
 
     Solid* revolveFace(Face* face, double angle, int steps);
     Solid* revolveFace(int faceIdx, double angle, int steps);
+
+    void clearSketch();
+
+    bool loadSketchFromFile(const string filename);
+
+private:
+    bool loadSketchFromSTL(const string filename);
+    bool loadSketchFromOBJ(const string filename);
 };

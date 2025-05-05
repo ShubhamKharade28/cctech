@@ -17,5 +17,6 @@ private slots:
     void selectSceneCreator();
     void selectBezierSketcher();
     void selectSketcher();
+    void selectModelEditor();
     void selectMainScreen();
 };

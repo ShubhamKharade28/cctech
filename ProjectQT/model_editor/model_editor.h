@@ -16,4 +16,10 @@ private:
 
     Sketcher* sketch;
     SketchRenderer* sketchRenderer;
-}
+
+private slots:
+    void onOpenFileClicked();
+    void onExportObjClicked();
+    void onExportStlClicked();
+    void onClearSketchClicked();
+};

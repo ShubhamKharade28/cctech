@@ -8,16 +8,19 @@ ScreenSelectorDialog::ScreenSelectorDialog(QWidget *parent)
     auto* sceneButton = new QPushButton("Draw 3D Scene", this);
     auto* bezierButton = new QPushButton("Draw Bezier Curve", this);
     auto* sketcherButton = new QPushButton("Draw Sketch", this);
+    auto* modelEditorButton = new QPushButton("Model Editor", this);
     auto* mainScreenButton = new QPushButton("Main Screen", this);
 
     connect(sceneButton, &QPushButton::clicked, this, &ScreenSelectorDialog::selectSceneCreator);
     connect(bezierButton, &QPushButton::clicked, this, &ScreenSelectorDialog::selectBezierSketcher);
     connect(sketcherButton, &QPushButton::clicked, this, &ScreenSelectorDialog::selectSketcher);
+    connect(modelEditorButton, &QPushButton::clicked, this, &ScreenSelectorDialog::selectModelEditor);
     connect(mainScreenButton, &QPushButton::clicked, this, &ScreenSelectorDialog::selectMainScreen);
 
     layout->addWidget(sceneButton);
     layout->addWidget(bezierButton);
     layout->addWidget(sketcherButton);
+    layout->addWidget(modelEditorButton);
     layout->addWidget(mainScreenButton);
 
     setLayout(layout);
@@ -40,6 +43,11 @@ void ScreenSelectorDialog::selectBezierSketcher() {
 
 void ScreenSelectorDialog::selectSketcher() {
     selectedScreen = 2;
+    accept();
+}
+
+void ScreenSelectorDialog::selectModelEditor() {
+    selectedScreen = 4;
     accept();
 }
 

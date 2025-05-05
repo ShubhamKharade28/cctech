@@ -5,6 +5,7 @@
 #include "scene_creator.h"
 #include "bezier_sketcher.h"
 #include "sketcher_screen.h"
+#include "model_editor.h"
 #include "mainscreen.h"
 
 #include "screen_selector_dialog.h"
@@ -20,29 +21,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 MainWindow::~MainWindow() {}
-
-// void MainWindow::showSceneCreatorScreen() {
-//     this->resize(1000, 700);
-//     setWindowTitle("Project 3D");
-
-//     SceneCreator *sceneCreator = new SceneCreator(this);
-//     setCentralWidget(sceneCreator);
-// }
-// void MainWindow::showBezierCurveScreen() {
-//     this->resize(1000, 700);
-//     setWindowTitle("Test - Bezier Curve");
-
-//     BezierSketcher *bezierSketcher = new BezierSketcher(this);
-//     setCentralWidget(bezierSketcher);
-// }
-
-// void MainWindow::showSketcherScreen() {
-//     this->resize(1000, 700);
-//     setWindowTitle("Test - Sketcher");
-
-//     SketcherScreen *sketcherScreen = new SketcherScreen(this);
-//     setCentralWidget(sketcherScreen);
-// }
 
 void MainWindow::showScreen(int screenIndex) {
     this->resize(1000, 700);
@@ -64,6 +42,10 @@ void MainWindow::showScreen(int screenIndex) {
         case 3:
             setWindowTitle("Main Screen");
             screen = new MainScreen(this);
+            break;
+        case 4:
+            setWindowTitle("Model Editor");
+            screen = new ModelEditor(this);
             break;
         default:
             setWindowTitle("Invalid Screen");

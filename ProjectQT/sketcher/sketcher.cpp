@@ -377,3 +377,138 @@ Solid* Sketcher::revolveFace(int faceIdx, double angle, int steps = 20){
     Face* f = faces[faceIdx];
     return revolveFace(f, angle, steps);
 }
+
+void Sketcher::clearSketch() {
+    for(auto& vertex : vertices) {
+        delete vertex;
+    }
+    vertices.clear();
+
+    for(auto& edge : edges) {
+        delete edge;
+    }
+    edges.clear();
+
+    for(auto& face : faces) {
+        delete face;
+    }
+    faces.clear();
+
+    for(auto& solid : solids) {
+        delete solid;
+    }
+    solids.clear();
+}
+
+bool Sketcher::loadSketchFromFile(const string filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        qDebug() << "Could not open file: " << QString::fromStdString(filename);
+        return false;
+    }
+    
+    string ext = filename.substr(filename.find_last_of(".") + 1);
+    if(ext == "stl") {
+        return loadSketchFromSTL(filename);
+    } else if(ext == "obj") {
+        return loadSketchFromOBJ(filename);
+    } 
+    // else ->
+    qDebug() << "Unsupported file format: " << QString::fromStdString(ext);
+    return false;
+}
+
+void Sketcher::loadSketchFromSTL(const string filename) {
+    ifstream file(filename);
+
+    if (!file.is_open()) {
+        qDebug() << "Could not open file: " << QString::fromStdString(filename);
+        return false;
+    }
+
+    string line;
+    vector<Vertex*> currentTriangle;
+    vector<Edge*> currentEdges;
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string word;
+        ss >> word;
+
+        if (word == "vertex") {
+            double x, y, z;
+            ss >> x >> y >> z;
+            Vertex* v = addVertex(x, y, z);
+            currentTriangle.push_back(v);
+        }
+
+        if(word == "endloop") {
+            if(currentTriangle.size() == 3) {
+                Vertex* v0 = currentTriangle[0], v1 = currentTriangle[1], v2 = currentTriangle[2];
+                Edge* e1 = addEdge(v0, v1);
+                Edge* e2 = addEdge(v1, v2);
+                Edge* e3 = addEdge(v2, v0);
+                Face* f = addFace({e1, e2, e3});
+            }
+            currentTriangle.clear();
+        }
+    }
+
+    file.close();
+    qDebug() << "STL file loaded successfully";
+    return true;
+}
+
+bool Sketcher::loadSketchFromOBJ(const string filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        qDebug() << "Could not open OBJ file: " << QString::fromStdString(filename);
+        return;
+    }
+
+    vector<Vertex*> tempVertices;
+    string line;
+    while(getline(file, line)) {
+        if(line.empty() || line[0] == '#') continue;
+
+        stringstream ss(line);
+        string prefix;
+        ss >> prefix;
+
+        if(prefix == "v") {
+            double x, y, z;
+            ss >> x >> y >> z;
+            Vertex* v = addVertex(x, y, z);
+            tempVertices.push_back(v);
+        }
+        else if(prefix == "f") {
+            vector<Vertex*> faceVertices;
+            string token;
+            while (ss >> token) {
+                stringstream tokenStream(token);
+                string indexStr;
+                getline(tokenStream, indexStr, '/');
+
+                int vertexIndex = stoi(indexStr) - 1;
+                if(vertexIndex >= 0 && vertexIndex < tempVertices.size()) {
+                    faceVertices.push_back(tempVertices[vertexIndex]);
+                }
+            }
+
+            vector<Edge*> faceEdges;
+            int n = faceVertices.size();
+            for(int i=0; i<n; i++) {
+                Vertex* v0 = faceVertices[i];
+                Vertex* v1 = faceVertices[(i+1) % n];
+                Edge* e = addEdge(v0, v1);
+                faceEdges.push_back(e);
+            }
+
+            Face* f = addFace(faceEdges);
+        }
+    }
+
+    file.close();
+    qDebug() << "OBJ file successfully loaded into sketcher";
+    return true;
+}
