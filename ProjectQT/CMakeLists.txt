@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 project(ProjectQT LANGUAGES CXX)
  
 # ✅ Use Qt6 with required modules
-find_package(Qt6 6.9.0 REQUIRED COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets)
+find_package(Qt6 6.9.0 REQUIRED COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets Concurrent)
  
 qt_standard_project_setup()
  
@@ -94,6 +94,7 @@ target_link_libraries(ProjectQT
         Qt6::OpenGL
         Qt6::OpenGLWidgets
         opengl32
+        Qt6::Concurrent
 )
  
 include(GNUInstallDirs)

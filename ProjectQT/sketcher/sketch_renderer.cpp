@@ -123,7 +123,7 @@ void SketchRenderer::renderSolids() {
 }
 
 void SketchRenderer::drawAxis() {
-    double start = -20, end = 20;
+    double start = -100, end = 100;
 
     // Define 3 axis lines (X, Y, Z)
     QVector<QPair<QVector3D, QVector3D>> lines = {
@@ -189,6 +189,6 @@ void SketchRenderer::wheelEvent(QWheelEvent* event) {
         zoomFactor /= 1.1f;
     }
 
-    zoomFactor = std::clamp(zoomFactor, 0.1f, 10.0f);
+    zoomFactor = std::clamp(zoomFactor, 0.01f, 50.0f);
     update();
 }

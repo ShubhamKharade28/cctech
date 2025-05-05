@@ -378,7 +378,7 @@ Solid* Sketcher::revolveFace(int faceIdx, double angle, int steps = 20){
     return revolveFace(f, angle, steps);
 }
 
-void Sketcher::clearSketch() {
+void Sketcher::clear() {
     for(auto& vertex : vertices) {
         delete vertex;
     }
@@ -418,7 +418,7 @@ bool Sketcher::loadSketchFromFile(const string filename) {
     return false;
 }
 
-void Sketcher::loadSketchFromSTL(const string filename) {
+bool Sketcher::loadSketchFromSTL(const string filename) {
     ifstream file(filename);
 
     if (!file.is_open()) {
@@ -444,7 +444,9 @@ void Sketcher::loadSketchFromSTL(const string filename) {
 
         if(word == "endloop") {
             if(currentTriangle.size() == 3) {
-                Vertex* v0 = currentTriangle[0], v1 = currentTriangle[1], v2 = currentTriangle[2];
+                Vertex* v0 = currentTriangle[0];
+                Vertex* v1 = currentTriangle[1];
+                Vertex* v2 = currentTriangle[2];
                 Edge* e1 = addEdge(v0, v1);
                 Edge* e2 = addEdge(v1, v2);
                 Edge* e3 = addEdge(v2, v0);
@@ -463,7 +465,7 @@ bool Sketcher::loadSketchFromOBJ(const string filename) {
     ifstream file(filename);
     if (!file.is_open()) {
         qDebug() << "Could not open OBJ file: " << QString::fromStdString(filename);
-        return;
+        return false;
     }
 
     vector<Vertex*> tempVertices;

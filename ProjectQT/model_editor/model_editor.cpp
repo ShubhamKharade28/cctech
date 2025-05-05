@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 
+#include <QtConcurrent> // to run concurrently
+
 ModelEditor::ModelEditor(QWidget *parent)
     : QWidget(parent)
 {
@@ -55,11 +57,35 @@ void ModelEditor::onOpenFileClicked()
     // open stl or obj file
     QString fileName = QFileDialog::getOpenFileName(this, tr("open file"), "", tr("STL Files (*.stl);;OBJ Files (*.obj)"));
     if (fileName.isEmpty()) return;
+
+    sketch->clear();
+
+    string stdFileName = fileName.toStdString();
+
+    // if (fileName.endsWith(".stl", Qt::CaseInsensitive)) {
+    //     sketch->loadSketchFromSTL(stdFileName);
+    // } else if (fileName.endsWith(".obj", Qt::CaseInsensitive)) {
+    //     sketch->loadSketchFromOBJ(stdFileName);
+    // }
+    // 
+    // sketchRenderer->update();
+
+    QtConcurrent::run([=]() {
+        if (fileName.endsWith(".stl", Qt::CaseInsensitive)) {
+            sketch->loadSketchFromSTL(stdFileName);
+        } else if (fileName.endsWith(".obj", Qt::CaseInsensitive)) {
+            sketch->loadSketchFromOBJ(stdFileName);
+        }
+
+        QMetaObject::invokeMethod(sketchRenderer, "update", Qt::QueuedConnection);
+    });
+
+    
 }
 
 void ModelEditor::onExportObjClicked() 
 {
-
+    
 }
 
 void ModelEditor::onExportStlClicked() 
@@ -69,6 +95,11 @@ void ModelEditor::onExportStlClicked()
 
 void ModelEditor::onClearSketchClicked() 
 {
-    sketch->clearSketch();
-    sketchRenderer->update();
+    // sketch->clear();
+    // sketchRenderer->update();
+
+    QtConcurrent::run([this]() {
+        sketch->clear();
+        QMetaObject::invokeMethod(sketchRenderer, "update", Qt::QueuedConnection);
+    });
 }
