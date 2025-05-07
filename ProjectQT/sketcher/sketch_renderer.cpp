@@ -1,7 +1,12 @@
 #include "sketch_renderer.h"
 #include <QDebug>
+#include <QReadLocker>
+#include <QWriteLocker>
+#include <QMutexLocker>
 
-SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidget(parent), sketch(sketch) {}
+SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidget(parent), sketch(sketch) {
+    
+}
 
 SketchRenderer::~SketchRenderer() {
     // delete sketch;// Cleanup if needed
@@ -28,6 +33,8 @@ void SketchRenderer::resizeGL(int w, int h) {
 }
 
 void SketchRenderer::paintGL() {
+    // lockMutex();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity(); 
 
@@ -38,10 +45,37 @@ void SketchRenderer::paintGL() {
 
     drawAxis(); 
 
-    renderVertices();
-    renderEdges();
-    renderFaces();
-    renderSolids();
+    switch(renderMode) {
+        case RenderMode::VerticesOnly:
+            renderVertices();
+            break;
+        case RenderMode::Wireframe:
+            renderEdges();
+            break;
+        case RenderMode::Shaded: {
+            renderEdges();
+            renderFaces();
+            break;
+        }
+        case RenderMode::Solid: {
+            renderSolids();
+            break;
+        }
+        default: {
+            qDebug() << "Wrong rendering mode";
+        }
+    }
+
+    // unlockMutex();
+}
+
+// mutex locking system
+void SketchRenderer::lockMutex() { mutexLock = true; }
+void SketchRenderer::unlockMutex() { mutexLock = false; }
+bool SketchRenderer::isMutexAvailable() { return mutexLock; }
+
+void SketchRenderer::setRenderMode(RenderMode mode = Wireframe) {
+    this->renderMode = mode;
 }
 
 QMatrix4x4 SketchRenderer::getViewMatrix(){
@@ -79,7 +113,7 @@ void SketchRenderer::renderVertices() {
 
 void SketchRenderer::renderEdges() {
     glColor3f(0.0f, 1.0f, 0.0f); // Set color for edges (green)
-    glLineWidth(2.0f); // Set line width for edges
+    glLineWidth(0.5f); // Set line width for edges
     glBegin(GL_LINES);
     for (auto& edge : sketch->getEdges()) {
         auto startVertex = edge->getStart();
@@ -178,7 +212,8 @@ void SketchRenderer::mouseMoveEvent(QMouseEvent* event) {
     }
 
     lastMousePosition = event->pos();
-    update();
+
+   update();
 }
 
 // zoom done

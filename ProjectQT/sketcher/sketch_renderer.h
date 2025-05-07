@@ -5,6 +5,14 @@
 #include <QOpenGLFunctions>
 #include <QMatrix4x4>
 #include <QMouseEvent>
+#include <QMutex>
+
+enum RenderMode {
+    Wireframe,
+    Shaded,
+    VerticesOnly,
+    Solid
+};
 
 class SketchRenderer : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
@@ -24,11 +32,23 @@ private slots:
     void wheelEvent(QWheelEvent* event) override;
     // void mouseReleaseEvent(QMouseEvent* event) override;
 
+    void setRenderMode(RenderMode mode);
+    void lockMutex();
+    void unlockMutex();
+
+public slots:
+    bool isMutexAvailable();
+
 private:
     void renderVertices();
     void renderEdges();
     void renderFaces();
     void renderSolids();
+    // void renderBoundingBox();
+
+    bool mutexLock = false;
+    
+    RenderMode renderMode = Wireframe;
 
     QMatrix4x4 getViewMatrix();
     void drawAxis();
