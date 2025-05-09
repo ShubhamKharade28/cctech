@@ -6,10 +6,36 @@
 
 SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidget(parent), sketch(sketch) {
     
+    modeSelector = new QComboBox(this);
+    modeSelector->addItem("View Transform");
+    modeSelector->addItem("Edit");
+    modeSelector->setFixedSize(150, 30);
+
+    connect(modeSelector, &QComboBox::currentIndexChanged, this, [this](int index) {
+        if(index == 0) {
+            setInteractionMode(InteractionMode::ViewTransform);
+        } else {
+            setInteractionMode(InteractionMode::Edit);
+        }
+    });
+
+    layout = new QVBoxLayout(this);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->addWidget(modeSelector);
+    layout->addStretch();
+    setLayout(layout);
 }
 
 SketchRenderer::~SketchRenderer() {
-    // delete sketch;// Cleanup if needed
+    delete sketch;
+}
+
+void SketchRenderer::setRenderMode(RenderMode mode = Wireframe) {
+    this->renderMode = mode;
+}
+
+void SketchRenderer::setInteractionMode(InteractionMode mode = InteractionMode::ViewTransform) {
+    this->interactionMode = mode;
 }
 
 void SketchRenderer::initializeGL() {
@@ -74,16 +100,12 @@ void SketchRenderer::lockMutex() { mutexLock = true; }
 void SketchRenderer::unlockMutex() { mutexLock = false; }
 bool SketchRenderer::isMutexAvailable() { return mutexLock; }
 
-void SketchRenderer::setRenderMode(RenderMode mode = Wireframe) {
-    this->renderMode = mode;
-}
-
 QMatrix4x4 SketchRenderer::getViewMatrix(){
     QMatrix4x4 modelView;
     modelView.setToIdentity();
 
     // apply zoomm
-    modelView.translate(posX, posY, -5.0*zoomFactor);
+    modelView.translate(posX, posY, -10*zoomFactor);
 
     // apply rotation (translate to center, rotate, then translate back to it's original position)
     modelView.translate(sceneCenter);
@@ -189,31 +211,78 @@ void SketchRenderer::drawAxis() {
     glEnd();
 }
 
+QPointF SketchRenderer::screenToWorld(QPointF screenPos) {
+    float ndcX = (2.0f * screenPos.x()) / width() - 1.0f;
+    float ndcY = 1.0f - (2.0f * screenPos.y()) / height();
+
+    float xCoef = 6.2, yCoef = 4;
+
+    float worldX = xCoef*(ndcX / zoomFactor);
+    float worldY = yCoef*(ndcY / zoomFactor);
+    QPointF mousePos = QPointF(worldX, worldY);
+    return mousePos;
+}
+
 void SketchRenderer::mousePressEvent(QMouseEvent* event) {
-    lastMousePosition = event->pos();
-    if(event->button() == Qt::LeftButton) {
-        currentButton = "left";
-    } else if(event->button() == Qt::RightButton) {
-        currentButton = "right";
+    if(interactionMode == InteractionMode::ViewTransform) {
+        lastMousePosition = event->pos();
+        if(event->button() == Qt::LeftButton) {
+            currentButton = "left";
+        } else if(event->button() == Qt::RightButton) {
+            currentButton = "right";
+        }
     }
+    else if (interactionMode == InteractionMode::Edit) {
+        // float ndcX = (2.0f * event->pos().x()) / width() - 1.0f;
+        // float ndcY = 1.0f - (2.0f * event->pos().y()) / height();
+
+        // float xCoef = 4, yCoef = 4;
+ 
+        // float worldX = xCoef*(ndcX / zoomFactor);
+        // float worldY = yCoef*(ndcY / zoomFactor);
+        // QPointF mousePos = QPointF(worldX, worldY);
+
+        QPointF screenPos = event->pos();
+        QPointF mousePos = screenToWorld(screenPos);
+
+        double x = (double) mousePos.x();
+        double y = (double) mousePos.y();
+        double z = 0.0; 
+
+        sketch->addVertex(x, y, z);
+        update();
+
+        qDebug() << "Vertex added at " << x << y << z;
+    }
+    lastMousePosition = event->pos();
 }
 
 void SketchRenderer::mouseMoveEvent(QMouseEvent* event) {
     QPoint delta = event->pos() - lastMousePosition;
 
-    if(currentButton == "left") {
-        qDebug() << "Left button pressed";
-        posX += delta.x() * sensitivity;
-        posY -= delta.y() * sensitivity;
-    } else if (currentButton == "right") {
-        qDebug() << "Right button pressed";
-        rotationX += delta.y();
-        rotationY += delta.x();
+    if(interactionMode == InteractionMode::Edit) {
+        // QPointF screenPos = event->pos();
+        // QPointF mousePos = screenToWorld(screenPos);
+
+        // QPointF deltaPos = screenToWorld(mousePos) - screenToWorld(lastMousePosition);
+        // QPointF newPos = mousePos + deltaPos;
+        // qDebug() << "Vertex " << mousePos.x() << " " << mousePos.y() << " to " << newPos.x() << " " << newPos.y();
+    }
+    else if (interactionMode == InteractionMode::ViewTransform) {
+        
+        if(currentButton == "left") {
+            qDebug() << "Left button pressed";
+            posX += delta.x() * sensitivity;
+            posY -= delta.y() * sensitivity;
+        } else if (currentButton == "right") {
+            qDebug() << "Right button pressed";
+            rotationX += delta.y();
+            rotationY += delta.x();
+        }
     }
 
     lastMousePosition = event->pos();
-
-   update();
+    update();
 }
 
 // zoom done

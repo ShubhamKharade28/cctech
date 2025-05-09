@@ -6,12 +6,19 @@
 #include <QMatrix4x4>
 #include <QMouseEvent>
 #include <QMutex>
+#include <QComboBox>
+#include <QVBoxLayout>
 
 enum RenderMode {
     Wireframe,
     Shaded,
     VerticesOnly,
     Solid
+};
+
+enum InteractionMode {
+    ViewTransform,
+    Edit
 };
 
 class SketchRenderer : public QOpenGLWidget, protected QOpenGLFunctions {
@@ -33,6 +40,7 @@ private slots:
     // void mouseReleaseEvent(QMouseEvent* event) override;
 
     void setRenderMode(RenderMode mode);
+    void setInteractionMode(InteractionMode mode);
     void lockMutex();
     void unlockMutex();
 
@@ -48,10 +56,15 @@ private:
 
     bool mutexLock = false;
     
-    RenderMode renderMode = Wireframe;
+    RenderMode renderMode = RenderMode::VerticesOnly;
+    InteractionMode interactionMode = InteractionMode::ViewTransform;
+
+    QComboBox* modeSelector;
+    QVBoxLayout* layout;
 
     QMatrix4x4 getViewMatrix();
     void drawAxis();
+    QPointF screenToWorld(QPointF screenPos);
 
     QMatrix4x4 projection;
     QPoint lastMousePosition; 

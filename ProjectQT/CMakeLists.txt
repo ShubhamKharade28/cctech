@@ -44,6 +44,9 @@ qt_add_executable(ProjectQT
     includes/file-utils.h
     includes/point.h
     includes/bezier_curve.h
+    includes/sketcher_primitives.h 
+    includes/sketcher.h 
+    includes/boolean2d.h 
 
     src/shapes/cuboid.cpp 
     src/shapes/cylinder.cpp 
@@ -54,13 +57,9 @@ qt_add_executable(ProjectQT
     src/file-utils.cpp
     src/drawable-shape.cpp
     src/bezier_curve.cpp
-    
-    # myopenglwidget.cpp
-    # myopenglwidget.h
+    src/sketcher.cpp 
+    src/boolean2d.cpp
 
-    sketcher/sketcher_primitives.h 
-    sketcher/sketcher.h 
-    sketcher/sketcher.cpp 
     sketcher/sketcher_screen.cpp
     sketcher/sketcher_screen.h
     sketcher/sketch_renderer.h 

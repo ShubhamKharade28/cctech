@@ -9,8 +9,8 @@ SketcherScreen::SketcherScreen(QWidget* parent) : QWidget(parent) {
 }
 
 SketcherScreen::~SketcherScreen() {
-    //     delete sketch; 
-    //     delete renderer;
+        delete sketch; 
+        delete renderer;
 }
 
 void SketcherScreen::setupUI() {
