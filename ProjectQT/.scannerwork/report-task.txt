@@ -1,0 +1,6 @@
+projectKey=My3DProjectKey
+serverUrl=http://localhost:9000
+serverVersion=25.5.0.107428
+dashboardUrl=http://localhost:9000/dashboard?id=My3DProjectKey
+ceTaskId=4b96e715-e8e7-4756-89d3-7cc82c19b755
+ceTaskUrl=http://localhost:9000/api/ce/task?id=4b96e715-e8e7-4756-89d3-7cc82c19b755

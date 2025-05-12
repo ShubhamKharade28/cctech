@@ -207,6 +207,34 @@ int Sketcher::findVertex(Vertex* v) {
     return -1;
 }
 
+int Sketcher::findVertex(double x, double y, double z, double radius) {
+    int closestIndex = -1;
+    double minDistSq = radius * radius;
+    for(int i=0; i<vertices.size(); i++) {
+        Vertex* v = vertices[i];
+        double dx = v->getX() - x;
+        double dy = v->getY() - y;
+        double dz = v->getZ() - z;
+        double distSq = dx*dx + dy*dy + dz*dz;
+
+        if(distSq <= minDistSq) {
+            minDistSq = distSq;
+            closestIndex = i;
+        }
+    }
+    return closestIndex;
+}
+
+bool Sketcher::moveVertex(int vertexIdx, double x, double y, double z) {
+    if(vertexIdx < 0 || vertexIdx >= vertices.size()) return false;
+
+    Vertex* v = vertices[vertexIdx];
+    v->setX(x);
+    v->setY(y);
+    v->setZ(z);
+    return true;
+}
+
 int Sketcher::findEdge(Edge* e) {
     for(int i=0; i<edges.size(); i++) {
         if(edges[i] == e) return i;

@@ -10,15 +10,22 @@
 #include <QVBoxLayout>
 
 enum RenderMode {
+    VerticesOnly,
     Wireframe,
     Shaded,
-    VerticesOnly,
-    Solid
+    Solid,
+    Composite
 };
 
 enum InteractionMode {
     ViewTransform,
     Edit
+};
+
+enum EditMode {
+    Vertice,
+    Edge, 
+    Face
 };
 
 class SketchRenderer : public QOpenGLWidget, protected QOpenGLFunctions {
@@ -37,15 +44,15 @@ private slots:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void wheelEvent(QWheelEvent* event) override;
-    // void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
     void setRenderMode(RenderMode mode);
     void setInteractionMode(InteractionMode mode);
-    void lockMutex();
-    void unlockMutex();
+    void setSelectedVertexIdx(int index);
 
 public slots:
-    bool isMutexAvailable();
+    void resetView();
+    void clearSketch();
 
 private:
     void renderVertices();
@@ -53,13 +60,15 @@ private:
     void renderFaces();
     void renderSolids();
     // void renderBoundingBox();
-
-    bool mutexLock = false;
     
     RenderMode renderMode = RenderMode::VerticesOnly;
     InteractionMode interactionMode = InteractionMode::ViewTransform;
+    EditMode editMode = EditMode::Vertice;
 
-    QComboBox* modeSelector;
+    int selectedVertexIdx = -1;
+
+    QComboBox* interactionModeSelector;
+    QComboBox* renderModeSelector;
     QVBoxLayout* layout;
 
     QMatrix4x4 getViewMatrix();

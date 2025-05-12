@@ -1,17 +1,20 @@
 #include "sketch_renderer.h"
 #include <QDebug>
-#include <QReadLocker>
-#include <QWriteLocker>
-#include <QMutexLocker>
+#include <QPushButton>
+#include <QHBoxLayout>
 
 SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidget(parent), sketch(sketch) {
+    // Set main layout
+    layout = new QVBoxLayout(this);
+    layout->setContentsMargins(10, 10, 10, 10);
+    setLayout(layout);
     
-    modeSelector = new QComboBox(this);
-    modeSelector->addItem("View Transform");
-    modeSelector->addItem("Edit");
-    modeSelector->setFixedSize(150, 30);
+    interactionModeSelector = new QComboBox(this);
+    interactionModeSelector->addItem("View Transform");
+    interactionModeSelector->addItem("Edit");
+    interactionModeSelector->setFixedSize(150, 30);
 
-    connect(modeSelector, &QComboBox::currentIndexChanged, this, [this](int index) {
+    connect(interactionModeSelector, &QComboBox::currentIndexChanged, this, [this](int index) {
         if(index == 0) {
             setInteractionMode(InteractionMode::ViewTransform);
         } else {
@@ -19,11 +22,53 @@ SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidge
         }
     });
 
-    layout = new QVBoxLayout(this);
-    layout->setContentsMargins(10, 10, 10, 10);
-    layout->addWidget(modeSelector);
+    renderModeSelector = new QComboBox(this);
+    renderModeSelector->addItem("Vertices Only");
+    renderModeSelector->addItem("Wireframes");
+    renderModeSelector->addItem("Shaded");
+    renderModeSelector->addItem("Composite");
+    renderModeSelector->setFixedSize(150, 30);
+
+    connect(renderModeSelector, &QComboBox::currentIndexChanged, this, [this] (int index) {
+        switch(index) {
+            case 0: 
+                setRenderMode(RenderMode::VerticesOnly);
+                break;
+            case 1:
+                setRenderMode(RenderMode::Wireframe);
+                break;
+            case 2:
+                setRenderMode(RenderMode::Shaded);
+                break;
+            case 3:
+                setRenderMode(RenderMode::Composite);
+                break;
+            default:
+                setRenderMode(RenderMode::Composite);
+        }
+        update();
+    });
+
+
+    auto* resetViewButton = new QPushButton("Reset View", this);
+    resetViewButton->setFixedSize(150, 30);
+    connect(resetViewButton, &QPushButton::clicked, this, resetView);
+
+    auto* clearSketchButton = new QPushButton("Clear", this);
+    clearSketchButton->setFixedSize(150, 30);
+    connect(clearSketchButton, &QPushButton::clicked, this, clearSketch);
+    
+
+    // Add top layout
+    auto* topLayout = new QHBoxLayout(this);
+    topLayout->addWidget(interactionModeSelector);
+    topLayout->addWidget(renderModeSelector);
+    topLayout->addWidget(resetViewButton);
+    topLayout->addWidget(clearSketchButton);
+    topLayout->addStretch();
+
+    layout->addLayout(topLayout);
     layout->addStretch();
-    setLayout(layout);
 }
 
 SketchRenderer::~SketchRenderer() {
@@ -59,8 +104,6 @@ void SketchRenderer::resizeGL(int w, int h) {
 }
 
 void SketchRenderer::paintGL() {
-    // lockMutex();
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity(); 
 
@@ -76,6 +119,7 @@ void SketchRenderer::paintGL() {
             renderVertices();
             break;
         case RenderMode::Wireframe:
+            renderVertices();
             renderEdges();
             break;
         case RenderMode::Shaded: {
@@ -87,18 +131,31 @@ void SketchRenderer::paintGL() {
             renderSolids();
             break;
         }
+        case RenderMode::Composite: {
+            renderVertices();
+            renderEdges();
+            renderFaces();
+            renderSolids();
+        }
         default: {
             qDebug() << "Wrong rendering mode";
         }
     }
-
-    // unlockMutex();
 }
 
-// mutex locking system
-void SketchRenderer::lockMutex() { mutexLock = true; }
-void SketchRenderer::unlockMutex() { mutexLock = false; }
-bool SketchRenderer::isMutexAvailable() { return mutexLock; }
+void SketchRenderer::clearSketch() {
+    sketch->clear();
+    update();
+}
+
+void SketchRenderer::resetView() {
+    zoomFactor = 1;
+    posX = 0;
+    posY = 0;
+    rotationX = 0.0f;
+    rotationY = 0.0f;
+    update();
+}
 
 QMatrix4x4 SketchRenderer::getViewMatrix(){
     QMatrix4x4 modelView;
@@ -223,25 +280,18 @@ QPointF SketchRenderer::screenToWorld(QPointF screenPos) {
     return mousePos;
 }
 
+void SketchRenderer::setSelectedVertexIdx(int idx = -1) {
+    selectedVertexIdx = idx;
+}
+
 void SketchRenderer::mousePressEvent(QMouseEvent* event) {
-    if(interactionMode == InteractionMode::ViewTransform) {
-        lastMousePosition = event->pos();
-        if(event->button() == Qt::LeftButton) {
-            currentButton = "left";
-        } else if(event->button() == Qt::RightButton) {
-            currentButton = "right";
-        }
+    if(event->button() == Qt::LeftButton) {
+        currentButton = "left";
+    } else if(event->button() == Qt::RightButton) {
+        currentButton = "right";
     }
-    else if (interactionMode == InteractionMode::Edit) {
-        // float ndcX = (2.0f * event->pos().x()) / width() - 1.0f;
-        // float ndcY = 1.0f - (2.0f * event->pos().y()) / height();
 
-        // float xCoef = 4, yCoef = 4;
- 
-        // float worldX = xCoef*(ndcX / zoomFactor);
-        // float worldY = yCoef*(ndcY / zoomFactor);
-        // QPointF mousePos = QPointF(worldX, worldY);
-
+    if (interactionMode == InteractionMode::Edit) {
         QPointF screenPos = event->pos();
         QPointF mousePos = screenToWorld(screenPos);
 
@@ -249,10 +299,15 @@ void SketchRenderer::mousePressEvent(QMouseEvent* event) {
         double y = (double) mousePos.y();
         double z = 0.0; 
 
-        sketch->addVertex(x, y, z);
+        if(currentButton == "right") {
+            sketch->addVertex(x, y, z);
+            qDebug() << "Vertex added at " << x << y << z;
+        } else if (currentButton == "left") {
+            int vertexIdx = sketch->findVertex(x, y, z);
+            setSelectedVertexIdx(vertexIdx);
+            qDebug() << "Selected Vertex: " << vertexIdx;
+        }
         update();
-
-        qDebug() << "Vertex added at " << x << y << z;
     }
     lastMousePosition = event->pos();
 }
@@ -260,13 +315,18 @@ void SketchRenderer::mousePressEvent(QMouseEvent* event) {
 void SketchRenderer::mouseMoveEvent(QMouseEvent* event) {
     QPoint delta = event->pos() - lastMousePosition;
 
-    if(interactionMode == InteractionMode::Edit) {
-        // QPointF screenPos = event->pos();
-        // QPointF mousePos = screenToWorld(screenPos);
+    if(interactionMode == InteractionMode::Edit && currentButton == "left") {
+        if(selectedVertexIdx != -1) {
+            QPointF screenPos = event->pos();
+            QPointF mousePos = screenToWorld(screenPos);
+            // QPointF deltaF = delta.toPointF();
+            // deltaF = screenToWorld(deltaF);
+            // QPointF newPos = mousePos + deltaF;
 
-        // QPointF deltaPos = screenToWorld(mousePos) - screenToWorld(lastMousePosition);
-        // QPointF newPos = mousePos + deltaPos;
-        // qDebug() << "Vertex " << mousePos.x() << " " << mousePos.y() << " to " << newPos.x() << " " << newPos.y();
+            // double x = newPos.x(), y = newPos.y(), z = 0;
+            double x = mousePos.x(), y = mousePos.y(), z = 0;
+            bool vertexMoved = sketch->moveVertex(selectedVertexIdx, x, y, z);
+        }
     }
     else if (interactionMode == InteractionMode::ViewTransform) {
         
@@ -295,4 +355,8 @@ void SketchRenderer::wheelEvent(QWheelEvent* event) {
 
     zoomFactor = std::clamp(zoomFactor, 0.01f, 50.0f);
     update();
+}
+
+void SketchRenderer::mouseReleaseEvent(QMouseEvent* event) {
+    selectedVertexIdx = -1;
 }

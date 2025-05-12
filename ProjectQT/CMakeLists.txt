@@ -5,6 +5,8 @@ project(ProjectQT LANGUAGES CXX)
 find_package(Qt6 6.9.0 REQUIRED COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets Concurrent)
  
 qt_standard_project_setup()
+
+qt_add_resources(RESOURCES resources.qrc)
  
 # ✅ Add your executable
 qt_add_executable(ProjectQT
@@ -70,6 +72,8 @@ qt_add_executable(ProjectQT
 
     model_editor/model_editor.h
     model_editor/model_editor.cpp
+
+    ${RESOURCES}
 )
 
 include_directories(

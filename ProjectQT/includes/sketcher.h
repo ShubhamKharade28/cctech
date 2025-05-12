@@ -48,6 +48,8 @@ public:
     int findEdge(Edge* e);
     int findFace(Face* f);
     int findSolid(Solid* s);
+    int findVertex(double x, double y, double z, double radius=0.1);
+    bool moveVertex(int vertexIdx, double x, double y, double z);
 
     // validation methods
     bool checkFaceEdgesValidity(vector<Edge*>& faceEdges);
