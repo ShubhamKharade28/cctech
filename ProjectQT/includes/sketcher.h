@@ -1,5 +1,6 @@
 #pragma once
 #include "sketcher_primitives.h"
+#include "boolean2d.h"
 
 class Sketcher {
     vector<Vertex*> vertices;
@@ -60,6 +61,9 @@ public:
 
     Solid* revolveFace(Face* face, double angle, int steps);
     Solid* revolveFace(int faceIdx, double angle, int steps);
+
+    Face* performBooleanOperation(Face* face1, Face* face2, BooleanType booleanType);
+    int performBooleanOperation(int face1, int face2, BooleanType booleanType);
 
     void clear();
 

@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QListWidget>
+#include <QComboBox>
 
 class SketcherScreen : public QWidget {
     Q_OBJECT
@@ -31,31 +32,28 @@ private:
     QListWidget* solidListWidget;
 
     // vertex inputs
-    QLineEdit* vertexXInput;
-    QLineEdit* vertexYInput;
-    QLineEdit* vertexZInput;
-    QPushButton* addVertexButton;
+    QLineEdit* vertexInput;
+    // QPushButton* addVertexButton;
 
     // edge inputs
-    QLineEdit* edgeStartInput;
-    QLineEdit* edgeEndInput;
-    QPushButton* addEdgeButton;
+    QLineEdit* edgeInput;
+    // QPushButton* addEdgeButton;
 
     // face inputs
     QLineEdit* faceEdgeInput;
-    QPushButton* addFaceButton;
+    // QPushButton* addFaceButton;
 
-    // extrude face button
-    QPushButton* extrudeFaceButton;
+    // extrusion face selection and height input
+    int selectedFaceIndex = -1;
     QLineEdit* extrudeHeightInput;
 
-    // revolve face button 
-    QPushButton* revolveFaceButton;
+    // revolve inputs
     QLineEdit* revolveAngleInput;
     QLineEdit* revolveAxisInput; // axis of revolution will be an edge (future use)
+
+    QLineEdit* booleanFacesInput;
+    QComboBox* booleanOpSelector;
     
-    // selected face for extrusion (for revolve in future)
-    int selectedFaceIndex = -1;
 
 private slots:
     void addVertex();
@@ -71,6 +69,8 @@ private slots:
     void selectFace(QListWidgetItem* item);
     void extrudeFace();
     void revolveFace();
+
+    void applyBooleanOperation();
 
 signals:
     void vertexAdded();

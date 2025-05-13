@@ -86,4 +86,7 @@ private:
     QVector3D sceneCenter = {0,0,0};
     float rotationX = 0.0f;
     float rotationY = 0.0f; 
+
+signals: 
+    void sketchUpdated();
 };

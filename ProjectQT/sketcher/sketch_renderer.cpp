@@ -141,6 +141,8 @@ void SketchRenderer::paintGL() {
             qDebug() << "Wrong rendering mode";
         }
     }
+
+    emit sketchUpdated();
 }
 
 void SketchRenderer::clearSketch() {

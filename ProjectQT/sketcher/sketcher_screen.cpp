@@ -1,16 +1,19 @@
 
 #include "sketcher_screen.h"
-#include <QHBoxLayout>
+#include "boolean2d.h"
 
+#include <QHBoxLayout>
+#include <QStringList>
 #include <QDebug>
+#include <QRegularExpression>
 
 SketcherScreen::SketcherScreen(QWidget* parent) : QWidget(parent) {
     setupUI();
 }
 
 SketcherScreen::~SketcherScreen() {
-        delete sketch; 
-        delete renderer;
+    delete sketch; 
+    delete renderer;
 }
 
 void SketcherScreen::setupUI() {
@@ -36,27 +39,21 @@ void SketcherScreen::setupUI() {
 
 void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     // Vertex inputs
-    addVertexButton = new QPushButton("Add Vertex", this);
-    vertexXInput = new QLineEdit(this);
-    vertexYInput = new QLineEdit(this);
-    vertexZInput = new QLineEdit(this);
-    auto* vertexLabel = new QLabel("Vertex Coordinates (x, y, z):", this);
+    vertexInput = new QLineEdit(this);
+    auto* vertexLabel = new QLabel("Vertex Coordinates (x y z):", this);
+    QPushButton* addVertexButton = new QPushButton("Add Vertex", this);
     sidebar->addWidget(vertexLabel);
-    sidebar->addWidget(vertexXInput);
-    sidebar->addWidget(vertexYInput);
-    sidebar->addWidget(vertexZInput);
+    sidebar->addWidget(vertexInput);
     sidebar->addWidget(addVertexButton);
     sidebar->addStretch();
     connect(addVertexButton, &QPushButton::clicked, this, &SketcherScreen::addVertex);
 
     // Edge inputs
-    edgeStartInput = new QLineEdit(this);
-    edgeEndInput = new QLineEdit(this);
-    addEdgeButton = new QPushButton("Add Edge", this);
-    auto* edgeLabel = new QLabel("Edge Vertices (start, end):", this);
+    auto* edgeLabel = new QLabel("Edge Vertices (startIndex endIndex):", this);
+    edgeInput = new QLineEdit(this);
+    QPushButton* addEdgeButton = new QPushButton("Add Edge", this);
     sidebar->addWidget(edgeLabel);
-    sidebar->addWidget(edgeStartInput);
-    sidebar->addWidget(edgeEndInput);
+    sidebar->addWidget(edgeInput);
     sidebar->addWidget(addEdgeButton);
     sidebar->addStretch();
     connect(addEdgeButton, &QPushButton::clicked, this, &SketcherScreen::addEdge);
@@ -64,7 +61,7 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     // Face inputs
     auto* faceInputLabel = new QLabel("Add Face (space separated edges):", this);
     faceEdgeInput = new QLineEdit(this);
-    addFaceButton = new QPushButton("Add Face", this);
+    QPushButton* addFaceButton = new QPushButton("Add Face", this);
     sidebar->addWidget(faceInputLabel);
     sidebar->addWidget(faceEdgeInput);
     sidebar->addWidget(addFaceButton);
@@ -98,7 +95,7 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     // Extrude height, and extrude face button
     extrudeHeightInput = new QLineEdit(this);
     extrudeHeightInput->setPlaceholderText("Extrude Height");
-    extrudeFaceButton = new QPushButton("Extrude Face", this);
+    QPushButton* extrudeFaceButton = new QPushButton("Extrude Face", this);
     sidebar->addWidget(extrudeHeightInput);
     sidebar->addWidget(extrudeFaceButton);
     sidebar->addStretch();
@@ -107,7 +104,7 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     // Revolve angle, and revolve face button
     revolveAngleInput = new QLineEdit(this);
     revolveAngleInput->setPlaceholderText("Revolve Angle (degrees)");
-    revolveFaceButton = new QPushButton("Revolve Face", this);
+    QPushButton* revolveFaceButton = new QPushButton("Revolve Face", this);
     sidebar->addWidget(revolveAngleInput);
     sidebar->addWidget(revolveFaceButton);
     sidebar->addStretch();
@@ -119,51 +116,79 @@ void SketcherScreen::setupSidebarUI(QVBoxLayout* sidebar) {
     sidebar->addWidget(solidListLabel);
     sidebar->addWidget(solidListWidget);
     connect(this, &SketcherScreen::solidAdded, this, &SketcherScreen::updateSolidList);
+
+    connect(renderer, &SketchRenderer::sketchUpdated, this, [this]() {
+        emit vertexAdded();
+        emit edgeAdded();
+        emit faceAdded();
+        emit solidAdded();
+    });
+
+    // BOOLEAN OPERATIONS
+    auto* booleanLabel = new QLabel("Boolean Operations", this);
+    booleanFacesInput = new QLineEdit(this);
+    booleanFacesInput->setPlaceholderText("Face Indices (e.g. 0 1)");
+    booleanOpSelector = new QComboBox(this);
+    booleanOpSelector->addItem("Union");
+    booleanOpSelector->addItem("Intersection");
+    booleanOpSelector->addItem("Difference");
+    QPushButton* booleanOpButton = new QPushButton("Apply Boolean Operation", this);
+
+    sidebar->addWidget(booleanLabel);
+    sidebar->addWidget(booleanFacesInput);
+    sidebar->addWidget(booleanOpSelector);
+    sidebar->addWidget(booleanOpButton);
+
+    connect(booleanOpButton, &QPushButton::clicked, this, applyBooleanOperation);
 }
 
 void SketcherScreen::addVertex() {
+    QStringList parts = vertexInput->text().split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    if (parts.size() != 3) {
+        qDebug() << "Invalid input! Enter 3 space-separated values.";
+        return;
+    }
+
     bool xOk, yOk, zOk;
-    double x = vertexXInput->text().toDouble(&xOk);
-    double y = vertexYInput->text().toDouble(&yOk);
-    double z = vertexZInput->text().toDouble(&zOk);
+    double x = parts[0].toDouble(&xOk);
+    double y = parts[1].toDouble(&yOk);
+    double z = parts[2].toDouble(&zOk);
 
     if (xOk && yOk && zOk) {
         sketch->addVertex(x, y, z);
         renderer->update();
         emit vertexAdded();
-
         qDebug() << "Vertex added:" << x << y << z;
     } else {
-        // Handle invalid input
         qDebug() << "Invalid vertex coordinates!";
     }
 
-    vertexXInput->clear();
-    vertexYInput->clear();
-    vertexZInput->clear();
-
-    vertexXInput->setFocus();
-    vertexXInput->selectAll();
+    vertexInput->clear();
+    vertexInput->setFocus();
 }
 
 void SketcherScreen::addEdge() {
-    bool startOk, endOk;
-    int start = edgeStartInput->text().toInt(&startOk);
-    int end = edgeEndInput->text().toInt(&endOk);
-
-    if (startOk && endOk) {
-        sketch->addEdge(start, end);
-        renderer->update(); 
-        emit edgeAdded();
-    } else {
-        qDebug() << "Invalid edge vertices!";
+    QStringList parts = edgeInput->text().split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    if (parts.size() != 2) {
+        qDebug() << "Invalid input! Enter 2 space-separated indices.";
+        return;
     }
 
-    edgeStartInput->clear();
-    edgeEndInput->clear();
+    bool startOk, endOk;
+    int startIndex = parts[0].toInt(&startOk);
+    int endIndex = parts[1].toInt(&endOk);
 
-    edgeStartInput->setFocus();
-    edgeStartInput->selectAll();
+    if (startOk && endOk) {
+        sketch->addEdge(startIndex, endIndex);
+        renderer->update();
+        emit edgeAdded();
+        qDebug() << "Edge added between indices:" << startIndex << "and" << endIndex;
+    } else {
+        qDebug() << "Invalid edge vertex indices!";
+    }
+
+    edgeInput->clear();
+    edgeInput->setFocus();
 }
 
 void SketcherScreen::addFace() {
@@ -321,4 +346,32 @@ void SketcherScreen::revolveFace() {
     revolveAngleInput->setFocus();
     revolveAngleInput->selectAll();
     // revolveAxisInput->clear(); // for future use
+}
+
+void SketcherScreen::applyBooleanOperation() {
+    QStringList indices = booleanFacesInput->text().split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    if (indices.size() != 2) {
+        qDebug() << "Enter exactly two face indices!";
+        return;
+    }
+    bool ok1, ok2;
+    int idx1 = indices[0].toInt(&ok1);
+    int idx2 = indices[1].toInt(&ok2);
+    if (!ok1 || !ok2) {
+        qDebug() << "Invalid face indices!";
+        return;
+    }
+
+    QString op = booleanOpSelector->currentText();
+    BooleanType booleanType;
+    if(op == "Union") booleanType = BooleanType::Union;
+    else if(op == "Intersection") booleanType = BooleanType::Intersection;
+    else booleanType = BooleanType::Difference;
+
+    // TODO: Implement your boolean operation logic here
+    qDebug() << "Applying boolean operation:" << op << "between faces" << idx1 << "and" << idx2;
+    int newFaceIdx = sketch->performBooleanOperation(idx1, idx2, booleanType);
+
+    // renderer->setHighlightedFace(newFaceIdx);
+    renderer->update();
 }

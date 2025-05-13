@@ -1,4 +1,5 @@
 #include "sketcher.h"
+#include "boolean2d.h"
 #include <QDebug>
 
 Sketcher::~Sketcher() {
@@ -541,4 +542,15 @@ bool Sketcher::loadSketchFromOBJ(const string filename) {
     file.close();
     qDebug() << "OBJ file successfully loaded into sketcher";
     return true;
+}
+
+Face* Sketcher::performBooleanOperation(Face* face1, Face* face2, BooleanType booleanType) {
+    return Boolean2D::perform(face1, face2, booleanType, this);
+}
+
+int Sketcher::performBooleanOperation(int face1, int face2, BooleanType booleanType) {
+    Face* f1 = faces[face1];
+    Face* f2 = faces[face2];
+    Face* res = performBooleanOperation(f1, f2, booleanType);
+    return findFace(res);
 }
