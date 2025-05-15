@@ -24,5 +24,6 @@ private:
     BezierSidebar* sidebar;
     BezierRenderer* renderer;
 
-    BezierCurve* curve;
+    BezierCurve* curve1;
+    BezierCurve* curve2;
 };

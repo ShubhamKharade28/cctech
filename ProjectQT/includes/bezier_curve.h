@@ -30,6 +30,8 @@ class BezierCurve {
 
     int findControlPoint(double x, double y, double influenceRadius);
 
+    vector<Point> findIntersectionWith(BezierCurve* curve);
+
 private:
     vector<Point> calculateCurvePoints();
 };
