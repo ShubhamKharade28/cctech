@@ -1,4 +1,5 @@
 #include "threed-utils.h"
+#include "shape.h"
 
 class FileUtils {
 public:

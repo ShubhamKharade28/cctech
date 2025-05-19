@@ -1,6 +1,5 @@
 #pragma once 
 
-#include "sketcher.h"
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QMatrix4x4>
@@ -8,6 +7,10 @@
 #include <QMutex>
 #include <QComboBox>
 #include <QVBoxLayout>
+
+
+#include "sketcher.h"
+#include "file-utils.h"
 
 enum RenderMode {
     VerticesOnly,
@@ -86,6 +89,14 @@ private:
     QVector3D sceneCenter = {0,0,0};
     float rotationX = 0.0f;
     float rotationY = 0.0f; 
+
+    // STL files
+    vector<StlShape> stlShapes;
+
+private slots:
+    void importSTLFile();
+    void renderSTLShapes();
+    void renderSTLIntersections();
 
 signals: 
     void sketchUpdated();

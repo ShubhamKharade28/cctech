@@ -17,26 +17,31 @@ qt_add_executable(ProjectQT
     screen_selector_dialog.h 
     screen_selector_dialog.cpp 
     
-    # all screens
-    screens/scene_creator.h 
-    screens/scene_creator.cpp
-    screens/bezier_sketcher.h 
-    screens/bezier_sketcher.cpp
+    # scene creator
+    scene_creator/scene_creator.h 
+    scene_creator/scene_creator.cpp
+    scene_creator/shapes_sidebar.h
+    scene_creator/shapes_sidebar.cpp 
+    scene_creator/scene_renderer.h 
+    scene_creator/scene_renderer.cpp 
+    scene_creator/transformation_sidebar.h 
+    scene_creator/transformation_sidebar.cpp
 
-    # widgets for scene creator
-    widgets/shapes_sidebar.h
-    widgets/shapes_sidebar.cpp 
-    widgets/scene_renderer.h 
-    widgets/scene_renderer.cpp 
-    widgets/transformation_sidebar.h 
-    widgets/transformation_sidebar.cpp
+    # bezier sketcher
+    bezier_sketcher/bezier_sketcher.h 
+    bezier_sketcher/bezier_sketcher.cpp
+    bezier_sketcher/bezier_sidebar.h 
+    bezier_sketcher/bezier_sidebar.cpp
+    bezier_sketcher/bezier_renderer.h
+    bezier_sketcher/bezier_renderer.cpp
 
-    # widgets for bezier sketcher
-    widgets/bezier_sidebar.h 
-    widgets/bezier_sidebar.cpp
-    widgets/bezier_renderer.h
-    widgets/bezier_renderer.cpp
+    # sketcher
+    sketcher/sketcher_screen.cpp
+    sketcher/sketcher_screen.h
+    sketcher/sketch_renderer.h 
+    sketcher/sketch_renderer.cpp
 
+    # geometry headers
     includes/shape.h 
     includes/shapes.h 
     includes/threed-utils.h 
@@ -50,6 +55,7 @@ qt_add_executable(ProjectQT
     includes/sketcher.h 
     includes/boolean2d.h 
 
+    # geometry sources
     src/shapes/cuboid.cpp 
     src/shapes/cylinder.cpp 
     src/shapes/sphere.cpp 
@@ -62,11 +68,6 @@ qt_add_executable(ProjectQT
     src/sketcher.cpp 
     src/boolean2d.cpp
 
-    sketcher/sketcher_screen.cpp
-    sketcher/sketcher_screen.h
-    sketcher/sketch_renderer.h 
-    sketcher/sketch_renderer.cpp
-
     integration/mainscreen.h 
     integration/mainscreen.cpp 
 
@@ -77,13 +78,15 @@ qt_add_executable(ProjectQT
 )
 
 include_directories(
+    ${PROJECT_SOURCE_DIR}/includes
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/shapes
-    ${PROJECT_SOURCE_DIR}/widgets
-    ${PROJECT_SOURCE_DIR}/screens
-    ${PROJECT_SOURCE_DIR}/includes
-    ${PROJECT_SOURCE_DIR}/test
+
+    ${PROJECT_SOURCE_DIR}/scene_creator
     ${PROJECT_SOURCE_DIR}/sketcher
+    ${PROJECT_SOURCE_DIR}/bezier_sketcher
+
+    ${PROJECT_SOURCE_DIR}/test
     ${PROJECT_SOURCE_DIR}/integration 
     ${PROJECT_SOURCE_DIR}/model_editor
 )
