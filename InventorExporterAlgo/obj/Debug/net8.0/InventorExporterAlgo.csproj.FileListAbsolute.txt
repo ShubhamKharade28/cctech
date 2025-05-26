@@ -1,0 +1,15 @@
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\InventorExporterAlgo.exe
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\InventorExporterAlgo.deps.json
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\InventorExporterAlgo.runtimeconfig.json
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\InventorExporterAlgo.pdb
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.AssemblyInfoInputs.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.AssemblyInfo.cs
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.csproj.CoreCompileInputs.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.sourcelink.json
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\refint\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.pdb
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.genruntimeconfig.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\ref\InventorExporterAlgo.dll
