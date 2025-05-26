@@ -1,0 +1,23 @@
+
+
+app.post('/get-animaitions', file="myfile.iam") {
+    1. extracted_data = fetch('www.inventorexporter.com', file=file) // .imf
+    
+    2. animation_sequence = fetch('www.getanimation.com', data=extracted_data)
+
+    return animation_sequence;
+}
+
+// www.inventorexporter.com 
+
+app.post('/get-extracted-data', file=file) {
+    extracted_data = extractData(file);
+    return extracted_data;
+}
+
+// www.getanimation.com 
+
+app.post('/get-animations', data) {
+    animation_sequence = makeAnimations(data);
+    return animation_sequence
+}

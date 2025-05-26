@@ -78,10 +78,10 @@ void inputAndRemoveItem()
 while (true)
 {
     Console.WriteLine("\nShopping List");
-    Console.WriteLine("1. View List");
-    Console.WriteLine("2. Add Item");
-    Console.WriteLine("3. Remove Item");
-    Console.WriteLine("4. Exit");
+    Console.WriteLine(" 1. View List");
+    Console.WriteLine(" 2. Add Item");
+    Console.WriteLine(" 3. Remove Item");
+    Console.WriteLine(" 4. Exit");
     Console.Write("Choose an option (1-4): ");
 
     string? input = Console.ReadLine();
