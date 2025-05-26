@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QFileDialog>
+#include <QtConcurrent>
 
 SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidget(parent), sketch(sketch) {
     // Set main layout
@@ -57,6 +59,10 @@ SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidge
     auto* clearSketchButton = new QPushButton("Clear", this);
     clearSketchButton->setFixedSize(150, 30);
     connect(clearSketchButton, &QPushButton::clicked, this, clearSketch);
+
+    auto* importSTLButton = new QPushButton("Import STL", this);
+    importSTLButton->setFixedSize(150, 30);
+    connect(importSTLButton, &QPushButton::clicked, this, importSTLFile);
     
 
     // Add top layout
@@ -65,6 +71,7 @@ SketchRenderer::SketchRenderer(QWidget* parent, Sketcher* sketch) : QOpenGLWidge
     topLayout->addWidget(renderModeSelector);
     topLayout->addWidget(resetViewButton);
     topLayout->addWidget(clearSketchButton);
+    topLayout->addWidget(importSTLButton);
     topLayout->addStretch();
 
     layout->addLayout(topLayout);
@@ -142,11 +149,15 @@ void SketchRenderer::paintGL() {
         }
     }
 
+    renderSTLShapes();
+    renderSTLIntersections();
+
     emit sketchUpdated();
 }
 
 void SketchRenderer::clearSketch() {
     sketch->clear();
+    stlShapes.clear();
     update();
 }
 
@@ -303,11 +314,9 @@ void SketchRenderer::mousePressEvent(QMouseEvent* event) {
 
         if(currentButton == "right") {
             sketch->addVertex(x, y, z);
-            qDebug() << "Vertex added at " << x << y << z;
         } else if (currentButton == "left") {
             int vertexIdx = sketch->findVertex(x, y, z);
             setSelectedVertexIdx(vertexIdx);
-            qDebug() << "Selected Vertex: " << vertexIdx;
         }
         update();
     }
@@ -331,13 +340,10 @@ void SketchRenderer::mouseMoveEvent(QMouseEvent* event) {
         }
     }
     else if (interactionMode == InteractionMode::ViewTransform) {
-        
         if(currentButton == "left") {
-            qDebug() << "Left button pressed";
             posX += delta.x() * sensitivity;
             posY -= delta.y() * sensitivity;
         } else if (currentButton == "right") {
-            qDebug() << "Right button pressed";
             rotationX += delta.y();
             rotationY += delta.x();
         }
@@ -361,4 +367,59 @@ void SketchRenderer::wheelEvent(QWheelEvent* event) {
 
 void SketchRenderer::mouseReleaseEvent(QMouseEvent* event) {
     selectedVertexIdx = -1;
+}
+
+void SketchRenderer::renderSTLShapes() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // mode = wireframe
+    glColor3f(0.0f, 1.0f, 1.0f); // cyan
+    glLineWidth(0.5f); // small line width for triangles, big for intersection of triangles
+    glBegin(GL_TRIANGLES);
+    for(StlShape& stlShape : stlShapes) {
+        for(Triangle& tri : stlShape) {
+            Vector v1 = tri.vertex1, v2 = tri.vertex2, v3 = tri.vertex3;
+            glVertex3f(v1[0], v1[1], v1[2]);
+            glVertex3f(v2[0], v2[1], v2[2]);
+            glVertex3f(v3[0], v3[1], v3[2]);
+        }
+    }
+    glEnd();
+}
+
+void SketchRenderer::renderSTLIntersections() {
+    // for now show only first two stl shapes' intersections
+    if(stlShapes.size() < 2) return;
+    
+    StlShape& stlShape1 = stlShapes[0];
+    StlShape& stlShape2 = stlShapes[1];
+
+    vector<Line> intersections = getIntersections(stlShape1, stlShape2);
+    qDebug() << "Intersections: " << intersections.size();
+    if(intersections.empty()) return;
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // mode = wireframe
+    glColor3f(1.0f, 0.0f, 1.0f); // magenta
+    glLineWidth(2.0f); // big line width for intersection of triangles
+    glBegin(GL_LINES);
+    for(Line& line : intersections) {
+        glVertex3f(line.first[0], line.first[1], line.first[2]);
+        glVertex3f(line.second[0], line.second[1], line.second[2]);
+    }
+    glEnd();
+}
+
+
+void SketchRenderer::importSTLFile() {
+    QString fileName = QFileDialog::getOpenFileName(this, "Open STL File", "", "STL Files (*.stl)");
+    if (!fileName.isEmpty()) {
+        string stdFileName = fileName.toStdString();
+
+        QtConcurrent::run([this, stdFileName = std::move(stdFileName)]() {
+            string mutableFileName = stdFileName;
+            StlShape stlShape = FileUtils::readSTL(mutableFileName);
+            QMetaObject::invokeMethod(this, [this, stlShape]() {
+                stlShapes.push_back(stlShape);
+                update();
+            }, Qt::QueuedConnection);
+        });
+    }
 }

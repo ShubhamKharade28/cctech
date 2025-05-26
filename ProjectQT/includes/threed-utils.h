@@ -3,10 +3,10 @@
 #include <bits/stdc++.h>
 using namespace std; 
 
-class Shape;
-
 #define Vector vector<double>
 #define Matrix vector<vector<double>>
+
+#include <QDebug>
 
 Vector substract(Vector a, Vector b);
 Vector cross(Vector a, Vector b);
@@ -39,3 +39,18 @@ public:
 };
 
 #define StlShape vector<Triangle>
+using Line = pair<Vector, Vector>;
+
+
+double dot(Vector a, Vector b);
+optional<Line> clipTriangleToLine(const Triangle& tri, const Vector& p0, const Vector& dir);
+optional<Line> getIntersection(Triangle& t1, Triangle& t2);
+optional<Line> segmentOverlap(Line seg1, Line seg2);
+optional<Line> getIntersection(Triangle& t1, Triangle& t2);
+vector<Line> getIntersections(StlShape& shape1, StlShape& shape2);
+
+/*
+// Sakshi's code
+bool trianglesCoplanar(Triangle& t1, Triangle& t2);
+bool triangleTriangleIntersectionSegment(const Triangle& t1, const Triangle& t2, Vector& segA, Vector& segB);
+    */
