@@ -13,3 +13,8 @@ C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\re
 C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.pdb
 C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.genruntimeconfig.cache
 C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\ref\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\Autodesk.Inventor.Interop.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\stdole.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Debug\net8.0\Autodesk.Inventor.Interop.xml
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\InventorExporterAlgo.csproj.AssemblyReference.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Debug\net8.0\Inventor.4802519C.Up2Date
