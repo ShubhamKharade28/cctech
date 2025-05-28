@@ -108,20 +108,17 @@ namespace AssemblyModel
             }
 
             // Todo: Apply transformations before writing data
-            
+
 
             Console.WriteLine($"Exporting assembly to OBJ format...");
             Console.WriteLine($"Number of parts: {Parts.Count}");
 
             foreach (var part in Parts)
             {
-                Console.WriteLine($"Processing part: {part.Name} ({part.DocumentType})");
                 foreach (var body in part.SurfaceBodies)
                 {
-                    Console.WriteLine($"  Surface body with {body.Faces.Count} faces");
                     foreach (var face in body.Faces)
                     {
-                        Console.WriteLine($"    Face with {face.Vertices.Count} vertices and {face.Edges.Count} edges");
                         List<int> faceVerticesIndices = new List<int>();
                         foreach (var vertex in face.Vertices)
                         {

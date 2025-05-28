@@ -1,0 +1,202 @@
+{
+  "FilePath": "C:\\Users\\Parth Kulkarni\\Downloads\\single-cylindar-1.snapshot.3\\Assembly1.iam",
+  "Components": [
+    {
+      "Name": "Part6:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part8:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part8:2",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "PartA:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part10:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part10:2",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part5:2",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part5:3",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "PartB:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part11:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part12:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part7:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part2:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part4:1",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part4:2",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part4:3",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    },
+    {
+      "Name": "Part4:4",
+      "Type": "kPartDocumentObject",
+      "Children": null
+    }
+  ],
+  "Constraints": [
+    {
+      "Name": "Mate:1",
+      "Type": "kMateConstraintObject",
+      "EntityOne": "Face (SurfaceType: kPlaneSurface)",
+      "EntityTwo": "Face (SurfaceType: kPlaneSurface)"
+    },
+    {
+      "Name": "Mate:2",
+      "Type": "kMateConstraintObject",
+      "EntityOne": "Face (SurfaceType: kPlaneSurface)",
+      "EntityTwo": "Face (SurfaceType: kPlaneSurface)"
+    },
+    {
+      "Name": "Insert:1",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircularArcCurve)"
+    },
+    {
+      "Name": "Insert:2",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircularArcCurve)"
+    },
+    {
+      "Name": "Insert:3",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    },
+    {
+      "Name": "Insert:4",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircularArcCurve)"
+    },
+    {
+      "Name": "Mate:3",
+      "Type": "kMateConstraintObject",
+      "EntityOne": "Edge (CurveType: kLineSegmentCurve)",
+      "EntityTwo": "Edge (CurveType: kLineSegmentCurve)"
+    },
+    {
+      "Name": "Mate:4",
+      "Type": "kMateConstraintObject",
+      "EntityOne": "Edge (CurveType: kLineSegmentCurve)",
+      "EntityTwo": "Edge (CurveType: kLineSegmentCurve)"
+    },
+    {
+      "Name": "Mate:5",
+      "Type": "kMateConstraintObject",
+      "EntityOne": "Edge (CurveType: kLineSegmentCurve)",
+      "EntityTwo": "Edge (CurveType: kLineSegmentCurve)"
+    },
+    {
+      "Name": "Insert:5",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircularArcCurve)"
+    },
+    {
+      "Name": "Insert:6",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircularArcCurve)",
+      "EntityTwo": "Edge (CurveType: kCircularArcCurve)"
+    },
+    {
+      "Name": "Insert:7",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    },
+    {
+      "Name": "Insert:8",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    },
+    {
+      "Name": "Insert:9",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    },
+    {
+      "Name": "Insert:10",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    },
+    {
+      "Name": "Insert:11",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    },
+    {
+      "Name": "Insert:12",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    },
+    {
+      "Name": "Insert:13",
+      "Type": "kInsertConstraintObject",
+      "EntityOne": "Edge (CurveType: kCircleCurve)",
+      "EntityTwo": "Edge (CurveType: kCircleCurve)"
+    }
+  ],
+  "Joints": [],
+  "Attributes": []
+}
