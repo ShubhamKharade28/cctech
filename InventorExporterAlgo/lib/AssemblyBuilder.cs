@@ -172,6 +172,7 @@ namespace AssemblyModel
 
                     faceObj.Edges.Add(edgeObj);
                 }
+                surfaceBody.Faces.Add(faceObj);
             }
 
             return surfaceBody;

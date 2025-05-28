@@ -60,48 +60,67 @@ namespace AssemblyModel
             Console.WriteLine($"============================\n");
         }
 
-        public string ExportAsSTL(Inventor.Application inventorApp, string outputFolder)
+        public void ExportAsOBJ(string directory = "data", string fileName = "assembly.obj")
         {
-            try
+            var vertices = new List<(double X, double Y, double Z)>();
+            var faces = new List<List<int>>();
+
+            int AddVertex(double x, double y, double z)
             {
-                Inventor.AssemblyDocument assemblyDoc = assemblyDoc = (Inventor.AssemblyDocument)inventorApp.Documents.Open(FilePath, false);
-                if (!System.IO.Directory.Exists(outputFolder))
-                    System.IO.Directory.CreateDirectory(outputFolder);
-
-                string stlPath = System.IO.Path.Combine(
-                    outputFolder,
-                    System.IO.Path.GetFileNameWithoutExtension(this.FilePath) + ".stl"
-                );
-
-                // Get the STL translator add-in and cast to TranslatorAddIn
-                var stlAddInObj = inventorApp.ApplicationAddIns.ItemById["{89162634-02B6-11D5-8E80-0010B541CAA8}"];
-                if (stlAddInObj != null && stlAddInObj.Activated == false)
-                    stlAddInObj.Activate();
-
-                var stlAddIn = stlAddInObj as Inventor.TranslatorAddIn;
-                if (stlAddIn == null)
-                    throw new System.Exception("STL TranslatorAddIn not found or not available.");
-
-                var context = inventorApp.TransientObjects.CreateTranslationContext();
-                context.Type = Inventor.IOMechanismEnum.kFileBrowseIOMechanism;
-
-                var options = inventorApp.TransientObjects.CreateNameValueMap();
-                if (stlAddIn.HasSaveCopyAsOptions[assemblyDoc, context, options])
+                // check if vertex already exists
+                for (int i = 0; i < vertices.Count; i++)
                 {
-                    // You can set STL options here if needed, e.g.:
-                    // options.Value["ExportUnits"] = 1; // 1 = cm, 2 = mm, etc.
+                    var v = vertices[i];
+                    if (v.X == x && v.Y == y && v.Z == z)
+                    {
+                        return i + 1; // OBJ indices are 1-based
+                    }
                 }
-
-                var dataMedium = inventorApp.TransientObjects.CreateDataMedium();
-                dataMedium.FileName = stlPath;
-
-                stlAddIn.SaveCopyAs(assemblyDoc, context, options, dataMedium);
-                return stlPath;
+                vertices.Add((x, y, z));
+                return vertices.Count;
             }
-            catch (System.Exception ex)
+
+            Console.WriteLine($"Exporting assembly to OBJ format...");
+            Console.WriteLine($"Number of parts: {Parts.Count}");
+
+            foreach (var part in Parts)
             {
-                System.Console.WriteLine($"Error exporting STL: {ex.Message}");
-                return null;
+                Console.WriteLine($"Processing part: {part.Name} ({part.DocumentType})");
+                foreach (var body in part.SurfaceBodies)
+                {
+                    Console.WriteLine($"  Surface body with {body.Faces.Count} faces");
+                    foreach (var face in body.Faces)
+                    {
+                        Console.WriteLine($"    Face with {face.Vertices.Count} vertices and {face.Edges.Count} edges");
+                        List<int> faceVerticesIndices = new List<int>();
+                        foreach (var vertex in face.Vertices)
+                        {
+                            int index = AddVertex(vertex.X, vertex.Y, vertex.Z);
+                            faceVerticesIndices.Add(index);
+                        }
+                        faces.Add(faceVerticesIndices);
+                    }
+                }
+            }
+
+            // create empty output directory if it doesn't exist
+            System.IO.Directory.CreateDirectory(directory);
+
+            string outputPath = System.IO.Path.Combine(directory, fileName);
+
+            using (var writer = new System.IO.StreamWriter(outputPath))
+            {
+                Console.WriteLine($"Exporting {vertices.Count} vertices and {faces.Count} faces to {outputPath}");
+                foreach (var v in vertices)
+                {
+                    writer.WriteLine($"v {v.X} {v.Y} {v.Z}");
+                }
+                writer.WriteLine();
+
+                foreach (var face in faces)
+                {
+                    writer.WriteLine("f " + string.Join(" ", face));
+                }
             }
         }
     }

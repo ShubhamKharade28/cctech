@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InventorExporterAlgo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d18eb507454979a58b8406958eaf3d853e0039d6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8c7891f8fb5e3dd3a25902daeb040579913a6122")]
 [assembly: System.Reflection.AssemblyProductAttribute("InventorExporterAlgo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InventorExporterAlgo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

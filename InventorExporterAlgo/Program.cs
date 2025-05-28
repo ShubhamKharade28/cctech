@@ -14,7 +14,7 @@ namespace InventorExporterAlgo
             Inventor.Application inventorApp = GetInventorApplication();
 
             // Path to your assembly file (.iam)
-            string iamFilePath = @"C:\Users\Shubham Kharade\Downloads\CasterWheel\CasterWheel.iam";
+            string iamFilePath = @"C:\Users\Shubham Kharade\Downloads\IAM_FILES\scissors.iam";
             if (args.Length > 0) iamFilePath = args[0];
 
             // Build the assembly
@@ -27,7 +27,7 @@ namespace InventorExporterAlgo
             Console.WriteLine($"Meta data for assembly {assembly.FilePath}:");
             assembly.PrintMetadata();
 
-            assembly.ExportAsSTL(inventorApp, "assembly-stls");
+            assembly.ExportAsOBJ(directory: "data", fileName: "assembly.obj");
 
             // Clean up
             inventorApp.Quit();
