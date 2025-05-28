@@ -60,6 +60,33 @@ namespace AssemblyModel
             Console.WriteLine($"============================\n");
         }
 
+        private static double[] MultiplyMatrix(double[] a, double[] b)
+        {
+            var r = new double[12];
+            for (int row = 0; row < 3; row++)
+            {
+                for (int col = 0; col < 4; col++)
+                {
+                    r[row * 4 + col] =
+                        a[row * 4 + 0] * b[0 + col] +
+                        a[row * 4 + 1] * b[4 + col] +
+                        a[row * 4 + 2] * b[8 + col] +
+                        (col == 3 ? a[row * 4 + 3] : 0);
+                }
+            }
+            return r;
+        }
+
+        private static (double X, double Y, double Z) TransformVertex(VertexData v, double[] matrix)
+        {
+            double x = v.X, y = v.Y, z = v.Z;
+            return (
+                matrix[0] * x + matrix[1] * y + matrix[2] * z + matrix[3],
+                matrix[4] * x + matrix[5] * y + matrix[6] * z + matrix[7],
+                matrix[8] * x + matrix[9] * y + matrix[10] * z + matrix[11]
+            );
+        }
+
         public void ExportAsOBJ(string directory = "data", string fileName = "assembly.obj")
         {
             var vertices = new List<(double X, double Y, double Z)>();
@@ -79,6 +106,9 @@ namespace AssemblyModel
                 vertices.Add((x, y, z));
                 return vertices.Count;
             }
+
+            // Todo: Apply transformations before writing data
+            
 
             Console.WriteLine($"Exporting assembly to OBJ format...");
             Console.WriteLine($"Number of parts: {Parts.Count}");
