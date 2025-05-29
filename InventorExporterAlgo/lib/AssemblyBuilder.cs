@@ -19,14 +19,21 @@ namespace AssemblyModel
             var assemblyDoc = (AssemblyDocument)inventorApp.Documents.Open(iamFilePath, false);
             var asmCompDef = assemblyDoc.ComponentDefinition;
 
-            Console.WriteLine($"Getting parts from assembly: {assemblyDoc.DisplayName}");
-            assembly.Parts = GetParts(asmCompDef.Occurrences);
+            Console.WriteLine($"Getting components from assembly...");
+            assembly.Components = GetComponents(asmCompDef.Occurrences);
 
-            Console.WriteLine($"Getting constraints and joints from assembly: {assemblyDoc.DisplayName}");
+            Console.WriteLine($"Getting constraints from assembly...");
             assembly.Constraints = GetConstraints(asmCompDef);
+
+            Console.WriteLine($"Getting Joints from assembly...");
             assembly.Joints = GetJoints(asmCompDef);
 
+            Console.WriteLine($"Getting attributes from assembly: {assemblyDoc.DisplayName}");
+            assembly.Attributes = GetAttributes(assemblyDoc);
+
             assemblyDoc.Close(false);
+
+            Console.WriteLine("Assembly loaded successfully.");
             return assembly;
         }
 
@@ -35,17 +42,21 @@ namespace AssemblyModel
             var constraints = new List<ConstraintData>();
             foreach (AssemblyConstraint constraint in asmCompDef.Constraints)
             {
-                string constraintName = constraint.Name;
-                string constraintType = constraint.Type.ToString();
-                string entityOne = constraint.OccurrenceOne._DisplayName;
-                string entityTwo = constraint.OccurrenceTwo._DisplayName;
+                // string constraintName = constraint.Name;
+                // string constraintType = constraint.Type.ToString();
+                string occurrenceOne = constraint.OccurrenceOne._DisplayName;
+                string occurrenceTwo = constraint.OccurrenceTwo._DisplayName;
+                string entityOne = GetEntityName(constraint.EntityOne);
+                string entityTwo = GetEntityName(constraint.EntityTwo);
 
                 var data = new ConstraintData
                 {
-                    Name = constraintName,
-                    Type = constraintType,
-                    EntityOne = entityOne,
-                    EntityTwo = entityTwo
+                    Name = constraint.Name,
+                    Type = constraint.Type.ToString(),
+                    EntityOne = GetEntityName(constraint.EntityOne),
+                    EntityTwo = GetEntityName(constraint.EntityTwo),
+                    OccurrenceOne = constraint.OccurrenceOne._DisplayName,
+                    OccurrenceTwo = constraint.OccurrenceTwo._DisplayName
                 };
                 constraints.Add(data);
             }
@@ -59,43 +70,75 @@ namespace AssemblyModel
             {
                 // Use reflection to get properties if possible
                 var type = jointObj.GetType();
-                string name = type.GetProperty("Name")?.GetValue(jointObj)?.ToString() ?? string.Empty;
-                string jointType = type.GetProperty("JointType")?.GetValue(jointObj)?.ToString() ?? string.Empty;
-                string occurrenceOne = type.GetProperty("OccurrenceOne")?.GetValue(jointObj)?.ToString() ?? string.Empty;
-                string occurrenceTwo = type.GetProperty("OccurrenceTwo")?.GetValue(jointObj)?.ToString() ?? string.Empty;
                 var data = new JointData
                 {
-                    Name = name,
-                    Type = jointType,
-                    OccurrenceOne = occurrenceOne,
-                    OccurrenceTwo = occurrenceTwo
+                    Type = type.ToString(),
+                    Name = type.GetProperty("Name")?.GetValue(jointObj)?.ToString() ?? string.Empty,
+                    OccurrenceOne = type.GetProperty("OccurrenceOne")?.GetValue(jointObj)?.ToString() ?? string.Empty,
+                    OccurrenceTwo = type.GetProperty("OccurrenceTwo")?.GetValue(jointObj)?.ToString() ?? string.Empty
                 };
                 joints.Add(data);
             }
             return joints;
         }
 
-        private static List<AssemblyPart> GetParts(ComponentOccurrences occurrences)
+        private static List<AssemblyComponent> GetComponents(ComponentOccurrences occurrences)
         {
-            var parts = new List<AssemblyPart>();
+            var components = new List<AssemblyComponent>();
 
             foreach (ComponentOccurrence occurrence in occurrences)
             {
-                var part = new AssemblyPart
+                var component = new AssemblyComponent
                 {
                     Name = occurrence.Name,
                     DocumentType = occurrence.DefinitionDocumentType.ToString(),
                     TransformMatrix = GetTransformMatrix(occurrence.Transformation),
                     SurfaceBodies = GetSurfaceBodies(occurrence.Definition),
                     Children = occurrence.DefinitionDocumentType == DocumentTypeEnum.kAssemblyDocumentObject
-                        ? GetParts(((AssemblyComponentDefinition)occurrence.Definition).Occurrences)
-                        : new List<AssemblyPart>()
+                        ? GetComponents(((AssemblyComponentDefinition)occurrence.Definition).Occurrences)
+                        : new List<AssemblyComponent>()
                 };
 
-                parts.Add(part);
+                components.Add(component);
             }
 
-            return parts;
+            return components;
+        }
+
+        private static List<AttributeSetData> GetAttributes(AssemblyDocument assemblyDoc)
+        {
+            var attributes = new List<AttributeSetData>();
+            foreach (AttributeSet attributeSet in assemblyDoc.AttributeSets)
+            {
+                var attrSetData = new AttributeSetData
+                {
+                    SetName = attributeSet.Name,
+                    Attributes = new List<AttributeData>()
+                };
+
+                foreach (AttributeData attribute in attributeSet)
+                {
+                    attrSetData.Attributes.Add(new AttributeData
+                    {
+                        Name = attribute.Name,
+                        Value = attribute.Value.ToString()
+                    });
+                }
+
+                attributes.Add(attrSetData);
+            }
+            return attributes;
+        }
+
+        static string GetEntityName(object entity)
+        {
+            if (entity is Face face) return $"Face (SurfaceType: {face.SurfaceType})";
+            if (entity is Edge edge) return $"Edge (CurveType: {edge.GeometryType})";
+            if (entity is WorkPlane wp) return $"WorkPlane: {wp.Name}";
+            if (entity is WorkAxis wa) return $"WorkAxis: {wa.Name}";
+            if (entity is WorkPoint wpnt) return $"WorkPoint: {wpnt.Name}";
+            if (entity is ComponentOccurrence occ) return $"Component: {occ.Name}";
+            return "Unknown Entity";
         }
 
         private static double[] GetTransformMatrix(Matrix transform)

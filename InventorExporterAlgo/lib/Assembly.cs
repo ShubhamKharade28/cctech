@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace AssemblyModel
 {
@@ -8,6 +9,8 @@ namespace AssemblyModel
         public string Type { get; set; }
         public string EntityOne { get; set; }
         public string EntityTwo { get; set; }
+        public string OccurrenceOne { get; set; }
+        public string OccurrenceTwo { get; set; }
     }
 
     public class JointData
@@ -17,25 +20,40 @@ namespace AssemblyModel
         public string OccurrenceOne { get; set; }
         public string OccurrenceTwo { get; set; }
     }
+ 
+    public class AttributeData
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
+    public class AttributeSetData
+    {
+        public string SetName { get; set; }
+        public List<AttributeData> Attributes { get; set; }
+    }
+
 
     public class Assembly
     {
         public string FilePath { get; set; }
-        public List<AssemblyPart> Parts { get; set; } = new();
+        public List<AssemblyComponent> Components { get; set; } = new();
         public List<ConstraintData> Constraints { get; set; } = new();
         public List<JointData> Joints { get; set; } = new();
+        public List<AttributeSetData> Attributes { get; set; } = new();
+
 
         public void PrintMetadata()
         {
             Console.WriteLine($"\n===== Assembly Metadata =====");
             Console.WriteLine($"File: {FilePath}");
-            Console.WriteLine($"Parts: {Parts.Count}");
-            for (int i = 0; i < Parts.Count; i++)
+            Console.WriteLine($"Components: {Components.Count}");
+            for (int i = 0; i < Components.Count; i++)
             {
-                var part = Parts[i];
-                Console.WriteLine($"  [{i + 1}] Name: {part.Name}");
-                Console.WriteLine($"      DocumentType: {part.DocumentType}");
-                Console.WriteLine($"      Children: {part.Children.Count}");
+                var component = Components[i];
+                Console.WriteLine($"  [{i + 1}] Name: {component.Name}");
+                Console.WriteLine($"      DocumentType: {component.DocumentType}");
+                Console.WriteLine($"      Children: {component.Children.Count}");
             }
 
             Console.WriteLine($"\nConstraints: {Constraints.Count}");
@@ -46,6 +64,8 @@ namespace AssemblyModel
                 Console.WriteLine($"      Type: {c.Type}");
                 Console.WriteLine($"      EntityOne: {c.EntityOne}");
                 Console.WriteLine($"      EntityTwo: {c.EntityTwo}");
+                Console.WriteLine($"      EntityOne: {c.OccurrenceOne}");
+                Console.WriteLine($"      EntityTwo: {c.OccurrenceTwo}");
             }
 
             Console.WriteLine($"\nJoints: {Joints.Count}");
@@ -56,6 +76,17 @@ namespace AssemblyModel
                 Console.WriteLine($"      Type: {j.Type}");
                 Console.WriteLine($"      OccurrenceOne: {j.OccurrenceOne}");
                 Console.WriteLine($"      OccurrenceTwo: {j.OccurrenceTwo}");
+            }
+
+            Console.WriteLine($"\nAttributes: {Attributes.Count}");
+            for (int i = 0; i < Attributes.Count; i++)
+            {
+                var attrSet = Attributes[i];
+                Console.WriteLine($"  [{i + 1}] SetName: {attrSet.SetName}");
+                foreach (var attr in attrSet.Attributes)
+                {
+                    Console.WriteLine($"      Attribute: {attr.Name} = {attr.Value}");
+                }
             }
             Console.WriteLine($"============================\n");
         }
@@ -87,7 +118,7 @@ namespace AssemblyModel
             );
         }
 
-        public void ExportAsOBJ(string directory = "data", string fileName = "assembly.obj")
+        public void ExportToOBJ(string directory = "data", string fileName = "assembly.obj")
         {
             var vertices = new List<(double X, double Y, double Z)>();
             var faces = new List<List<int>>();
@@ -111,11 +142,11 @@ namespace AssemblyModel
 
 
             Console.WriteLine($"Exporting assembly to OBJ format...");
-            Console.WriteLine($"Number of parts: {Parts.Count}");
+            Console.WriteLine($"Number of Components: {Components.Count}");
 
-            foreach (var part in Parts)
+            foreach (var component in Components)
             {
-                foreach (var body in part.SurfaceBodies)
+                foreach (var body in component.SurfaceBodies)
                 {
                     foreach (var face in body.Faces)
                     {
@@ -149,6 +180,30 @@ namespace AssemblyModel
                     writer.WriteLine("f " + string.Join(" ", face));
                 }
             }
+        }
+
+        public void ExportToJson(string directory = "data", string fileName = "assembly.json")
+        {
+            string jsonOutputPath = System.IO.Path.Combine(directory, fileName);
+            if (!System.IO.Directory.Exists(directory))
+                System.IO.Directory.CreateDirectory(directory);
+
+            // Serialize the assembly metadata to JSON
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+
+            string json = JsonSerializer.Serialize(this, options);
+
+            // Write the JSON to a file
+            using (var writer = new System.IO.StreamWriter(jsonOutputPath))
+            {
+                writer.WriteLine(json);
+            }
+
+            Console.WriteLine($"Metadata saved to: {jsonOutputPath}");
         }
     }
 }

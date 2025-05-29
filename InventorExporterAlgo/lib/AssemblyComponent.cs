@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace AssemblyModel
 {
-    public class AssemblyPart
+    public class AssemblyComponent
     {
         public string Name { get; set; }
         public string DocumentType { get; set; } // e.g., PartDocument or AssemblyDocument
         public double[] TransformMatrix { get; set; } // 12-element array (3x4 matrix)
         public List<SurfaceBodyData> SurfaceBodies { get; set; } = new();
-        public List<AssemblyPart> Children { get; set; } = new();
+        public List<AssemblyComponent> Children { get; set; } = new();
     }
 
     public class SurfaceBodyData

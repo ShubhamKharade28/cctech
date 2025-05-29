@@ -20,14 +20,8 @@ namespace InventorExporterAlgo
             // Build the assembly
             Assembly assembly = AssemblyBuilder.BuildAssembly(iamFilePath, inventorApp);
 
-            // Example: Print the number of parts
-            Console.WriteLine($"Assembly loaded: {assembly.FilePath}");
-            Console.WriteLine($"Number of parts: {assembly.Parts.Count}");
-
-            Console.WriteLine($"Meta data for assembly {assembly.FilePath}:");
-            assembly.PrintMetadata();
-
-            assembly.ExportAsOBJ(directory: "data", fileName: "assembly.obj");
+            assembly.ExportToOBJ(directory: "data", fileName: "assembly_geometry.obj");
+            assembly.ExportToJson(directory: "data", fileName: "complete_assembly_data.json");
 
             // Clean up
             inventorApp.Quit();
