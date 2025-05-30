@@ -1,0 +1,8 @@
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\InventorExporterAlgo.exe
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\InventorExporterAlgo.deps.json
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\InventorExporterAlgo.runtimeconfig.json
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\InventorExporterAlgo.pdb
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\Autodesk.Inventor.Interop.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\stdole.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\bin\Release\net8.0\publish\Autodesk.Inventor.Interop.xml

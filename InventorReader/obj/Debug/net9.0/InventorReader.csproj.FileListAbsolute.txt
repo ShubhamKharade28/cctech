@@ -1,0 +1,8 @@
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\InventorReader.csproj.AssemblyReference.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\Interop.Inventor.dll
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\InventorReader.csproj.ResolveComReference.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\InventorReader.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\InventorReader.AssemblyInfoInputs.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\InventorReader.AssemblyInfo.cs
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\InventorReader.csproj.CoreCompileInputs.cache
+C:\Users\Shubham Kharade\Desktop\cctech\InventorReader\obj\Debug\net9.0\InventorReader.sourcelink.json

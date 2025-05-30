@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "9I7n4RWkdrM=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Shubham Kharade\\Desktop\\cctech\\InventorReader\\InventorReader.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Shubham Kharade\\.nuget\\packages\\microsoft.net.sdk.compilers.toolset\\9.0.300\\microsoft.net.sdk.compilers.toolset.9.0.300.nupkg.sha512"
+  ],
+  "logs": []
+}
