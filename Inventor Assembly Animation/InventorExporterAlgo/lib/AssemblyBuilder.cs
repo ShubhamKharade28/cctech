@@ -48,8 +48,6 @@ namespace AssemblyModel
             var constraints = new List<ConstraintData>();
             foreach (AssemblyConstraint constraint in asmConstraints)
             {
-                // string constraintName = constraint.Name;
-                // string constraintType = constraint.Type.ToString();
                 string occurrenceOne = constraint.OccurrenceOne._DisplayName;
                 string occurrenceTwo = constraint.OccurrenceTwo._DisplayName;
                 string entityOne = GetEntityName(constraint.EntityOne);
@@ -72,16 +70,14 @@ namespace AssemblyModel
         private static List<JointData> GetJoints(AssemblyJoints asmJoints)
         {
             var joints = new List<JointData>();
-            foreach (object jointObj in asmJoints)
+            foreach (AssemblyJoint joint in asmJoints)
             {
-                // Use reflection to get properties if possible
-                var type = jointObj.GetType();
                 var data = new JointData
                 {
-                    Type = type.ToString(),
-                    Name = type.GetProperty("Name")?.GetValue(jointObj)?.ToString() ?? string.Empty,
-                    OccurrenceOne = type.GetProperty("OccurrenceOne")?.GetValue(jointObj)?.ToString() ?? string.Empty,
-                    OccurrenceTwo = type.GetProperty("OccurrenceTwo")?.GetValue(jointObj)?.ToString() ?? string.Empty
+                    Name = joint.Name,
+                    Type = joint.Type.ToString(),
+                    OccurrenceOne = joint.OccurrenceOne._DisplayName,
+                    OccurrenceTwo = joint.OccurrenceTwo._DisplayName
                 };
                 joints.Add(data);
             }
@@ -100,13 +96,11 @@ namespace AssemblyModel
                     Parent = occurrence.ParentOccurrence?._DisplayName ?? "Root",
                     DocumentType = occurrence.DefinitionDocumentType.ToString(),
                     TransformMatrix = GetTransformMatrix(occurrence.Transformation),
-                    SurfaceBodies = GetSurfaceBodies(occurrence.Definition),
-                    // Constraints = GetConstraints(occurrence.Constraints),
-                    // Joints = GetJoints(occurrence.Joints),
-                    Attributes = GetAttributes(occurrence.AttributeSets),
-                    Children = occurrence.DefinitionDocumentType == DocumentTypeEnum.kAssemblyDocumentObject
-                        ? GetComponents(((AssemblyComponentDefinition)occurrence.Definition).Occurrences)
-                        : new List<AssemblyComponent>()
+                    // SurfaceBodies = GetSurfaceBodies(occurrence.Definition),
+                    // Attributes = GetAttributes(occurrence.AttributeSets),
+                    // Children = occurrence.DefinitionDocumentType == DocumentTypeEnum.kAssemblyDocumentObject
+                    //     ? GetComponents(((AssemblyComponentDefinition)occurrence.Definition).Occurrences)
+                    //     : new List<AssemblyComponent>()
                 };
 
                 components.Add(component);

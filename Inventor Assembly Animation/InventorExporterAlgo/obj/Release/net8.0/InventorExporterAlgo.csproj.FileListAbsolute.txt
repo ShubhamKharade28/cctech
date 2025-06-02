@@ -18,3 +18,23 @@ C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Release\net8.0\
 C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.pdb
 C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.genruntimeconfig.cache
 C:\Users\Shubham Kharade\Desktop\cctech\InventorExporterAlgo\obj\Release\net8.0\ref\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\InventorExporterAlgo.exe
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\InventorExporterAlgo.deps.json
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\InventorExporterAlgo.runtimeconfig.json
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\InventorExporterAlgo.pdb
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\Autodesk.Inventor.Interop.dll
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\stdole.dll
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\bin\Release\net8.0\Autodesk.Inventor.Interop.xml
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.csproj.AssemblyReference.cache
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.AssemblyInfoInputs.cache
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.AssemblyInfo.cs
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.csproj.CoreCompileInputs.cache
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.sourcelink.json
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\Inventor.4802519C.Up2Date
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\refint\InventorExporterAlgo.dll
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.pdb
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\InventorExporterAlgo.genruntimeconfig.cache
+C:\Users\Shubham Kharade\Desktop\cctech\Inventor Assembly Animation\InventorExporterAlgo\obj\Release\net8.0\ref\InventorExporterAlgo.dll
