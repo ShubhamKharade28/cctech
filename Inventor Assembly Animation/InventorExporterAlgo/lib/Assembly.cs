@@ -37,8 +37,9 @@ namespace AssemblyModel
     public class Assembly
     {
         public string FilePath { get; set; }
-        public string DisplayName;
-        public string DocumentType;
+        public string DocumentType { get; set; }
+        public string DisplayName { get; set; }
+        public string InternalName { get; set; }
 
         public List<AssemblyComponent> Components { get; set; } = new();
         public List<ConstraintData> Constraints { get; set; } = new();
@@ -46,11 +47,9 @@ namespace AssemblyModel
         public List<AttributeSetData> Attributes { get; set; } = new();
 
         /* Attributes to add:
-            1. DisplayName (Name);
-            2. ModelingSettings
-            3. SketchSettings
-            4. Materials
-            5. DocumentType
+            1. ModelingSettings
+            2. SketchSettings
+            3. Materials
         */
 
 
@@ -224,8 +223,9 @@ namespace AssemblyModel
     public class AssemblyMetadata
     {
         public string FilePath { get; set; }
-        public string DisplayName;
-        public string DocumentType;
+        public string DocumentType { get; set;  }
+        public string DisplayName { get; set;  }
+        public string InternalName { get; set; }
 
         public List<ComponentMetadata> Components { get; set; } = new();
         public List<ConstraintData> Constraints { get; set; } = new();

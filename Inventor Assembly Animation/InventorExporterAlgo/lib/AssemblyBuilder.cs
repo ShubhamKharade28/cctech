@@ -25,6 +25,11 @@ namespace AssemblyModel
             var assemblyDoc = (AssemblyDocument)inventorApp.Documents.Open(iamFilePath, false);
             var asmCompDef = assemblyDoc.ComponentDefinition;
 
+            assembly.DisplayName = assemblyDoc.DisplayName;
+            assembly.InternalName = assemblyDoc._InternalName;
+            assembly.DocumentType = assemblyDoc.DocumentType.ToString();
+
+
             Console.WriteLine($"Getting components from assembly...");
             assembly.Components = GetComponents(asmCompDef.Occurrences);
 

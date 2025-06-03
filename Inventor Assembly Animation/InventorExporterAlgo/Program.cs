@@ -14,8 +14,8 @@ namespace InventorExporterAlgo
             Inventor.Application inventorApp = GetInventorApplication();
 
             // Path to your assembly file (.iam)
-            string inputPath = args.Length > 0 ? args[0] : "data/assembly.iam";
-            string outputPath = args.Length > 1 ? args[1] : "data/assembly_data.json";
+            string inputPath = args.Length > 0 ? args[0] : "input-assemblies/scissors/scissors.iam";
+            string outputPath = args.Length > 1 ? args[1] : "outputs/scissors_data.json";
             
 
             // Build the assembly

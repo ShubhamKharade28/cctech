@@ -1,5 +1,5 @@
 {
-  "filePath": "data/single-cylinder/Assembly1.iam",
+  "filePath": "input-assemblies/single-cylinder/Assembly1.iam",
   "components": [
     {
       "parent": "Root",
