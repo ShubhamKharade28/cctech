@@ -20,9 +20,10 @@ namespace InventorExporterAlgo
 
             // Build the assembly
             Assembly assembly = AssemblyBuilder.BuildAssembly(inputPath, inventorApp);
+            AssemblyMetadata assemblyMetadata = new AssemblyMetadata(assembly);
 
             // assembly.ExportToOBJ(directory: "data", fileName: "assembly_geometry.obj");
-            assembly.ExportToJson(outputPath);
+            assemblyMetadata.ExportToJson(outputPath);
 
             // Clean up
             inventorApp.Quit();

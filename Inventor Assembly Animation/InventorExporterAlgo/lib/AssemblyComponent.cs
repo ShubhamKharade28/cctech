@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AssemblyModel
 {
@@ -8,6 +9,7 @@ namespace AssemblyModel
         public string Name { get; set; }
         public string DocumentType { get; set; } // e.g., PartDocument or AssemblyDocument
         public double[] TransformMatrix { get; set; } // 12-element array (3x4 matrix)
+
         public List<SurfaceBodyData> SurfaceBodies { get; set; } = new();
         public List<AssemblyComponent> Children { get; set; } = new();
         public List<AttributeSetData> Attributes { get; set; } = new();
@@ -21,6 +23,29 @@ namespace AssemblyModel
             5. WorkPoints, WorkAxes, WorkPlanes
             6. IMateResults, IMateDefinitions
         */
+    }
+
+    public class ComponentMetadata
+    {
+        public string Parent { get; set; } // Name of the parent component
+        public string Name { get; set; }
+        public string DocumentType { get; set; } // e.g., PartDocument or AssemblyDocument
+        public double[] TransformMatrix { get; set; } // 12-element array (3x4 matrix)
+        public List<ComponentMetadata> Children { get; set; }
+
+        public ComponentMetadata(AssemblyComponent assemblyComponent)
+        {
+            this.Parent = assemblyComponent.Parent;
+            this.Name = assemblyComponent.Name;
+            this.DocumentType = assemblyComponent.DocumentType;
+            this.TransformMatrix = assemblyComponent.TransformMatrix;
+            this.Children = [];
+            foreach (AssemblyComponent childComponent in assemblyComponent.Children)
+            {
+                ComponentMetadata childMetadata = new ComponentMetadata(childComponent);
+                Children.Add(childMetadata);
+            }
+        }
     }
 
     public class SurfaceBodyData

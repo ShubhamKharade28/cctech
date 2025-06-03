@@ -20,7 +20,7 @@ namespace AssemblyModel
         public string OccurrenceOne { get; set; }
         public string OccurrenceTwo { get; set; }
     }
- 
+
     public class AttributeData
     {
         public string Name { get; set; }
@@ -198,12 +198,12 @@ namespace AssemblyModel
         public void ExportToJson(string outputPath)
         {
             // Ensure output directory exists
-        string outputDir = System.IO.Path.GetDirectoryName(outputPath);
-        if (!string.IsNullOrEmpty(outputDir) && !System.IO.Directory.Exists(outputDir))
-            System.IO.Directory.CreateDirectory(outputDir);
+            string outputDir = System.IO.Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(outputDir) && !System.IO.Directory.Exists(outputDir))
+                System.IO.Directory.CreateDirectory(outputDir);
 
             // Serialize the assembly metadata to JSON
-        var options = new JsonSerializerOptions
+            var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -218,6 +218,58 @@ namespace AssemblyModel
             }
 
             Console.WriteLine($"Assembly data saved to: {outputPath}");
+        }
+    }
+
+    public class AssemblyMetadata
+    {
+        public string FilePath { get; set; }
+        public string DisplayName;
+        public string DocumentType;
+
+        public List<ComponentMetadata> Components { get; set; } = new();
+        public List<ConstraintData> Constraints { get; set; } = new();
+        public List<JointData> Joints { get; set; } = new();
+        public List<AttributeSetData> Attributes { get; set; } = new();
+        public AssemblyMetadata(Assembly assembly)
+        {
+            this.FilePath = assembly.FilePath;
+            this.DisplayName = assembly.DisplayName;
+            this.DocumentType = assembly.DocumentType;
+            this.Components = [];
+            foreach (AssemblyComponent asmCom in assembly.Components)
+            {
+                ComponentMetadata component = new ComponentMetadata(asmCom);
+                Components.Add(component);
+            }
+            this.Constraints = assembly.Constraints;
+            this.Joints = assembly.Joints;
+            this.Attributes = assembly.Attributes;
+        }
+
+        public void ExportToJson(string outputPath)
+        {
+            // Ensure output directory exists
+            string outputDir = System.IO.Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(outputDir) && !System.IO.Directory.Exists(outputDir))
+                System.IO.Directory.CreateDirectory(outputDir);
+
+            // Serialize the assembly metadata to JSON
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+
+            string json = JsonSerializer.Serialize(this, options);
+
+            // Write the JSON to a file
+            using (var writer = new System.IO.StreamWriter(outputPath))
+            {
+                writer.WriteLine(json);
+            }
+
+            Console.WriteLine($"Assembly metadata saved to: {outputPath}");
         }
     }
 }

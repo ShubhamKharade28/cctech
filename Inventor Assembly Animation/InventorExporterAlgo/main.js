@@ -1,6 +1,6 @@
 const { exec } = require('child_process');
 
-exec('dotnet run "data/scissors.iam" "data/assembly_json2.json"', (error, stdout, stderr) => {
+exec('dotnet run "inputs/single-cylinder/Assembly1.iam" "outputs/single_cylinder_assembly_data.json"', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error.message}`);
     return;

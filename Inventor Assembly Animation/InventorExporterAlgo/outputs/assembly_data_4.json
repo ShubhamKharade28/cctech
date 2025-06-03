@@ -1,0 +1,168 @@
+{
+  "filePath": "data/Assembly1.iam",
+  "components": [
+    {
+      "parent": "Root",
+      "name": "FixturePlate:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Base_1:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        0,
+        8.838632623586453E-16,
+        1.2523166870383497E-33,
+        8.838632623586453E-16,
+        0,
+        -1,
+        0.050799999999999734,
+        0,
+        1,
+        0,
+        0
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Ball_1:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        -1.3498259645657397E-14,
+        9.450956023159719E-16,
+        5.751139334205974E-16,
+        9.450956023160253E-16,
+        3.973942157418159E-15,
+        -1,
+        -0.8110518387535041,
+        1.349825964565739E-14,
+        1,
+        3.9739421574181715E-15,
+        2.4637999999999947
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Connector_1:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        -1.308162294719078E-14,
+        -3.3515979919486625E-14,
+        -0.027295330135968243,
+        -3.535269133693885E-14,
+        -0.18428466995223272,
+        -0.9828729116323212,
+        0.266658908462936,
+        6.681091537393334E-15,
+        0.9828729116323212,
+        -0.18428466995223272,
+        2.756351913549194
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Lever_1:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        -1,
+        -3.025511519869037E-16,
+        -7.649734864177839E-16,
+        -0.02729533252019097,
+        -8.226309224012806E-16,
+        0.3677848033037089,
+        0.9299109303900306,
+        3.3019999999999734,
+        -7.091007890928204E-32,
+        0.9299109303900306,
+        -0.3677848033037089,
+        2.4637999999999987
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Socket_1:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        -7.876976197607964E-15,
+        -1.9636915067919897E-14,
+        -1.1150134396413656E-14,
+        -1.9575399678725578E-14,
+        0.007734941336159118,
+        -0.9999700848937999,
+        -9.70102258477116,
+        8.028630943102478E-15,
+        0.9999700848937999,
+        0.007734941336159118,
+        2.4713639991326315
+      ],
+      "children": []
+    }
+  ],
+  "constraints": [
+    {
+      "name": "Mate:1",
+      "type": "kMateConstraintObject",
+      "entityOne": "Face (SurfaceType: kCylinderSurface)",
+      "entityTwo": "Face (SurfaceType: kCylinderSurface)",
+      "occurrenceOne": "Lever_1:1",
+      "occurrenceTwo": "Base_1:1"
+    }
+  ],
+  "joints": [
+    {
+      "name": "Slider:2",
+      "type": "kAssemblyJointObject",
+      "occurrenceOne": "Base_1:1",
+      "occurrenceTwo": "FixturePlate:1"
+    },
+    {
+      "name": "Cylindrical:1",
+      "type": "kAssemblyJointObject",
+      "occurrenceOne": "Ball_1:1",
+      "occurrenceTwo": "Base_1:1"
+    },
+    {
+      "name": "Rotational:1",
+      "type": "kAssemblyJointObject",
+      "occurrenceOne": "Connector_1:1",
+      "occurrenceTwo": "Ball_1:1"
+    },
+    {
+      "name": "Rotational:2",
+      "type": "kAssemblyJointObject",
+      "occurrenceOne": "Lever_1:1",
+      "occurrenceTwo": "Connector_1:1"
+    },
+    {
+      "name": "Ball:1",
+      "type": "kAssemblyJointObject",
+      "occurrenceOne": "Socket_1:1",
+      "occurrenceTwo": "Ball_1:1"
+    }
+  ],
+  "attributes": []
+}

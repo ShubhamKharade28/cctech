@@ -1,0 +1,493 @@
+{
+  "filePath": "data/single-cylinder/Assembly1.iam",
+  "components": [
+    {
+      "parent": "Root",
+      "name": "Part6:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        -1.0000000000000004,
+        -9.860761315262648E-32,
+        -4.440892098500626E-16,
+        -270.5552626659178,
+        -4.440892098500627E-16,
+        2.220446049250316E-16,
+        1.0000000000000002,
+        -126.46558094565535,
+        0,
+        1.0000000000000007,
+        -2.220446049250313E-16,
+        119.33233079863156
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part8:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        2.2204460492503215E-16,
+        1.0000000000000007,
+        1.4432899320127033E-15,
+        -1178.6656244314818,
+        -2.220446049250308E-16,
+        1.443289932012704E-15,
+        -1,
+        -126.67123642843171,
+        -1.0000000000000007,
+        2.22044604925032E-16,
+        2.2204460492503146E-16,
+        444.3323307986316
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part8:2",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        2.253562672946933E-16,
+        0.9999999999999957,
+        -1.0355934521145911E-18,
+        331.334375568521,
+        -1.7893991387730664E-16,
+        -5.283915301490549E-16,
+        -0.9999999999999966,
+        -126.67123642843048,
+        -1.000000000000002,
+        2.4633073358870814E-16,
+        2.220446049250305E-16,
+        444.3323307986313
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "PartA:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1.000000000000001,
+        -2.1372175917591071E-16,
+        1.2578383114508778E-17,
+        -1276.1656244314809,
+        -1.7639627468915405E-17,
+        -0.06347832410098192,
+        -0.9979832174787923,
+        -126.67123642842994,
+        -1.6424303749122847E-17,
+        0.9979832174787929,
+        -0.06347832410098181,
+        574.3323307986316
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part10:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        -2.2204460492503128E-16,
+        -1.0000000000000002,
+        -1.3816089307959588E-16,
+        363.83437556852107,
+        1.0000000000000002,
+        -2.220446049250313E-16,
+        1.4307851621150949E-34,
+        -126.67123642843055,
+        -3.082095943615987E-32,
+        -1.381608930795959E-16,
+        1,
+        574.3323307986317
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part10:2",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        -2.220446049250313E-16,
+        -1.0000000000000002,
+        -2.220446049250316E-16,
+        -1141.1656244314813,
+        1.0000000000000002,
+        -2.220446049250313E-16,
+        -3.2047474274603644E-31,
+        -126.67123642843023,
+        2.7117093616972325E-31,
+        -2.2204460492503165E-16,
+        1,
+        574.3323307986318
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part5:2",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        -2.0064921813001867E-47,
+        -9.036437440025337E-32,
+        331.3343755685206,
+        -9.036437440025334E-32,
+        1.789399138773062E-16,
+        -1.0000000000000002,
+        -125.67123642842989,
+        0,
+        1.0000000000000002,
+        1.789399138773062E-16,
+        577.0677464920445
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part5:3",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        0.9999999999999978,
+        6.46123322973582E-15,
+        1.4206404341629418E-19,
+        -1178.6656244314822,
+        1.4206404340902974E-19,
+        2.220446049250321E-16,
+        -1.0000000000000002,
+        -127.29007008883772,
+        -6.337200501203489E-15,
+        0.9999999999999979,
+        2.2204460492503215E-16,
+        574.3323307986319
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "PartB:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        -1.1102230246251554E-15,
+        -1.0000000000000009,
+        2.1408918354761425E-16,
+        -651.1656244314797,
+        -0.9999999999999996,
+        1.6653345369377415E-16,
+        1.1462490536691378E-15,
+        -140.9538593511503,
+        -1.7486012637846233E-15,
+        -1.4942394294285431E-15,
+        -1.0000000000000002,
+        798.8785547313596
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part11:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        -2.1456313419688042E-16,
+        -1.000000000000001,
+        -6.494101901298447E-19,
+        488.83437556852107,
+        -0.0634783241009821,
+        1.42682086436816E-17,
+        -0.9979832174787968,
+        -126.67123642843038,
+        0.997983217478797,
+        -2.1408918354761613E-16,
+        -0.06347832410098209,
+        574.3323307986316
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part12:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        6.661338147750939E-16,
+        -2.22044604925032E-16,
+        -1.0000000000000002,
+        -649.7589402524559,
+        -1.0000000000000007,
+        -5.607334379462086E-18,
+        -6.661338147750937E-16,
+        -140.95385935115272,
+        -1.3877787807811696E-17,
+        1.000000000000001,
+        -2.220446049250313E-16,
+        1913.8785547313603
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part7:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        0,
+        -2.2204460492503175E-16,
+        -849.7589402524559,
+        0,
+        1,
+        -1.4791141972893998E-31,
+        -140.95385935115294,
+        2.2204460492503175E-16,
+        1.4791141972893998E-31,
+        1,
+        2048.8785547313605
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part2:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        -4.930380657631324E-32,
+        9.860761315262648E-32,
+        -649.7589402524557,
+        1.9721522630525295E-31,
+        -1.948512218727392E-17,
+        -1.0000000000000002,
+        -140.95385935115272,
+        -2.2186712959340957E-31,
+        1.0000000000000004,
+        -2.775557561562392E-17,
+        1353.8785547313591
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part4:1",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        1.381293805172967E-46,
+        6.220794266266279E-31,
+        -1178.6656244314838,
+        6.2207942662662746E-31,
+        2.2204460492503215E-16,
+        -1.0000000000000002,
+        -347.4383227592643,
+        3.067088372709226E-62,
+        1.0000000000000002,
+        2.2204460492503215E-16,
+        745.8323307986315
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part4:2",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        1.2337887036651204E-46,
+        5.556490346080258E-31,
+        -1178.6656244314838,
+        5.556490346080255E-31,
+        2.2204460492503215E-16,
+        -1.0000000000000002,
+        92.8582299111625,
+        2.739561252821838E-62,
+        1.0000000000000002,
+        2.2204460492503215E-16,
+        745.8323307986313
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part4:3",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        1.4397009839203412E-78,
+        6.483836814708586E-63,
+        331.3343755685206,
+        6.483836814708585E-63,
+        1.7893991387730615E-16,
+        -1.0000000000000002,
+        94.47706357157018,
+        0,
+        1.0000000000000002,
+        1.7893991387730615E-16,
+        748.5677464920444
+      ],
+      "children": []
+    },
+    {
+      "parent": "Root",
+      "name": "Part4:4",
+      "documentType": "kPartDocumentObject",
+      "transformMatrix": [
+        1,
+        1.4397009839203412E-78,
+        6.483836814708586E-63,
+        331.3343755685206,
+        6.483836814708585E-63,
+        1.7893991387730615E-16,
+        -1.0000000000000002,
+        -345.8194890988561,
+        0,
+        1.0000000000000002,
+        1.7893991387730615E-16,
+        748.5677464920448
+      ],
+      "children": []
+    }
+  ],
+  "constraints": [
+    {
+      "name": "Mate:1",
+      "type": "kMateConstraintObject",
+      "entityOne": "Face (SurfaceType: kPlaneSurface)",
+      "entityTwo": "Face (SurfaceType: kPlaneSurface)",
+      "occurrenceOne": "Part8:1",
+      "occurrenceTwo": "Part6:1"
+    },
+    {
+      "name": "Mate:2",
+      "type": "kMateConstraintObject",
+      "entityOne": "Face (SurfaceType: kPlaneSurface)",
+      "entityTwo": "Face (SurfaceType: kPlaneSurface)",
+      "occurrenceOne": "Part8:2",
+      "occurrenceTwo": "Part6:1"
+    },
+    {
+      "name": "Insert:1",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircularArcCurve)",
+      "occurrenceOne": "PartA:1",
+      "occurrenceTwo": "Part8:1"
+    },
+    {
+      "name": "Insert:2",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircularArcCurve)",
+      "occurrenceOne": "PartA:1",
+      "occurrenceTwo": "Part8:2"
+    },
+    {
+      "name": "Insert:3",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part10:1",
+      "occurrenceTwo": "PartA:1"
+    },
+    {
+      "name": "Insert:4",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircularArcCurve)",
+      "occurrenceOne": "Part10:2",
+      "occurrenceTwo": "Part8:1"
+    },
+    {
+      "name": "Mate:3",
+      "type": "kMateConstraintObject",
+      "entityOne": "Edge (CurveType: kLineSegmentCurve)",
+      "entityTwo": "Edge (CurveType: kLineSegmentCurve)",
+      "occurrenceOne": "Part5:2",
+      "occurrenceTwo": "Part8:2"
+    },
+    {
+      "name": "Mate:4",
+      "type": "kMateConstraintObject",
+      "entityOne": "Edge (CurveType: kLineSegmentCurve)",
+      "entityTwo": "Edge (CurveType: kLineSegmentCurve)",
+      "occurrenceOne": "Part5:3",
+      "occurrenceTwo": "Part8:1"
+    },
+    {
+      "name": "Mate:5",
+      "type": "kMateConstraintObject",
+      "entityOne": "Edge (CurveType: kLineSegmentCurve)",
+      "entityTwo": "Edge (CurveType: kLineSegmentCurve)",
+      "occurrenceOne": "Part8:1",
+      "occurrenceTwo": "Part5:3"
+    },
+    {
+      "name": "Insert:5",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircularArcCurve)",
+      "occurrenceOne": "PartB:1",
+      "occurrenceTwo": "PartA:1"
+    },
+    {
+      "name": "Insert:6",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircularArcCurve)",
+      "entityTwo": "Edge (CurveType: kCircularArcCurve)",
+      "occurrenceOne": "Part11:1",
+      "occurrenceTwo": "PartA:1"
+    },
+    {
+      "name": "Insert:7",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part12:1",
+      "occurrenceTwo": "PartB:1"
+    },
+    {
+      "name": "Insert:8",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part7:1",
+      "occurrenceTwo": "Part12:1"
+    },
+    {
+      "name": "Insert:9",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part2:1",
+      "occurrenceTwo": "Part12:1"
+    },
+    {
+      "name": "Insert:10",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part4:1",
+      "occurrenceTwo": "Part5:3"
+    },
+    {
+      "name": "Insert:11",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part4:2",
+      "occurrenceTwo": "Part5:3"
+    },
+    {
+      "name": "Insert:12",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part4:3",
+      "occurrenceTwo": "Part5:2"
+    },
+    {
+      "name": "Insert:13",
+      "type": "kInsertConstraintObject",
+      "entityOne": "Edge (CurveType: kCircleCurve)",
+      "entityTwo": "Edge (CurveType: kCircleCurve)",
+      "occurrenceOne": "Part4:4",
+      "occurrenceTwo": "Part5:2"
+    }
+  ],
+  "joints": [],
+  "attributes": []
+}
